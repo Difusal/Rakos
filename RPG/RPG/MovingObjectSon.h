@@ -22,4 +22,7 @@ public:
 private:
 	double p1_x, p1_y;
 	double p2_x, p2_y;
+
+	friend class NPC;
+	friend class Rabbit;
 };

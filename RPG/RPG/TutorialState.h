@@ -4,7 +4,7 @@
 #include "Weapon.h"
 #include "Player.h"
 #include "NPC.h"
-#include "Creature.h"
+#include "Rabbit.h"
 #include "stdIncludes.h"
 
 class TutorialState: public State
@@ -28,15 +28,15 @@ private:
 	vector<MovingObject*> movingStuff;
 	vector<MovingObjectSon*> movingCreaturesAndNpcs;
 
-	Player player;
-	NPC steve;
-	NPC knight;
-	NPC sorcerer;
-	NPC warrior;
-	Creature rabbit;
+	Player *player;
+	NPC *steve;
+	NPC *knight;
+	NPC *sorcerer;
+	NPC *warrior;
+	Rabbit *rabbit;
 	
-	Weapon * no_weapon;
-	Weapon * knife;
+	Weapon *no_weapon;
+	Weapon *knife;
 	
 	int attack_cooldown;
 	bool player_can_attack;

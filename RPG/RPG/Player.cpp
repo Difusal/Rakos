@@ -1,8 +1,41 @@
 #include "Player.h"
 
+/*
 Player::Player(void)
 {
-	this->setType(playerType);
+	type = playerType;
+	dead = false;
+	weapon = new Weapon();
+
+	active = false;
+	dir = DOWN;
+	x = 0;
+	y = 0;
+	running = false;
+	moveSpeed = HumansWalkingSpeed;
+
+	bitmap = al_load_bitmap(playerPng);
+	bitmap_sourceX = 32;
+	bitmap_sourceY = 0;
+}
+*/
+
+Player::Player(Weapon *weapon, double X, double Y)
+{
+	type = playerType;
+	dead = false;
+	this->weapon = weapon;
+
+	active = false;
+	dir = DOWN;
+	x = X;
+	y = Y;
+	running = false;
+	moveSpeed = HumansWalkingSpeed;
+
+	bitmap = al_load_bitmap(playerPng);
+	bitmap_sourceX = 32;
+	bitmap_sourceY = 0;
 }
 
 void Player::updateFeetCoords()

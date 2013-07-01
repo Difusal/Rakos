@@ -59,14 +59,14 @@ void TutorialState::LoadWeapons()
 
 bool TutorialState::mapCollision(int Dir, const vector<int> &tiles)
 {
-	int north_scan = world_map[(player.getFeetY()-15)/WorldBlockSize][player.getFeetX()/WorldBlockSize];
-	int ne_scan = world_map[(player.getFeetY()-15)/WorldBlockSize][(player.getFeetX()+25)/WorldBlockSize];
-	int east_scan = world_map[player.getFeetY()/WorldBlockSize][(player.getFeetX()+25)/WorldBlockSize];
-	int se_scan = world_map[(player.getFeetY()+25)/WorldBlockSize][(player.getFeetX()+25)/WorldBlockSize];
-	int south_scan = world_map[(player.getFeetY()+25)/WorldBlockSize][player.getFeetX()/WorldBlockSize];
-	int sw_scan = world_map[(player.getFeetY()+25)/WorldBlockSize][(player.getFeetX()-25)/WorldBlockSize];
-	int west_scan = world_map[player.getFeetY()/WorldBlockSize][(player.getFeetX()-25)/WorldBlockSize];
-	int nw_scan = world_map[(player.getFeetY()-15)/WorldBlockSize][(player.getFeetX()-25)/WorldBlockSize];
+	int north_scan = world_map[(player->getFeetY()-15)/WorldBlockSize][player->getFeetX()/WorldBlockSize];
+	int ne_scan = world_map[(player->getFeetY()-15)/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
+	int east_scan = world_map[player->getFeetY()/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
+	int se_scan = world_map[(player->getFeetY()+25)/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
+	int south_scan = world_map[(player->getFeetY()+25)/WorldBlockSize][player->getFeetX()/WorldBlockSize];
+	int sw_scan = world_map[(player->getFeetY()+25)/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
+	int west_scan = world_map[player->getFeetY()/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
+	int nw_scan = world_map[(player->getFeetY()-15)/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
 
 	for (unsigned int i = 0; i < tiles.size(); i++)
 	{
@@ -201,30 +201,36 @@ void TutorialState::Initialize()
 		exit(-1);
 	}
 
-	player.setBitmap(al_load_bitmap(playerPng));
-	steve.setBitmap(al_load_bitmap(explorer_greenPng));
-	knight.setBitmap(al_load_bitmap(knight_whitePng));
-	rabbit.setBitmap(al_load_bitmap(rabbitPng));
-	if (!player.getBitmap() || !steve.getBitmap() || !rabbit.getBitmap() || !knight.getBitmap())
+	// initializing player
+	player = new Player(no_weapon, 480, 580);
+
+	// initializing npcs
+	steve = new NPC(explorer_greenPng, 160, 200, 230, 320);
+	knight = new NPC(knight_whitePng, 670, 180, 740, 240);
+	sorcerer = new NPC(sorcerer_bluePng, 985, 90);
+	warrior = new NPC(warrior_yellowPng, 985, 250);
+
+	// initializing creatures
+	rabbit = new Rabbit(180, 390, 240, 390);
+
+	if (!player->getBitmap() || !steve->getBitmap() || !rabbit->getBitmap() || !knight->getBitmap())
 	{
 		al_show_native_message_box(StateControl::GetInstance()->GetDisplay(), "Error", "Could not load player bitmap or npc bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
 	}
 
-	// initializing player
-	steve.setDeadState(false);
-	player.setWeapon(no_weapon);
-	player.setRunningState(false);
-	player.setX(480);
-	player.setY(580);
-	player.setMoveSpeed(HumansWalkingSpeed);
-	player.setActiveState(false);
-	player.setDir(DOWN);
-	player.setBitmapSourceX(32);
-	player.setBitmapSourceY(0);
-
-	// initializing npcs
-	// steve
+	/*
+	player->setDeadState(false);
+	player->setWeapon(no_weapon);
+	player->setRunningState(false);
+	player->setX(480);
+	player->setY(580);
+	player->setMoveSpeed(HumansWalkingSpeed);
+	player->setActiveState(false);
+	player->setDir(DOWN);
+	player->setBitmapSourceX(32);
+	player->setBitmapSourceY(0);*/
+	/*
 	steve.setDeadState(false);
 	steve.setP1_x(160);
 	steve.setP1_y(200);
@@ -276,7 +282,8 @@ void TutorialState::Initialize()
 	warrior.setDir(DOWN);
 	warrior.setBitmapSourceX(32);
 	warrior.setBitmapSourceY(0);
-
+	*/
+	/*
 	// initializing rabbit
 	rabbit.setName("Rabbit");
 	rabbit.setDeadState(false);
@@ -293,15 +300,16 @@ void TutorialState::Initialize()
 	rabbit.setDir(RIGHT);
 	rabbit.setBitmapSourceX(32);
 	rabbit.setBitmapSourceY(0);
+	*/
 
 	movingCreaturesAndNpcs.clear();
-	movingCreaturesAndNpcs.push_back(&rabbit);
-	movingCreaturesAndNpcs.push_back(&steve);
-	movingCreaturesAndNpcs.push_back(&knight);
-	movingCreaturesAndNpcs.push_back(&sorcerer);
-	movingCreaturesAndNpcs.push_back(&warrior);
+	movingCreaturesAndNpcs.push_back(rabbit);
+	movingCreaturesAndNpcs.push_back(steve);
+	movingCreaturesAndNpcs.push_back(knight);
+	movingCreaturesAndNpcs.push_back(sorcerer);
+	movingCreaturesAndNpcs.push_back(warrior);
 	movingStuff.clear();
-	movingStuff.push_back(&player);
+	movingStuff.push_back(player);
 	for (unsigned int i = 0; i < movingCreaturesAndNpcs.size(); i++)
 		movingStuff.push_back(movingCreaturesAndNpcs[i]);
 
@@ -333,100 +341,100 @@ bool TutorialState::Update(ALLEGRO_EVENT * ev)
 
 			// player used portal
 			if (switch_pressed &&
-				(483 <= player.getFeetX() && player.getFeetX() <= 515) &&
-				(123 <= player.getFeetY() && player.getFeetY() <= 156))
+				(483 <= player->getFeetX() && player->getFeetX() <= 515) &&
+				(123 <= player->getFeetY() && player->getFeetY() <= 156))
 			{
-				player.setX(700-16);
-				player.setY(142-32);
+				player->setX(700-16);
+				player->setY(142-32);
 			}
 
 			// player wants to chat
 			if (al_key_down(&keyState, ALLEGRO_KEY_C) &&
-				calculateDistance(player.getX(), player.getY(), steve.getX(), steve.getY()) < 40)
+				calculateDistance(player->getX(), player->getY(), steve->getX(), steve->getY()) < 40)
 			{
 				show_tutorial_dialog_2 = false;
 
-				if (rabbit.isDead())
+				if (rabbit->isDead())
 					show_steve_dialog_2 = true;
 				else
 					show_steve_dialog_1 = true;
 
 				player_has_talked_to_steve = true;
-				player.setWeapon(knife);
-				steve.setActiveState(false);
+				player->setWeapon(knife);
+				steve->setActiveState(false);
 			}
-			if (calculateDistance(player.getX(), player.getY(), steve.getX(), steve.getY()) > 60)
-			{ show_steve_dialog_1 = false; show_steve_dialog_2 = false; steve.setActiveState(true); }
+			if (calculateDistance(player->getX(), player->getY(), steve->getX(), steve->getY()) > 60)
+			{ show_steve_dialog_1 = false; show_steve_dialog_2 = false; steve->setActiveState(true); }
 
 			// player attacks
 			if (al_key_down(&keyState, ALLEGRO_KEY_K) && player_can_attack &&
-				calculateDistance(player.getX(), player.getY(), rabbit.getX(), rabbit.getY()) < 40 &&
-				((player.getDir() != UP && rabbit.getDir() != DOWN) || (player.getDir() != LEFT && rabbit.getDir() != RIGHT) ||
-				(player.getDir() != RIGHT && rabbit.getDir() != LEFT) || (player.getDir() != DOWN && rabbit.getDir() != UP)))
+				calculateDistance(player->getX(), player->getY(), rabbit->getX(), rabbit->getY()) < 40 &&
+				((player->getDir() != UP && rabbit->getDir() != DOWN) || (player->getDir() != LEFT && rabbit->getDir() != RIGHT) ||
+				(player->getDir() != RIGHT && rabbit->getDir() != LEFT) || (player->getDir() != DOWN && rabbit->getDir() != UP)))
 			{
 				player_can_attack = false;
-				rabbit.setHP(rabbit.getHP() - player.getWeapon()->Damage());
-				if (rabbit.getHP() <= 0) { rabbit.setDeadState(true); }
+				rabbit->setHP(rabbit->getHP() - player->getWeapon()->Damage());
+				if (rabbit->getHP() <= 0) { rabbit->setDeadState(true); }
 			}
 
 			// moving player
-			player.setActiveState(true);
+			player->setActiveState(true);
 			// shift being pressed == running
 			if (al_key_down(&keyState, ALLEGRO_KEY_LSHIFT))
 			{
-				player.setMoveSpeed(HumansRunningSpeed);
-				if (!player.getRunningState())
+				player->setMoveSpeed(HumansRunningSpeed);
+				if (!player->getRunningState())
 					al_set_timer_speed(StateControl::GetInstance()->GetTimer(2), 1.0/(1.5*drawFPS));
-				player.setRunningState(true);
+				player->setRunningState(true);
 			}
 			else
 			{
-				player.setMoveSpeed(HumansWalkingSpeed);
-				if (player.getRunningState())
+				player->setMoveSpeed(HumansWalkingSpeed);
+				if (player->getRunningState())
 					al_set_timer_speed(StateControl::GetInstance()->GetTimer(2), 1.0/drawFPS);
-				player.setRunningState(false);
+				player->setRunningState(false);
 			}
 			if(al_key_down(&keyState, ALLEGRO_KEY_S))
 			{
 				if (!player_has_talked_to_steve)
 				{ show_tutorial_dialog_1 = false; show_tutorial_dialog_2 = true; }
-				player.setY(player.getY() + player.getMoveSpeed());
-				if (player.getY() > world_map.size()*WorldBlockSize - 32)
-					player.setY(world_map.size()*WorldBlockSize - 32);
-				player.setDir(DOWN);
+				player->setY(player->getY() + player->getMoveSpeed());
+				if (player->getY() > world_map.size()*WorldBlockSize - 32)
+					player->setY(world_map.size()*WorldBlockSize - 32);
+				player->setDir(DOWN);
 			}
 			else if(al_key_down(&keyState, ALLEGRO_KEY_W))
 			{
 				if (!player_has_talked_to_steve)
 				{ show_tutorial_dialog_1 = false; show_tutorial_dialog_2 = true; }
-				player.setY(player.getY() - player.getMoveSpeed()); 
-				if (player.getY() < 0)
-					player.setY(0);
-				player.setDir(UP);
+				player->setY(player->getY() - player->getMoveSpeed()); 
+				if (player->getY() < 0)
+					player->setY(0);
+				player->setDir(UP);
 			}
 			else if(al_key_down(&keyState, ALLEGRO_KEY_D))
 			{
 				if (!player_has_talked_to_steve)
 				{ show_tutorial_dialog_1 = false; show_tutorial_dialog_2 = true; }
-				player.setX(player.getX() + player.getMoveSpeed());
-				if (player.getX() > world_map[0].size()*WorldBlockSize - 32)
-					player.setX(world_map[0].size()*WorldBlockSize - 32);
-				player.setDir(RIGHT);
+				player->setX(player->getX() + player->getMoveSpeed());
+				if (player->getX() > world_map[0].size()*WorldBlockSize - 32)
+					player->setX(world_map[0].size()*WorldBlockSize - 32);
+				player->setDir(RIGHT);
 			}
 			else if(al_key_down(&keyState, ALLEGRO_KEY_A))
 			{
 				if (!player_has_talked_to_steve)
 				{ show_tutorial_dialog_1 = false; show_tutorial_dialog_2 = true; }
-				player.setX(player.getX() - player.getMoveSpeed()); 
-				if (player.getX() < 0)
-					player.setX(0);
-				player.setDir(LEFT);
+				player->setX(player->getX() - player->getMoveSpeed()); 
+				if (player->getX() < 0)
+					player->setX(0);
+				player->setDir(LEFT);
 			}
 			else 
-				player.setActiveState(false);
-			player.updateFeetCoords();
+				player->setActiveState(false);
+			player->updateFeetCoords();
 			// player above --- // interactive tiles // ---
-			if ((126 <= player.getFeetX() && player.getFeetX() <= 155) && (130 <= player.getFeetY() && player.getFeetY() <= 155))
+			if ((126 <= player->getFeetX() && player->getFeetX() <= 155) && (130 <= player->getFeetY() && player->getFeetY() <= 155))
 			{ switch_pressed = true; }
 			else
 			{
@@ -448,22 +456,22 @@ bool TutorialState::Update(ALLEGRO_EVENT * ev)
 			/////  Collisions  /////
 			////////////////////////
 			// map collisions
-			bool colliding = mapCollision(player.getDir(), unaccessible_tiles);
-			switch (player.getDir())
+			bool colliding = mapCollision(player->getDir(), unaccessible_tiles);
+			switch (player->getDir())
 			{
 			default:
-			case UP: { if (colliding) { player.setY(player.getY() + player.getMoveSpeed()); } break; }
-			case DOWN: { if (colliding) { player.setY(player.getY() - player.getMoveSpeed()); } break; }
-			case LEFT: { if (colliding) { player.setX(player.getX() + player.getMoveSpeed()); } break; }
-			case RIGHT: { if (colliding) { player.setX(player.getX() - player.getMoveSpeed()); } break; }
+			case UP: { if (colliding) { player->setY(player->getY() + player->getMoveSpeed()); } break; }
+			case DOWN: { if (colliding) { player->setY(player->getY() - player->getMoveSpeed()); } break; }
+			case LEFT: { if (colliding) { player->setX(player->getX() + player->getMoveSpeed()); } break; }
+			case RIGHT: { if (colliding) { player->setX(player->getX() - player->getMoveSpeed()); } break; }
 			}
 			// moving things collisions
 			for (unsigned int i = 0; i < movingCreaturesAndNpcs.size(); i++)
 				if (!movingCreaturesAndNpcs[i]->isDead())
-					updateMovingObjectsCollisions(player, *movingCreaturesAndNpcs[i]);
+					updateMovingObjectsCollisions(*player, *movingCreaturesAndNpcs[i]);
 
 			// updating camera
-			CameraUpdate(world_map, cameraPosition, player.getX(), player.getY(), 32, 32);
+			CameraUpdate(world_map, cameraPosition, player->getX(), player->getY(), 32, 32);
 			al_identity_transform(StateControl::GetInstance()->GetCamera());
 			al_translate_transform(StateControl::GetInstance()->GetCamera(), -cameraPosition[0], -cameraPosition[1]);
 			al_use_transform(StateControl::GetInstance()->GetCamera());
@@ -475,14 +483,12 @@ bool TutorialState::Update(ALLEGRO_EVENT * ev)
 		// creatures and npcs
 		if (ev->timer.source == StateControl::GetInstance()->GetTimer(1))
 		{
-			/*
 			for (unsigned int i = 1; i < movingStuff.size(); i++)
-				updateAnimationFrame(*movingStuff[i]);*/
+				updateAnimationFrame(*movingStuff[i]);
 		}
 		// player
-		/*
 		if (ev->timer.source == StateControl::GetInstance()->GetTimer(2))
-		{ updateAnimationFrame(player); }*/
+		{ updateAnimationFrame(*player); }
 
 		return true;
 	}
@@ -516,9 +522,8 @@ void TutorialState::Draw()
 		al_draw_bitmap_region(movingStuff[i]->getBitmap(), movingStuff[i]->getBitmapSourceX(), movingStuff[i]->getBitmapSourceY() * al_get_bitmap_height(movingStuff[i]->getBitmap()) / 4, 32, 32, movingStuff[i]->getX(), movingStuff[i]->getY(), NULL);
 		
 		/* life bars */
-		/*
 		if (movingStuff[i]->getType() == creatureType)
-			drawLifeBar(*movingStuff[i]);*/
+			drawLifeBar(*movingStuff[i]);
 	}
 
 	al_draw_bitmap(side_bar, 600+cameraPosition[0], cameraPosition[1], NULL);
@@ -526,21 +531,21 @@ void TutorialState::Draw()
 	/* drawing dialogs */
 	if (show_tutorial_dialog_1) { al_draw_bitmap(tutorial_dialog_1, 300+cameraPosition[0] - al_get_bitmap_width(tutorial_dialog_1)/2, cameraPosition[1] + ScreenHeight/4, NULL); }
 	else if (show_tutorial_dialog_2) { al_draw_bitmap(tutorial_dialog_2, 300+cameraPosition[0] - al_get_bitmap_width(tutorial_dialog_2)/2, cameraPosition[1] + ScreenHeight - al_get_bitmap_height(tutorial_dialog_2), NULL); }
-	else if (show_steve_dialog_1) { al_draw_bitmap(steve_dialog_1, steve.getX()-85, steve.getY()-al_get_bitmap_height(steve_dialog_1), NULL); }
-	else if (show_steve_dialog_2) { al_draw_bitmap(steve_dialog_2, steve.getX()-85, steve.getY()-al_get_bitmap_height(steve_dialog_2), NULL); }
+	else if (show_steve_dialog_1) { al_draw_bitmap(steve_dialog_1, steve->getX()-85, steve->getY()-al_get_bitmap_height(steve_dialog_1), NULL); }
+	else if (show_steve_dialog_2) { al_draw_bitmap(steve_dialog_2, steve->getX()-85, steve->getY()-al_get_bitmap_height(steve_dialog_2), NULL); }
 
 	
 	// player temp coords
-	cout << "Player coords: " << player.getFeetX() << " " << player.getFeetY()
-		<< "\t\t" << player.getX() << " " << player.getY() << endl;
+	cout << "Player coords: " << player->getFeetX() << " " << player->getFeetY()
+		<< "\t\t" << player->getX() << " " << player->getY() << endl;
 	// -----------------
 	
 }
 
 void TutorialState::Terminate()
 {
-	al_destroy_bitmap(player.getBitmap());
-	al_destroy_bitmap(steve.getBitmap());
+	al_destroy_bitmap(player->getBitmap());
+	al_destroy_bitmap(steve->getBitmap());
 	al_destroy_bitmap(tutorial_dialog_1);
 	al_destroy_bitmap(tutorial_dialog_2);
 	al_destroy_bitmap(steve_dialog_1);

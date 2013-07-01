@@ -39,10 +39,10 @@
     <ClCompile Include="NPC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Creature.cpp">
+    <ClCompile Include="MovingObjectSon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MovingObjectSon.cpp">
+    <ClCompile Include="Rabbit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,10 +74,10 @@
     <ClInclude Include="NPC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Creature.h">
+    <ClInclude Include="MovingObjectSon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MovingObjectSon.h">
+    <ClInclude Include="Rabbit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

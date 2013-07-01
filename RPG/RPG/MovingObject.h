@@ -57,4 +57,8 @@ private:
 
 	ALLEGRO_BITMAP * bitmap;
 	int bitmap_sourceX, bitmap_sourceY;
+
+	friend class Player;
+	friend class NPC;
+	friend class Rabbit;
 };

@@ -7,10 +7,11 @@
 class Player: public MovingObject
 {
 public:
-	Player(void);
+	//Player(void);
+	Player(Weapon *weapon, double X, double Y);
 
-	Weapon * getWeapon() { return weapon; }
-	void setWeapon(Weapon * newWeapon) { weapon = newWeapon; }
+	Weapon *getWeapon() { return weapon; }
+	void setWeapon(Weapon *newWeapon) { weapon = newWeapon; }
 
 	bool getRunningState() { return running; }
 	void setRunningState(bool newState) { running = newState; }

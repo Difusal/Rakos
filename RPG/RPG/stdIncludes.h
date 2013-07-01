@@ -34,7 +34,7 @@ const float AttackRate = FPS*0.8;
 const float HumansWalkingSpeed = 1.0;
 const float HumansRunningSpeed = 1.7;
 const float NPCWalkingSpeed = 0.5;
-const float NiceCreaturesSpeed = 0.4;
+const float SlowCreaturesSpeed = 0.4;
 
 /* defining user-friendly color names */
 #define Black al_map_rgb(0, 0, 0)

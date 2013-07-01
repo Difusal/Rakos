@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="Rabbit.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovingObject.cpp" />
@@ -23,7 +23,7 @@
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Creature.h" />
+    <ClInclude Include="Rabbit.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="MovingObject.h" />
     <ClInclude Include="MovingObjectSon.h" />
