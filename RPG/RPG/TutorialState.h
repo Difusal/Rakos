@@ -18,14 +18,16 @@ public:
 	void LoadWeapons();
 	bool mapCollision(int Dir, const vector<int> &tiles);
 
-	void updateMovingObjectsCollisions(MovingObject &a, MovingObject &b);
-	void updateAnimationFrame(MovingObject &obj);
-	void moveObject(MovingObjectSon &obj);
+	void updateRunningState();
+	void updatePlayerPosition();
+	void updateMovingObjectsCollisions(MovingObject *a, MovingObject *b);
+	void updateAnimationFrame(MovingObject *obj);
+	void moveObject(MovingObjectSon *obj);
 
 private:
 	vector<vector<int> > world_map;
 	vector<int> unaccessible_tiles;
-	vector<MovingObject*> movingStuff;
+	vector<MovingObject*> allMovingStuff;
 	vector<MovingObjectSon*> movingCreaturesAndNpcs;
 
 	Player *player;
@@ -50,9 +52,9 @@ private:
 	bool player_has_talked_to_steve;
 
 	ALLEGRO_KEYBOARD_STATE keyState;
-	ALLEGRO_BITMAP * side_bar;
-	ALLEGRO_BITMAP * tutorial_dialog_1;
-	ALLEGRO_BITMAP * tutorial_dialog_2;
-	ALLEGRO_BITMAP * steve_dialog_1;
-	ALLEGRO_BITMAP * steve_dialog_2;
+	ALLEGRO_BITMAP *side_bar;
+	ALLEGRO_BITMAP *tutorial_dialog_1;
+	ALLEGRO_BITMAP *tutorial_dialog_2;
+	ALLEGRO_BITMAP *steve_dialog_1;
+	ALLEGRO_BITMAP *steve_dialog_2;
 };
