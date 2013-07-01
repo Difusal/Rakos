@@ -44,14 +44,13 @@ public:
 
 private:
 	int type;
-
-	bool dead;
 	string name;
+	bool dead;
 	int hp;
 	int max_hp;
-	double x, y;
-
+	
 	bool active;
+	double x, y;
 	int dir;
 	double moveSpeed;
 

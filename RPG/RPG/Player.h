@@ -7,7 +7,6 @@
 class Player: public MovingObject
 {
 public:
-	//Player(void);
 	Player(Weapon *weapon, double X, double Y);
 
 	Weapon *getWeapon() { return weapon; }

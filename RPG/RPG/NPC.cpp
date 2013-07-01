@@ -1,15 +1,9 @@
 #include "NPC.h"
 
-/*
-NPC::NPC(void)
-{
-	this->setType(npcType);
-}
-*/
-
-NPC::NPC(const char* Bitmap, double P1_X, double P1_Y, double P2_X, double P2_Y)
+NPC::NPC(string Name, double P1_X, double P1_Y, double P2_X, double P2_Y, const char* Bitmap)
 {
 	type = npcType;
+	name = Name;
 	dead = false;
 
 	active = true;
@@ -27,9 +21,10 @@ NPC::NPC(const char* Bitmap, double P1_X, double P1_Y, double P2_X, double P2_Y)
 	bitmap_sourceY = 0;
 }
 
-NPC::NPC(const char* Bitmap, double X, double Y)
+NPC::NPC(string Name, double X, double Y, const char* Bitmap)
 {
 	type = npcType;
+	name = Name;
 	dead = false;
 
 	active = false;
