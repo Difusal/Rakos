@@ -261,7 +261,7 @@ void TutorialState::Initialize()
 		exit(-1);
 	}
 
-	// initializing player, npcs and creatures
+	// initializing player, npcs, creatures, etc.
 	player = new Player(no_weapon, 480, 580);
 
 	steve = new NPC("Steve", 160, 200, 230, 320, explorer_greenPng);
@@ -270,6 +270,8 @@ void TutorialState::Initialize()
 	warrior = new NPC("Warrior", 985, 250, warrior_yellowPng);
 
 	rabbit = new Rabbit(180, 390, 240, 390);
+
+	portal1 = new Portal();
 
 	if (!player->getBitmap() || !rabbit->getBitmap() || !steve->getBitmap() ||
 		!knight->getBitmap() || !sorcerer->getBitmap() || !warrior->getBitmap())

@@ -23,7 +23,6 @@ public:
 	void Initialize();
 	void CreateAllegroDisplay();
 	void LoadFonts();
-	void LoadWeapons();
 	void start_game();
 	void Terminate();
 
@@ -73,11 +72,11 @@ private:
 	vector<State*> states;
 
 	ALLEGRO_TRANSFORM camera;
+	ALLEGRO_BITMAP * background;
 	ALLEGRO_BITMAP * tileSet;
 	ALLEGRO_DISPLAY * display;
 	ALLEGRO_EVENT ev;
 	ALLEGRO_EVENT_QUEUE * event_queue;
-	ALLEGRO_BITMAP * background;
 	ALLEGRO_TIMER * timer;
 	ALLEGRO_TIMER * drawTimer;
 	ALLEGRO_TIMER * playerAnimTimer;

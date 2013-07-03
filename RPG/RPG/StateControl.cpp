@@ -44,7 +44,7 @@ float calculateDistance(float p1_x, float p1_y, float p2_x, float p2_y)
 	return sqrt(pow(p2_y-p1_y, 2) + pow(p2_x-p1_x, 2));
 }
 
-StateControl * StateControl::instance = NULL;
+StateControl *StateControl::instance = NULL;
 
 void StateControl::Initialize()
 {
@@ -106,10 +106,7 @@ void StateControl::Initialize()
 
 	possible_double_press = false;
 	double_press_counter = 0;
-
-	cout << "Loading game data..." << endl;
-	LoadWeapons();
-
+	
 	cout << "Starting timers..." << endl;
 	al_start_timer(timer);
 	al_start_timer(drawTimer);
@@ -140,19 +137,6 @@ void StateControl::LoadFonts()
 		al_show_native_message_box(display, "Error", "Could not load font file.", "Have you included the resources in the same directory of the program?", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
 	}
-}
-
-void StateControl::LoadWeapons()
-{
-	// none
-
-	// knife
-	/*
-	knife->name = "knife";
-	knife->min_attack = 1;
-	knife->max_attack = 2;
-	*/
-	// ...
 }
 
 void StateControl::start_game ()
