@@ -13,11 +13,13 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RPG.cpp" />
+    <ClCompile Include="TutorialState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RPG.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stdIncludes.h" />
+    <ClInclude Include="TutorialState.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{73E2BCD5-3D49-4ACE-9D1E-65273D1CA413}</ProjectGuid>

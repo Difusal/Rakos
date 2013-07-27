@@ -55,6 +55,8 @@ const float SlowCreaturesSpeed = 0.4;
 #define ConsolaTTF "res//fonts//consola.ttf"
 
 /* images */
+#define MouseCursor "res//images//mouse_cursor.png"
+#define LoadingGameBackgroundPath "res//images//loading_game_bg.png"
 #define SideBarPath "res//images//side_bar.png"
 
 /* sprites */
