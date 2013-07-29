@@ -1,44 +1,6 @@
 #include "RPG.h"
 #include "TutorialState.h"
 
-/* generates random numbers */
-int random_number (int min, int max) {
-	max++;
-
-	return ((rand() % (max-min)) + min);
-}
-
-void CameraUpdate(vector<vector<int> > & worldMap, float * cameraPosition, float x, float y, int width, int height) {
-	cameraPosition[0] = -((ScreenWidth-200) / 2) + (x + width / 2); 
-	cameraPosition[1] = -(ScreenHeight / 2) + (y + height / 2);
-
-	if(cameraPosition[0] < 0)
-		cameraPosition[0] = 0; 
-	if(cameraPosition[1] < 0)
-		cameraPosition[1] = 0;
-	if(cameraPosition[0] > WorldBlockSize*worldMap[0].size() - (ScreenWidth-200))
-		cameraPosition[0] = WorldBlockSize*worldMap[0].size() - (ScreenWidth-200);
-	if(cameraPosition[1] > WorldBlockSize*worldMap.size() - ScreenHeight)
-		cameraPosition[1] = WorldBlockSize*worldMap.size() - ScreenHeight;
-}
-
-bool boxCollision(float x, float y, float ex, float ey, int width, int height) {
-	int x_correction = 15;
-	int y_correction = 25;
-	if (x + width - x_correction < ex || x > ex + width - x_correction ||
-		y + height - y_correction < ey || y > ey + height - y_correction)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-float calculateDistance(float p1_x, float p1_y, float p2_x, float p2_y) {
-	return sqrt(pow(p2_y-p1_y, 2) + pow(p2_x-p1_x, 2));
-}
-
-
 RPG *RPG::instance = NULL;
 
 RPG *RPG::GetInstance() {

@@ -11,15 +11,29 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="globalFunctions.cpp" />
+    <ClCompile Include="LivingBeing.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Rabbit.cpp" />
     <ClCompile Include="RPG.cpp" />
     <ClCompile Include="TutorialState.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="globalFunctions.h" />
+    <ClInclude Include="LivingBeing.h" />
+    <ClInclude Include="NPC.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Portal.h" />
+    <ClInclude Include="Rabbit.h" />
     <ClInclude Include="RPG.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stdIncludes.h" />
     <ClInclude Include="TutorialState.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{73E2BCD5-3D49-4ACE-9D1E-65273D1CA413}</ProjectGuid>

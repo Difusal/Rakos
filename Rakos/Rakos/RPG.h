@@ -7,6 +7,19 @@ enum GameState {
 	Tutorial
 };
 
+enum Direction {
+	DOWN,
+	LEFT,
+	RIGHT,
+	UP
+};
+
+enum LivingBeingType {
+	_Player,
+	_NPC,
+	_Creature
+};
+
 enum TimerType {
 	RegularTimer,
 	DrawTimer,
