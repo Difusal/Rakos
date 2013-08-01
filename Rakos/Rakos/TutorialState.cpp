@@ -2,11 +2,6 @@
 #include "RPG.h"
 #include "globalFunctions.h"
 
-void TutorialState::LoadWeapons() {
-	no_weapon = new Weapon();
-	knife = new Weapon("knife", 1, 2);
-}
-
 bool TutorialState::mapCollision(int Dir, const vector<int> &tiles) {
 	int north_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][player->getFeetX()/WorldBlockSize];
 	int ne_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
@@ -56,13 +51,13 @@ void TutorialState::updateRunningState() {
 	if (al_key_down(&keyState, ALLEGRO_KEY_LSHIFT)) {
 		player->setMoveSpeed(HumansRunningSpeed);
 		if (!player->getRunningState())
-			al_set_timer_speed(RPG::GetInstance()->GetTimer(2), 1.0/(1.5*drawFPS));
+			al_set_timer_speed(RPG::GetInstance()->GetTimer(_PlayerAnimTimer), 1.0/(1.5*drawFPS));
 		player->setRunningState(true);
 	}
 	else {
 		player->setMoveSpeed(HumansWalkingSpeed);
 		if (player->getRunningState())
-			al_set_timer_speed(RPG::GetInstance()->GetTimer(2), 1.0/drawFPS);
+			al_set_timer_speed(RPG::GetInstance()->GetTimer(_PlayerAnimTimer), 1.0/drawFPS);
 		player->setRunningState(false);
 	}
 }
@@ -193,14 +188,10 @@ void TutorialState::moveObject(LivingBeing *obj)
 }
 
 
-void TutorialState::Initialize()
-{
+void TutorialState::Initialize() {
 	/* loading map */
 	LoadMap(TutorialWorldMapPath, worldMap);
 	unaccessibleTiles.push_back(0);
-
-	/* loading equipment */
-	LoadWeapons();
 
 	/* loading images */
 	side_bar = al_load_bitmap(SideBarPath);
@@ -220,7 +211,7 @@ void TutorialState::Initialize()
 	}
 
 	// initializing player, npcs, creatures, etc.
-	player = new Player(no_weapon, 480, 580);
+	player = RPG::GetInstance()->GetPlayer();
 
 	steve = new NPC("Steve", 160, 200, 230, 320, explorer_greenPng);
 	knight = new NPC("White Knight", 670, 180, 740, 240, knight_whitePng);
@@ -230,12 +221,6 @@ void TutorialState::Initialize()
 	rabbit = new Rabbit(180, 390, 240, 390);
 
 	portal1 = new Portal();
-
-	if (!player->getBitmap() || !rabbit->getBitmap() || !steve->getBitmap() ||
-		!knight->getBitmap() || !sorcerer->getBitmap() || !warrior->getBitmap()) {
-		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load player bitmap or npc bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-		exit(-1);
-	}
 
 	/* initializing useful vectors */
 	livingBeings.clear();
@@ -258,20 +243,17 @@ void TutorialState::Initialize()
 	switch_pressed = false;
 }
 
-bool TutorialState::Update(ALLEGRO_EVENT * ev)
-{
+bool TutorialState::Update(ALLEGRO_EVENT * ev) {
 	al_get_keyboard_state(&keyState);
 
 	/* if something is dead, remove it from livingBeings vector */
 	int prev_size = livingBeings.size();
-	for (unsigned int i = 0; i < livingBeings.size(); i++)
+	for (unsigned int i = 1; i < livingBeings.size(); i++)
 		if (livingBeings[i]->isDead())
 			livingBeings.erase(livingBeings.begin() + i);
 
-	if (ev->type == ALLEGRO_EVENT_TIMER)
-	{
-		if (ev->timer.source == RPG::GetInstance()->GetTimer(0))
-		{
+	if (ev->type == ALLEGRO_EVENT_TIMER) {
+		if (ev->timer.source == RPG::GetInstance()->GetTimer(_RegularTimer)) {
 			// attack rate control
 			if (!player_can_attack)
 				attack_cooldown++;
@@ -299,7 +281,7 @@ bool TutorialState::Update(ALLEGRO_EVENT * ev)
 					show_steve_dialog_1 = true;
 
 				player_has_talked_to_steve = true;
-				player->setWeapon(knife);
+				player->setWeapon(RPG::GetInstance()->GetWeapon(_Knife));
 				steve->setActiveState(false);
 			}
 			if (calculateDistance(player->getX(), player->getY(), steve->getX(), steve->getY()) > 60) {
@@ -347,17 +329,27 @@ bool TutorialState::Update(ALLEGRO_EVENT * ev)
 			////////////////////////
 			// map collisions
 			bool colliding = mapCollision(player->getDir(), unaccessibleTiles);
-			switch (player->getDir())
-			{
-			default:
-			case UP: { if (colliding) { player->setY(player->getY() + player->getMoveSpeed()); } break; }
-			case DOWN: { if (colliding) { player->setY(player->getY() - player->getMoveSpeed()); } break; }
-			case LEFT: { if (colliding) { player->setX(player->getX() + player->getMoveSpeed()); } break; }
-			case RIGHT: { if (colliding) { player->setX(player->getX() - player->getMoveSpeed()); } break; }
+			if (colliding) {
+				switch (player->getDir()) {
+				default:
+				case UP:
+					player->setY(player->getY() + player->getMoveSpeed());
+					break;
+				case DOWN:
+					player->setY(player->getY() - player->getMoveSpeed());
+					break;
+				case LEFT:
+					player->setX(player->getX() + player->getMoveSpeed());
+					break;
+				case RIGHT:
+					player->setX(player->getX() - player->getMoveSpeed());
+					break;
+				}
 			}
 			// moving things collisions
 			for (unsigned int i = 0; i < livingBeings.size(); i++)
-				updateLivingBeingsCollisions(player, livingBeings[i]);
+				if (livingBeings[i]->getType() != _Player)
+					updateLivingBeingsCollisions(player, livingBeings[i]);
 
 			// updating camera
 			CameraUpdate(worldMap, cameraPosition, player->getX(), player->getY(), 32, 32);
@@ -370,12 +362,12 @@ bool TutorialState::Update(ALLEGRO_EVENT * ev)
 		/// controlling animations ///
 		//////////////////////////////
 		// creatures and npcs
-		if (ev->timer.source == RPG::GetInstance()->GetTimer(1))
+		if (ev->timer.source == RPG::GetInstance()->GetTimer(_DrawTimer))
 			for (LivingBeing* obj : livingBeings)
 				if (obj->getType() != _Player)
 					updateAnimationFrame(obj);
 		// player
-		if (ev->timer.source == RPG::GetInstance()->GetTimer(2))
+		if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerAnimTimer))
 			updateAnimationFrame(player);
 
 		/* updating drawing vector */
@@ -428,8 +420,8 @@ void TutorialState::Draw()
 	*/
 }
 
-void TutorialState::Terminate()
-{
+void TutorialState::Terminate() {
+	unaccessibleTiles.clear();
 	al_destroy_bitmap(player->getBitmap());
 	al_destroy_bitmap(steve->getBitmap());
 	al_destroy_bitmap(tutorial_dialog_1);

@@ -3,10 +3,11 @@
 #include "stdIncludes.h"
 
 int random_number (int min, int max);
-static float cameraPosition[2] = { 0, 0 };
 void CameraUpdate(vector<vector<int> > & worldMap, float * cameraPosition, float x, float y, int width, int height);
 bool boxCollision(float x, float y, float ex, float ey, int width, int height);
 float calculateDistance(float p1_x, float p1_y, float p2_x, float p2_y);
+
+static float cameraPosition[2] = { 0, 0 };
 
 class State;
 enum _screenState

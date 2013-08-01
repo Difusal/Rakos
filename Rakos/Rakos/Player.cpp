@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "RPG.h"
 
 Player::Player(Weapon *weapon, double X, double Y) {
 	type = _Player;
@@ -13,6 +14,10 @@ Player::Player(Weapon *weapon, double X, double Y) {
 	moveSpeed = HumansWalkingSpeed;
 
 	bitmap = al_load_bitmap(playerPng);
+	if (!bitmap) {
+		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load player bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		exit(-1);
+	}
 	bitmap_sourceX = 32;
 	bitmap_sourceY = 0;
 }
@@ -22,6 +27,5 @@ void Player::updateFeetCoords() {
 	feet_y = this->getY() + 32;
 }
 
-Player::~Player(void)
-{
+Player::~Player(void) {
 }

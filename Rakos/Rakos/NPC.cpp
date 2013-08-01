@@ -16,6 +16,10 @@ NPC::NPC(string Name, double P1_X, double P1_Y, double P2_X, double P2_Y, const 
 	moveSpeed = NPCWalkingSpeed;
 
 	bitmap = al_load_bitmap(Bitmap);
+	if (!bitmap) {
+		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load NPC bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		exit(-1);
+	}
 	bitmap_sourceX = 32;
 	bitmap_sourceY = 0;
 }

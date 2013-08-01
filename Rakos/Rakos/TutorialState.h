@@ -17,7 +17,6 @@ public:
 	virtual void Draw();
 	virtual void Terminate();
 
-	void LoadWeapons();
 	bool mapCollision(int Dir, const vector<int> &tiles);
 
 	void updateRunningState();
@@ -30,9 +29,6 @@ private:
 	vector<vector<int> > worldMap;
 	vector<int> unaccessibleTiles;
 	vector<LivingBeing*> livingBeings;
-
-	Weapon *no_weapon;
-	Weapon *knife;
 
 	Player *player;
 	NPC *steve;

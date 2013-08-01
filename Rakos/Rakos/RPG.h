@@ -2,31 +2,9 @@
 
 #include "stdIncludes.h"
 #include "state.h"
+#include "Player.h"
 
 static float cameraPosition[2] = { 0, 0 };
-
-enum GameState {
-	Tutorial
-};
-
-enum Direction {
-	DOWN,
-	LEFT,
-	RIGHT,
-	UP
-};
-
-enum LivingBeingType {
-	_Player,
-	_NPC,
-	_Creature
-};
-
-enum TimerType {
-	RegularTimer,
-	DrawTimer,
-	PlayerAnimTimer
-};
 
 class RPG
 {
@@ -36,31 +14,33 @@ public:
 
 	void CreateAllegroDisplay();
 	void LoadFonts();
+	void LoadWeapons();
 	void Initialize();
 	void TrackMouse();
 	void start_game();
 	void Terminate();
 
 	ALLEGRO_DISPLAY *GetDisplay() { return display; }
-	ALLEGRO_TIMER *GetTimer(int timerID) {
-		switch (timerID)
+	ALLEGRO_TIMER *GetTimer(TimerType Timer) {
+		switch (Timer)
 		{
 		default:
-		case 0: { return timer; break; }
-		case 1: { return drawTimer; break; }
-		case 2: { return playerAnimTimer; break; }
+		case _RegularTimer: { return timer; break; }
+		case _DrawTimer: { return drawTimer; break; }
+		case _PlayerAnimTimer: { return playerAnimTimer; break; }
 		}
 	}
+	void SetTileSet (ALLEGRO_BITMAP *png) { tileSet = png; }
+	ALLEGRO_BITMAP *GetTileSet() { return tileSet; }
+	ALLEGRO_TRANSFORM *GetCamera() { return &camera; }
+
+	Player *GetPlayer() { return player; }
+	Weapon *GetWeapon(WeaponType Weapon);
 
 	ALLEGRO_FONT *big_font;
 	ALLEGRO_FONT *medium_font;
 	ALLEGRO_FONT *small_font;
 	ALLEGRO_FONT *tiny_font;
-
-	void SetTileSet (ALLEGRO_BITMAP *png) { tileSet = png; }
-	ALLEGRO_BITMAP *GetTileSet() { return tileSet; }
-
-	ALLEGRO_TRANSFORM *GetCamera() { return &camera; }
 
 	unsigned int mouse_x, mouse_y;
 	bool left_mouse_button_pressed;
@@ -76,6 +56,11 @@ private:
 
 	ALLEGRO_BITMAP *mouse;
 	ALLEGRO_BITMAP *loading_background;
+
+	Player *player;
+
+	Weapon *no_weapon;
+	Weapon *knife;
 
 	int scroll_time_pause;
 	bool background_going_left;

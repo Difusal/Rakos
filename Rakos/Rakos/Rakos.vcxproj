@@ -25,6 +25,7 @@
   <ItemGroup>
     <ClInclude Include="globalFunctions.h" />
     <ClInclude Include="LivingBeing.h" />
+    <ClInclude Include="globalEnums.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Portal.h" />

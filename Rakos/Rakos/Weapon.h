@@ -1,7 +1,6 @@
 #pragma once
 
 #include "stdIncludes.h"
-#include "RPG.h"
 
 class Weapon
 {

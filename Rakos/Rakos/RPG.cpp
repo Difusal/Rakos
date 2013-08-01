@@ -37,6 +37,7 @@ void RPG::CreateAllegroDisplay() {
 }
 
 void RPG::LoadFonts() {
+	cout << "Loading fonts..." << endl;
 	big_font = al_load_font(ConsolaTTF, 36, ALLEGRO_ALIGN_CENTER);
 	medium_font = al_load_font(ConsolaTTF, 20, ALLEGRO_ALIGN_CENTER);
 	small_font = al_load_font(ConsolaTTF, 14, ALLEGRO_ALIGN_CENTER);
@@ -45,6 +46,24 @@ void RPG::LoadFonts() {
 	{
 		al_show_native_message_box(display, "Error", "Could not load font file.", "Have you included the resources in the same directory of the program?", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
+	}
+}
+
+void RPG::LoadWeapons() {
+	cout << "Loading weapons..." << endl;
+	no_weapon = new Weapon();
+	knife = new Weapon("knife", 1, 2);
+}
+
+Weapon * RPG::GetWeapon(WeaponType Weapon) {
+	switch (Weapon) {
+	default:
+	case _None:
+		return no_weapon;
+		break;
+	case _Knife:
+		return knife;
+		break;
 	}
 }
 
@@ -94,7 +113,6 @@ void RPG::Initialize() {
 	cout << "Hiding windows mouse cursor..." << endl;
 	al_hide_mouse_cursor(display);
 
-	cout << "Loading fonts..." << endl;
 	LoadFonts();
 
 	cout << "Creating timers..." << endl;
@@ -124,6 +142,8 @@ void RPG::Initialize() {
 		al_show_native_message_box(Tetris::GetInstance()->GetDisplay(), "Error", "Could not load Tetris theme song.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
 	}*/
+
+	LoadWeapons();
 
 	cout << "Initializing variables..." << endl;
 	mouse = al_load_bitmap(MouseCursor);
@@ -206,9 +226,12 @@ void RPG::start_game ()
 {
 	Initialize();
 
+	// TEMP EDIT THIS
+	player = new Player(no_weapon, 480, 580);
+
 	states.push_back(new TutorialState());
 	state = -1;
-	ChangeState(Tutorial);
+	ChangeState(_Tutorial);
 
 	cout << "Starting control cycle..." << endl;
 	while (!done) {

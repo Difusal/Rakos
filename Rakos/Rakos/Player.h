@@ -1,8 +1,8 @@
 #pragma once
 
-#include "stdIncludes.h"
 #include "LivingBeing.h"
 #include "Weapon.h"
+#include "globalEnums.h"
 
 class Player: public LivingBeing {
 public:
