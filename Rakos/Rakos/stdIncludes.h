@@ -18,7 +18,7 @@
 #include <vector>
 #include <math.h>
 #include <fstream>
-//#include <algorithm>
+#include <algorithm>
 //#include <direct.h>
 
 using namespace std;
@@ -69,3 +69,9 @@ const float SlowCreaturesSpeed = 0.4;
 
 /* world maps */
 #define TutorialWorldMapPath "res//maps//tutorial.txt"
+
+/* dialogs */
+#define TutorialDialog1 "res//images//tutorial_dialog_1.png"
+#define TutorialDialog2 "res//images//tutorial_dialog_2.png"
+#define SteveDialog1 "res//images//steve_dialog_1.png"
+#define SteveDialog2 "res//images//steve_dialog_2.png"

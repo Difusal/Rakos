@@ -3,6 +3,8 @@
 #include "stdIncludes.h"
 #include "state.h"
 
+static float cameraPosition[2] = { 0, 0 };
+
 enum GameState {
 	Tutorial
 };

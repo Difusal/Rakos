@@ -4,8 +4,7 @@
 #include "LivingBeing.h"
 #include "Weapon.h"
 
-class Player: public LivingBeing
-{
+class Player: public LivingBeing {
 public:
 	Player(Weapon *weapon, double X, double Y);
 

@@ -2,11 +2,11 @@
 
 Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 	name = "Rabbit";
-	type = creatureType;
+	type = _Creature;
 
 	dead = false;
-	max_hp = 10;
-	hp = max_hp;
+	maxHp = 10;
+	hp = maxHp;
 
 	active = true;
 	direction = DOWN;
