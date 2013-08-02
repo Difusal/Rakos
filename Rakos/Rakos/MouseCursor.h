@@ -21,6 +21,9 @@ public:
 	bool right_mouse_button_released;
 
 private:
+	float prevMouseRawX;
+	float prevMouseRawY;
+
 	bool playAnim;
 	int animFrame;
 

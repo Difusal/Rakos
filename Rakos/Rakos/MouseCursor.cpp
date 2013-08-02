@@ -37,6 +37,16 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 	if (ev->type == ALLEGRO_EVENT_MOUSE_AXES) {
 		mouse_x = ev->mouse.x + RPG::GetInstance()->cameraPosition[0];
 		mouse_y = ev->mouse.y + RPG::GetInstance()->cameraPosition[1];
+
+		prevMouseRawX = ev->mouse.x;
+		prevMouseRawY = ev->mouse.y;
+
+		draw = true;
+	}
+	else {
+		mouse_x = prevMouseRawX + RPG::GetInstance()->cameraPosition[0];
+		mouse_y = prevMouseRawY + RPG::GetInstance()->cameraPosition[1];
+
 		draw = true;
 	}
 

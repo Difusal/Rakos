@@ -167,7 +167,7 @@ void RPG::start_game ()
 	Initialize();
 
 	// TEMP EDIT THIS
-	player = new Player(no_weapon, 480, 580);
+	player = new Player("Difusal", no_weapon, 480, 580);
 
 	states.push_back(new TutorialState());
 	state = -1;

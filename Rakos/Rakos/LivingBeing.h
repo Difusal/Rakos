@@ -5,6 +5,9 @@
 
 class LivingBeing {
 public:
+	void Draw();
+	void DrawLifeBar();
+
 	int getType() { return type; }
 	void setType(LivingBeingType Type) { type = Type; }
 	string getName() { return name; }

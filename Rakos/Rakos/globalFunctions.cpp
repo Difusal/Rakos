@@ -100,24 +100,3 @@ bool boxCollision(float x, float y, float ex, float ey, int width, int height) {
 float calculateDistance(float p1_x, float p1_y, float p2_x, float p2_y) {
 	return sqrt(pow(p2_y-p1_y, 2) + pow(p2_x-p1_x, 2));
 }
-
-
-/* draws living being life bar */
-void drawLifeBar(LivingBeing *obj) {
-	int bar_width = 40, bar_height = 5;
-
-	int pos_x = obj->getX() + al_get_bitmap_width(obj->getBitmap())/4/2 - bar_width/2;
-	int pos_y = obj->getY() - 5;
-
-	float percentage = obj->getHP() * 100.0 / obj->getMaxHP();
-
-	ALLEGRO_COLOR color;
-	if (percentage >= 50) { color = Green; }
-	else if (percentage >= 25) { color = Yellow; }
-	else { color = Red; }
-
-	int hp_width = bar_width * percentage / 100.0;
-
-	al_draw_filled_rectangle(pos_x-1, pos_y-1, pos_x+bar_width+1, pos_y+bar_height+1, Black);
-	al_draw_filled_rectangle(pos_x, pos_y, pos_x+hp_width, pos_y+bar_height, color);
-}

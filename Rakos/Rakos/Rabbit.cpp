@@ -1,8 +1,8 @@
 #include "Rabbit.h"
 
 Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
-	name = "Rabbit";
 	type = _Creature;
+	name = "Rabbit";
 
 	dead = false;
 	maxHp = 10;

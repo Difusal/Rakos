@@ -395,12 +395,7 @@ void TutorialState::Draw()
 
 	/* drawing moving things */
 	for (unsigned int i = 0; i < livingBeings.size(); i++) {
-		/* bitmaps */
-		al_draw_bitmap_region(livingBeings[i]->getBitmap(), livingBeings[i]->getBitmapSourceX(), livingBeings[i]->getBitmapSourceY() * al_get_bitmap_height(livingBeings[i]->getBitmap()) / 4, 32, 32, livingBeings[i]->getX(), livingBeings[i]->getY(), NULL);
-		
-		/* life bars */
-		if (livingBeings[i]->getType() == _Creature)
-			drawLifeBar(livingBeings[i]);
+		livingBeings[i]->Draw();
 	}
 
 	/* drawing side bar */

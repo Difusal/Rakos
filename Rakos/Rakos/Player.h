@@ -6,7 +6,7 @@
 
 class Player: public LivingBeing {
 public:
-	Player(Weapon *weapon, double X, double Y);
+	Player(string Name, Weapon *weapon, double X, double Y);
 
 	Weapon *getWeapon() { return weapon; }
 	void setWeapon(Weapon *newWeapon) { weapon = newWeapon; }

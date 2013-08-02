@@ -1,8 +1,9 @@
 #include "Player.h"
 #include "RPG.h"
 
-Player::Player(Weapon *weapon, double X, double Y) {
+Player::Player(string Name, Weapon *weapon, double X, double Y) {
 	type = _Player;
+	name = Name;
 	dead = false;
 	this->weapon = weapon;
 
