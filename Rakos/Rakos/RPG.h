@@ -11,9 +11,19 @@ public:
 	static RPG *GetInstance();
 	void ChangeState(int newState);
 
-	void CreateAllegroDisplay();
-	void LoadFonts();
 	void LoadWeapons();
+
+	void StartAllegro5();
+	void CreateAllegroDisplay();
+	void DisplayLoadingSplashScreen();
+	void StartMouseCursor();
+	void LoadFonts();
+	void CreateTimers();
+	void CreateEventQueue();
+	void LoadSoundSamples();
+	void InitializeVariables();
+	void StartTimers();
+
 	void Initialize();
 	void start_game();
 	void Terminate();
@@ -48,6 +58,9 @@ private:
 	static RPG *instance;
 	vector<State*> states;
 	int state;
+
+	vector<ALLEGRO_TIMER*> timers;
+	vector<ALLEGRO_FONT*> fonts;
 
 	ALLEGRO_BITMAP *loading_background;
 

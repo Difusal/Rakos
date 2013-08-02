@@ -29,7 +29,7 @@ using namespace std;
 #define ScreenHeight 600
 #define WorldBlockSize 40
 const float FPS = 60.0;
-const float mouseAnimFPS = FPS/2.0;
+const float mouseAnimFPS = 18.0;
 const float drawFPS = 8.0;
 const float AttackRate = FPS*0.8;
 const float HumansWalkingSpeed = 1.0;

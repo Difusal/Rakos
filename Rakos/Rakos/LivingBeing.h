@@ -6,6 +6,7 @@
 class LivingBeing {
 public:
 	void Draw();
+	void DrawName();
 	void DrawLifeBar();
 
 	int getType() { return type; }

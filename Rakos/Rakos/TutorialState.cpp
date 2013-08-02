@@ -137,8 +137,7 @@ void TutorialState::updateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b)
 	}
 }
 
-void TutorialState::updateAnimationFrame(LivingBeing *obj)
-{
+void TutorialState::updateAnimationFrame(LivingBeing *obj) {
 	if(obj->getActiveState())
 		obj->setBitmapSourceX(obj->getBitmapSourceX() + al_get_bitmap_width(obj->getBitmap())/4);
 	else
