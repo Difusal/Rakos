@@ -65,7 +65,7 @@ private:
 	double p1_x, p1_y;
 	double p2_x, p2_y;
 
-	ALLEGRO_BITMAP * bitmap;
+	ALLEGRO_BITMAP *bitmap;
 	int bitmap_sourceX, bitmap_sourceY;
 
 	friend class Player;

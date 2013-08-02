@@ -112,11 +112,13 @@ void RPG::Initialize() {
 
 	cout << "Hiding windows mouse cursor..." << endl;
 	al_hide_mouse_cursor(display);
+	Mouse = new MouseCursor();
 
 	LoadFonts();
 
 	cout << "Creating timers..." << endl;
 	timer = al_create_timer(1.0 / FPS);
+	mouseAnimTimer = al_create_timer(1.0 / mouseAnimFPS);
 	drawTimer = al_create_timer(1.0 / drawFPS);
 	playerAnimTimer = al_create_timer(1.0 / drawFPS);
 
@@ -126,6 +128,7 @@ void RPG::Initialize() {
 	cout << "Registering event sources..." << endl;
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+	al_register_event_source(event_queue, al_get_timer_event_source(mouseAnimTimer));
 	al_register_event_source(event_queue, al_get_timer_event_source(drawTimer));
 	al_register_event_source(event_queue, al_get_timer_event_source(playerAnimTimer));
 	al_register_event_source(event_queue, al_get_mouse_event_source());
@@ -146,80 +149,17 @@ void RPG::Initialize() {
 	LoadWeapons();
 
 	cout << "Initializing variables..." << endl;
-	mouse = al_load_bitmap(MouseCursor);
-	mouse_x = ScreenWidth;
-	mouse_y = ScreenHeight;
-	left_mouse_button_pressed = false;
-	left_mouse_button_released = false;
-	right_mouse_button_pressed = false;
-	right_mouse_button_released = false;
-
-	possible_double_press = false;
-	double_press_counter = 0;
+	cameraPosition[0] = 0;
+	cameraPosition[1] = 0;
 
 	done = false;
 	draw = true;
 
 	cout << "Starting timers..." << endl;
 	al_start_timer(timer);
+	al_start_timer(mouseAnimTimer);
 	al_start_timer(drawTimer);
 	al_start_timer(playerAnimTimer);
-}
-
-void RPG::TrackMouse() {
-	/* --- controlling left mouse button double press --- */
-	if (possible_double_press && double_press_counter < FPS*1.5/4) {
-		double_press_counter++;
-	}
-	else if (possible_double_press)	{
-		possible_double_press = false;
-		double_press_counter = 0;
-	}
-
-	/* --- tracking mouse --- */
-	if (ev.type == ALLEGRO_EVENT_MOUSE_AXES) {
-		mouse_x = ev.mouse.x;
-		mouse_y = ev.mouse.y;
-
-		draw = true;
-	}
-
-	/* --- tracking button presses/releases --- */
-	if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-		if (ev.mouse.button &1) {
-			//cout << "* Left mouse button pressed *" << endl;
-			left_mouse_button_pressed = true;
-			left_mouse_button_released = false;
-			draw = true;
-		}
-		if (ev.mouse.button &2) {
-			//cout << "* Right mouse button pressed *" << endl;
-			right_mouse_button_pressed = true;
-			right_mouse_button_released = false;
-			draw = true;
-		}
-	}
-	if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-		if (ev.mouse.button &1) {
-			if (possible_double_press) {
-				cout << "* Left mouse button released(pressed) twice *" << endl;
-				left_mouse_button_pressed_twice = true;
-			}
-			else
-				cout << "* Left mouse button released *" << endl;
-
-			possible_double_press = true;
-			left_mouse_button_pressed = false;
-			left_mouse_button_released = true;
-			draw = true;
-		}
-		if (ev.mouse.button &2) {
-			cout << "* Right mouse button released *" << endl;
-			right_mouse_button_pressed = false;
-			right_mouse_button_released = true;
-			draw = true;
-		}
-	}
 }
 
 void RPG::start_game ()
@@ -235,17 +175,15 @@ void RPG::start_game ()
 
 	cout << "Starting control cycle..." << endl;
 	while (!done) {
-		al_wait_for_event(event_queue, & ev);
+		al_wait_for_event(event_queue, &ev);
 
-		TrackMouse();
+		draw = Mouse->Update(&ev);
 
 		/* --- UPDATING --- */
 		states[state]->Update(&ev);
 
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
-			left_mouse_button_released = false;
-			left_mouse_button_pressed_twice = false;
-			right_mouse_button_released = false;
+			Mouse->SetAllReleaseValuesToFalse();
 
 			draw = true;
 		}
@@ -253,10 +191,8 @@ void RPG::start_game ()
 		/* --- DRAWING --- */
 		if (draw && al_event_queue_is_empty(event_queue))
 		{
-			states[state]->Draw();
-			
-			/* -- mouse cursor -- */
-			al_draw_bitmap(mouse, mouse_x, mouse_y, NULL);
+			states[state]->Draw();			
+			Mouse->Draw();
 
 			/*
 			// mouse temp coords
@@ -300,11 +236,11 @@ void RPG::Terminate() {
 	al_destroy_timer(playerAnimTimer);
 	al_destroy_timer(drawTimer);
 	al_destroy_timer(timer);
+	delete Mouse;
 	al_destroy_display(display);
 
 	/* bitmaps */
 	al_destroy_bitmap(loading_background);
-	al_destroy_bitmap(mouse);
 
 	delete instance;
 }

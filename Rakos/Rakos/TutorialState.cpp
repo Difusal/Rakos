@@ -352,9 +352,9 @@ bool TutorialState::Update(ALLEGRO_EVENT * ev) {
 					updateLivingBeingsCollisions(player, livingBeings[i]);
 
 			// updating camera
-			CameraUpdate(worldMap, cameraPosition, player->getX(), player->getY(), 32, 32);
+			CameraUpdate(worldMap, RPG::GetInstance()->cameraPosition, player->getX(), player->getY(), 32, 32);
 			al_identity_transform(RPG::GetInstance()->GetCamera());
-			al_translate_transform(RPG::GetInstance()->GetCamera(), -cameraPosition[0], -cameraPosition[1]);
+			al_translate_transform(RPG::GetInstance()->GetCamera(), -RPG::GetInstance()->cameraPosition[0], -RPG::GetInstance()->cameraPosition[1]);
 			al_use_transform(RPG::GetInstance()->GetCamera());
 		}
 
@@ -404,11 +404,11 @@ void TutorialState::Draw()
 	}
 
 	/* drawing side bar */
-	al_draw_bitmap(side_bar, 600+cameraPosition[0], cameraPosition[1], NULL);
+	al_draw_bitmap(side_bar, 600 + RPG::GetInstance()->cameraPosition[0], RPG::GetInstance()->cameraPosition[1], NULL);
 
 	/* drawing dialogs */
-	if (show_tutorial_dialog_1) { al_draw_bitmap(tutorial_dialog_1, 300+cameraPosition[0] - al_get_bitmap_width(tutorial_dialog_1)/2, cameraPosition[1] + ScreenHeight/4, NULL); }
-	else if (show_tutorial_dialog_2) { al_draw_bitmap(tutorial_dialog_2, 300+cameraPosition[0] - al_get_bitmap_width(tutorial_dialog_2)/2, cameraPosition[1] + ScreenHeight - al_get_bitmap_height(tutorial_dialog_2), NULL); }
+	if (show_tutorial_dialog_1) { al_draw_bitmap(tutorial_dialog_1, 300 + RPG::GetInstance()->cameraPosition[0] - al_get_bitmap_width(tutorial_dialog_1)/2, RPG::GetInstance()->cameraPosition[1] + ScreenHeight/4, NULL); }
+	else if (show_tutorial_dialog_2) { al_draw_bitmap(tutorial_dialog_2, 300 + RPG::GetInstance()->cameraPosition[0] - al_get_bitmap_width(tutorial_dialog_2)/2, RPG::GetInstance()->cameraPosition[1] + ScreenHeight - al_get_bitmap_height(tutorial_dialog_2), NULL); }
 	else if (show_steve_dialog_1) { al_draw_bitmap(steve_dialog_1, steve->getX()-85, steve->getY()-al_get_bitmap_height(steve_dialog_1), NULL); }
 	else if (show_steve_dialog_2) { al_draw_bitmap(steve_dialog_2, steve->getX()-85, steve->getY()-al_get_bitmap_height(steve_dialog_2), NULL); }
 

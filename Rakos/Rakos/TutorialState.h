@@ -13,7 +13,7 @@ class TutorialState: public State
 {
 public:
 	virtual void Initialize();
-	bool Update (ALLEGRO_EVENT * ev);
+	bool Update (ALLEGRO_EVENT *ev);
 	virtual void Draw();
 	virtual void Terminate();
 

@@ -29,6 +29,7 @@ using namespace std;
 #define ScreenHeight 600
 #define WorldBlockSize 40
 const float FPS = 60.0;
+const float mouseAnimFPS = FPS/2.0;
 const float drawFPS = 8.0;
 const float AttackRate = FPS*0.8;
 const float HumansWalkingSpeed = 1.0;
@@ -55,7 +56,7 @@ const float SlowCreaturesSpeed = 0.4;
 #define ConsolaTTF "res//fonts//consola.ttf"
 
 /* images */
-#define MouseCursor "res//images//mouse_cursor.png"
+#define MouseCursorPng "res//images//mouse_cursor.png"
 #define LoadingGameBackgroundPath "res//images//loading_game_bg.png"
 #define SideBarPath "res//images//side_bar.png"
 

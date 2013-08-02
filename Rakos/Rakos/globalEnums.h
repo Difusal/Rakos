@@ -24,6 +24,7 @@ enum LivingBeingType {
 
 enum TimerType {
 	_RegularTimer,
+	_MouseAnimTimer,
 	_DrawTimer,
 	_PlayerAnimTimer
 };
