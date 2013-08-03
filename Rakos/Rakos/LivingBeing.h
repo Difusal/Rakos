@@ -5,6 +5,8 @@
 
 class LivingBeing {
 public:
+	void Move();
+	void UpdateAnimationFrame();
 	void Draw();
 	void DrawName();
 	void DrawLifeBar();
@@ -19,6 +21,7 @@ public:
 	bool getActiveState() { return active; }
 	void setActiveState(bool newState) { active = newState; }
 
+	void takeHP(unsigned int HPAmount) { hp -= HPAmount; }
 	int getHP() { return hp; }
 	void setHP(int HP) { hp = HP; }
 	int getMaxHP() { return maxHp; }
@@ -61,14 +64,14 @@ private:
 	unsigned int hp;
 	unsigned int maxHp;
 
-	double x, y;
-	Direction direction;
-	double moveSpeed;
-
 	double wanderRadius;
 	double p1_x, p1_y;
 	double p2_x, p2_y;
 
+	double x, y;
+	Direction direction;
+	double moveSpeed;
+	
 	ALLEGRO_BITMAP *bitmap;
 	int bitmap_sourceX, bitmap_sourceY;
 

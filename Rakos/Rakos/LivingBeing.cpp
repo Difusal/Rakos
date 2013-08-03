@@ -2,6 +2,58 @@
 #include "globalFunctions.h"
 #include "RPG.h"
 
+void LivingBeing::Move() {
+	// Skip this if trying to move player. Player has it's own move function.
+	if (this->type == _Player)
+		return;
+
+	if (active) {
+		switch (direction) {
+		default:
+		case DOWN:
+			y += moveSpeed;
+			if (y > p2_y) {
+				y = p2_y;
+				direction = RIGHT;
+			}	
+			break;
+		case RIGHT:
+			x += moveSpeed;
+			if (x > p2_x) {
+				x = p2_x;
+				direction = UP;
+			}				
+			break;
+		case UP:
+			y -= moveSpeed;
+			if (y < p1_y) {
+				y = p1_y;
+				direction = LEFT;
+			}
+			break;
+		case LEFT:
+			x -= moveSpeed;
+			if (x < p1_x) {
+				x = p1_x;
+				direction = DOWN;
+			}	
+			break;
+		}
+	}
+}
+
+void LivingBeing::UpdateAnimationFrame() {
+	if(active)
+		bitmap_sourceX += al_get_bitmap_width(bitmap)/4.0;
+	else
+		bitmap_sourceX = 32;
+
+	if(bitmap_sourceX >= al_get_bitmap_width(bitmap))
+		bitmap_sourceX = 0;
+
+	bitmap_sourceY = direction;
+}
+
 void LivingBeing::Draw() {
 	// drawing bitmap
 	al_draw_bitmap_region(bitmap, bitmap_sourceX, bitmap_sourceY * al_get_bitmap_height(bitmap)/4.0, 32, 32, x, y, NULL);

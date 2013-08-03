@@ -42,6 +42,24 @@ Weapon * RPG::GetWeapon(WeaponType Weapon) {
 	}
 }
 
+ALLEGRO_TIMER * RPG::GetTimer( TimerType Timer ) {
+	switch (Timer) {
+	default:
+	case _RegularTimer:
+		return timer;
+		break;
+	case _MouseAnimTimer:
+		return mouseAnimTimer;
+		break;
+	case _DrawTimer:
+		return drawTimer;
+		break;
+	case _PlayerAnimTimer:
+		return playerAnimTimer;
+		break;
+	}
+}
+
 
 void RPG::StartAllegro5() {
 	cout << "Starting Allegro 5..." << endl;

@@ -30,16 +30,7 @@ public:
 
 	ALLEGRO_DISPLAY *GetDisplay() { return display; }
 	MouseCursor *Mouse;
-	ALLEGRO_TIMER *GetTimer(TimerType Timer) {
-		switch (Timer)
-		{
-		default:
-		case _RegularTimer: { return timer; break; }
-		case _MouseAnimTimer: { return mouseAnimTimer; break; }
-		case _DrawTimer: { return drawTimer; break; }
-		case _PlayerAnimTimer: { return playerAnimTimer; break; }
-		}
-	}
+	ALLEGRO_TIMER *GetTimer(TimerType Timer);
 	void SetTileSet (ALLEGRO_BITMAP *png) { tileSet = png; }
 	ALLEGRO_BITMAP *GetTileSet() { return tileSet; }
 
