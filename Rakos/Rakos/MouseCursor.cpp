@@ -43,12 +43,6 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 
 		draw = true;
 	}
-	else {
-		mouse_x = prevMouseRawX + RPG::GetInstance()->cameraPosition[0];
-		mouse_y = prevMouseRawY + RPG::GetInstance()->cameraPosition[1];
-
-		draw = true;
-	}
 
 	/* --- tracking button presses/releases --- */
 	if (ev->type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
@@ -107,6 +101,13 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 	}
 
 	return draw;
+}
+
+bool MouseCursor::CorrectMousePosition() {
+	mouse_x = prevMouseRawX + RPG::GetInstance()->cameraPosition[0];
+	mouse_y = prevMouseRawY + RPG::GetInstance()->cameraPosition[1];
+
+	return true;
 }
 
 void MouseCursor::Draw() {

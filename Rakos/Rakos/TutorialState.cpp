@@ -2,59 +2,6 @@
 #include "RPG.h"
 #include "globalFunctions.h"
 
-bool TutorialState::mapCollision(int Dir, const vector<int> &tiles) {
-	int north_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][player->getFeetX()/WorldBlockSize];
-	int ne_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
-	int east_scan = worldMap[player->getFeetY()/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
-	int se_scan = worldMap[(player->getFeetY()+25)/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
-	int south_scan = worldMap[(player->getFeetY()+25)/WorldBlockSize][player->getFeetX()/WorldBlockSize];
-	int sw_scan = worldMap[(player->getFeetY()+25)/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
-	int west_scan = worldMap[player->getFeetY()/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
-	int nw_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
-
-	for (unsigned int i = 0; i < tiles.size(); i++) {
-		switch (Dir) {
-		case UP:
-			if (north_scan == tiles[i] || east_scan == tiles[i] || west_scan == tiles[i] || ne_scan == tiles[i] || nw_scan == tiles[i])
-				return 1;
-			break;
-		case DOWN:
-			if (east_scan == tiles[i] || south_scan == tiles[i] || west_scan == tiles[i] || se_scan == tiles[i] || sw_scan == tiles[i])
-				return 1;
-			break;
-		case LEFT:
-			if (north_scan == tiles[i] || south_scan == tiles[i] || west_scan == tiles[i] || sw_scan == tiles[i] || nw_scan == tiles[i])
-				return 1;
-			break;
-		case RIGHT:
-			if (north_scan == tiles[i] || east_scan == tiles[i] || south_scan == tiles[i] || ne_scan == tiles[i] || se_scan == tiles[i])
-				return 1;
-			break;
-		}
-	}
-
-	return 0;
-}
-
-
-void TutorialState::updateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
-	if(b->getActiveState() && boxCollision(b->getX(), b->getY(), a->getX(), a->getY(), 32, 32))
-	{
-		if (b->getDir() == 0) { b->setY(b->getY() - b->getMoveSpeed()); }
-		else if (b->getDir() == 1) { b->setX(b->getX() + b->getMoveSpeed()); }
-		else if (b->getDir() == 2) { b->setX(b->getX() - b->getMoveSpeed()); }
-		else if (b->getDir() == 3) { b->setY(b->getY() + b->getMoveSpeed()); }
-	}
-	if(a->getActiveState() && boxCollision(a->getX(), a->getY(), b->getX(), b->getY(), 32, 32))
-	{
-		if (a->getDir() == 0) { a->setY(a->getY() - a->getMoveSpeed()); }
-		else if (a->getDir() == 1) { a->setX(a->getX() + a->getMoveSpeed()); }
-		else if (a->getDir() == 2) { a->setX(a->getX() - a->getMoveSpeed()); }
-		else if (a->getDir() == 3) { a->setY(a->getY() + a->getMoveSpeed()); }
-	}
-}
-
-
 void TutorialState::InitializeLivingBeings() {
 	livingBeings.clear();
 
@@ -198,43 +145,18 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 				if (!livingBeings[i]->isDead())
 					livingBeings[i]->Move();
 
-			////////////////////////
-			/////  Collisions  /////
-			////////////////////////
-			// map collisions
-			bool colliding = mapCollision(player->getDir(), unaccessibleTiles);
-			if (colliding) {
-				switch (player->getDir()) {
-				default:
-				case UP:
-					player->setY(player->getY() + player->getMoveSpeed());
-					break;
-				case DOWN:
-					player->setY(player->getY() - player->getMoveSpeed());
-					break;
-				case LEFT:
-					player->setX(player->getX() + player->getMoveSpeed());
-					break;
-				case RIGHT:
-					player->setX(player->getX() - player->getMoveSpeed());
-					break;
-				}
-			}
-			// moving things collisions
+			//  Collisions
+			player->CorrectPositionIfCollidingWithMapLimits(worldMap, unaccessibleTiles);
 			for (unsigned int i = 0; i < livingBeings.size(); i++)
 				if (livingBeings[i]->getType() != _Player)
-					updateLivingBeingsCollisions(player, livingBeings[i]);
+					RPG::GetInstance()->UpdateLivingBeingsCollisions(player, livingBeings[i]);
 
-			// updating camera
-			CameraUpdate(worldMap, RPG::GetInstance()->cameraPosition, player->getX(), player->getY(), 32, 32);
-			al_identity_transform(RPG::GetInstance()->GetCamera());
-			al_translate_transform(RPG::GetInstance()->GetCamera(), -RPG::GetInstance()->cameraPosition[0], -RPG::GetInstance()->cameraPosition[1]);
-			al_use_transform(RPG::GetInstance()->GetCamera());
+			RPG::GetInstance()->UpdateCamera(worldMap);
 		}
 
 		UpdateAnimations(ev);
 
-		/* updating drawing vector */
+		// sorting vector in the correct drawing order
 		sort(livingBeings.begin(), livingBeings.end(), [](LivingBeing *a, LivingBeing *b) { return a->getY() < b->getY(); });
 
 		return true;
@@ -282,8 +204,6 @@ void TutorialState::Draw()
 
 void TutorialState::Terminate() {
 	unaccessibleTiles.clear();
-	al_destroy_bitmap(player->getBitmap());
-	al_destroy_bitmap(steve->getBitmap());
 	al_destroy_bitmap(tutorial_dialog_1);
 	al_destroy_bitmap(tutorial_dialog_2);
 	al_destroy_bitmap(steve_dialog_1);

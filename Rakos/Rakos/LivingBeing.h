@@ -46,13 +46,6 @@ public:
 	void setP2_x(double x) { p2_x = x; }
 	double getP2_y() { return p2_y; }
 	void setP2_y(double y) { p2_y = y; }
-	
-	ALLEGRO_BITMAP *getBitmap() { return bitmap; }
-	void setBitmap(ALLEGRO_BITMAP *Bitmap) { bitmap = Bitmap; }
-	int getBitmapSourceX() { return bitmap_sourceX; }
-	int getBitmapSourceY() { return bitmap_sourceY; }
-	void setBitmapSourceX(int X) { bitmap_sourceX = X; }
-	void setBitmapSourceY(int Y) { bitmap_sourceY = Y; }
 
 private:
 	LivingBeingType type;

@@ -21,10 +21,6 @@ public:
 	virtual void Draw();
 	virtual void Terminate();
 
-	bool mapCollision(int Dir, const vector<int> &tiles);
-
-	void updateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b);
-
 private:
 	vector<vector<int> > worldMap;
 	vector<int> unaccessibleTiles;

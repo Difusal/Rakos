@@ -8,10 +8,9 @@
 class RPG
 {
 public:
+	// Public Methods
 	static RPG *GetInstance();
 	void ChangeState(int newState);
-
-	void LoadWeapons();
 
 	void StartAllegro5();
 	void CreateAllegroDisplay();
@@ -24,26 +23,35 @@ public:
 	void InitializeVariables();
 	void StartTimers();
 
+	void LoadWeapons();
+	Weapon *GetWeapon(WeaponType Weapon);
+
+	bool livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles);
+	void UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b);
+	void UpdateCamera(vector<vector<int> > &worldMap);
+
 	void Initialize();
 	void start_game();
 	void Terminate();
 
 	ALLEGRO_DISPLAY *GetDisplay() { return display; }
-	MouseCursor *Mouse;
 	ALLEGRO_TIMER *GetTimer(TimerType Timer);
-	void SetTileSet (ALLEGRO_BITMAP *png) { tileSet = png; }
-	ALLEGRO_BITMAP *GetTileSet() { return tileSet; }
-
-	float cameraPosition[2];
 	ALLEGRO_TRANSFORM *GetCamera() { return &camera; }
 
-	Player *GetPlayer() { return player; }
-	Weapon *GetWeapon(WeaponType Weapon);
+	ALLEGRO_BITMAP *GetTileSet() { return tileSet; }
+	void SetTileSet (ALLEGRO_BITMAP *png) { tileSet = png; }
 
+	Player *GetPlayer() { return player; }
+
+
+	// Public Variables
 	ALLEGRO_FONT *big_font;
 	ALLEGRO_FONT *medium_font;
 	ALLEGRO_FONT *small_font;
 	ALLEGRO_FONT *tiny_font;
+
+	MouseCursor *Mouse;
+	float cameraPosition[2];
 
 private:
 	static RPG *instance;

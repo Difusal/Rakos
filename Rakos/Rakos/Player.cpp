@@ -115,6 +115,26 @@ void Player::Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &w
 	UpdateFeetCoords();
 }
 
+void Player::CorrectPositionIfCollidingWithMapLimits(const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles) {
+	if (RPG::GetInstance()->livingBeingCollidingWithMap(direction, worldMap, unaccessibleTiles)) {
+		switch (direction) {
+		default:
+		case UP:
+			y += moveSpeed;
+			break;
+		case DOWN:
+			y -= moveSpeed;
+			break;
+		case LEFT:
+			x += moveSpeed;
+			break;
+		case RIGHT:
+			x -= moveSpeed;
+			break;
+		}
+	}
+}
+
 void Player::ControlAttackRate() {
 	if (!playerCanAttack)
 		attackCooldown++;

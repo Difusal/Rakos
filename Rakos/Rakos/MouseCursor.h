@@ -8,6 +8,7 @@ public:
 	MouseCursor(void);
 
 	bool Update(ALLEGRO_EVENT *ev);
+	bool CorrectMousePosition();
 	void Draw();
 	void SetAllReleaseValuesToFalse();
 

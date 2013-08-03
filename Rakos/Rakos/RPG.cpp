@@ -1,5 +1,6 @@
 #include "RPG.h"
 #include "TutorialState.h"
+#include "globalFunctions.h"
 
 RPG *RPG::instance = NULL;
 
@@ -21,43 +22,6 @@ void RPG::ChangeState (int newState) {
 	state = newState;
 
 	states[state]->Initialize();
-}
-
-
-void RPG::LoadWeapons() {
-	cout << "Loading weapons..." << endl;
-	no_weapon = new Weapon();
-	knife = new Weapon("knife", 1, 2);
-}
-
-Weapon * RPG::GetWeapon(WeaponType Weapon) {
-	switch (Weapon) {
-	default:
-	case _None:
-		return no_weapon;
-		break;
-	case _Knife:
-		return knife;
-		break;
-	}
-}
-
-ALLEGRO_TIMER * RPG::GetTimer( TimerType Timer ) {
-	switch (Timer) {
-	default:
-	case _RegularTimer:
-		return timer;
-		break;
-	case _MouseAnimTimer:
-		return mouseAnimTimer;
-		break;
-	case _DrawTimer:
-		return drawTimer;
-		break;
-	case _PlayerAnimTimer:
-		return playerAnimTimer;
-		break;
-	}
 }
 
 
@@ -165,8 +129,8 @@ void RPG::LoadSoundSamples() {
 	explosionSound = al_load_sample(ExplosionSound);
 	themeSong = al_load_sample(ThemeSong);
 	if (!themeSong) {
-		al_show_native_message_box(Tetris::GetInstance()->GetDisplay(), "Error", "Could not load Tetris theme song.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-		exit(-1);
+	al_show_native_message_box(Tetris::GetInstance()->GetDisplay(), "Error", "Could not load Tetris theme song.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+	exit(-1);
 	}*/
 }
 
@@ -184,6 +148,142 @@ void RPG::StartTimers() {
 	for (unsigned int i = 0; i < timers.size(); i++) {
 		al_start_timer(timers[i]);
 	}
+}
+
+
+void RPG::LoadWeapons() {
+	cout << "Loading weapons..." << endl;
+	no_weapon = new Weapon();
+	knife = new Weapon("knife", 1, 2);
+}
+
+Weapon * RPG::GetWeapon(WeaponType Weapon) {
+	switch (Weapon) {
+	default:
+	case _None:
+		return no_weapon;
+		break;
+	case _Knife:
+		return knife;
+		break;
+	}
+}
+
+
+bool RPG::livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles) {
+	int north_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][player->getFeetX()/WorldBlockSize];
+	int ne_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
+	int east_scan = worldMap[player->getFeetY()/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
+	int se_scan = worldMap[(player->getFeetY()+25)/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
+	int south_scan = worldMap[(player->getFeetY()+25)/WorldBlockSize][player->getFeetX()/WorldBlockSize];
+	int sw_scan = worldMap[(player->getFeetY()+25)/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
+	int west_scan = worldMap[player->getFeetY()/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
+	int nw_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
+
+	for (unsigned int i = 0; i < unaccessibleTiles.size(); i++) {
+		switch (Dir) {
+		case UP:
+			if (north_scan == unaccessibleTiles[i] || east_scan == unaccessibleTiles[i] || west_scan == unaccessibleTiles[i] || ne_scan == unaccessibleTiles[i] || nw_scan == unaccessibleTiles[i])
+				return true;
+			break;
+		case DOWN:
+			if (east_scan == unaccessibleTiles[i] || south_scan == unaccessibleTiles[i] || west_scan == unaccessibleTiles[i] || se_scan == unaccessibleTiles[i] || sw_scan == unaccessibleTiles[i])
+				return true;
+			break;
+		case LEFT:
+			if (north_scan == unaccessibleTiles[i] || south_scan == unaccessibleTiles[i] || west_scan == unaccessibleTiles[i] || sw_scan == unaccessibleTiles[i] || nw_scan == unaccessibleTiles[i])
+				return true;
+			break;
+		case RIGHT:
+			if (north_scan == unaccessibleTiles[i] || east_scan == unaccessibleTiles[i] || south_scan == unaccessibleTiles[i] || ne_scan == unaccessibleTiles[i] || se_scan == unaccessibleTiles[i])
+				return true;
+			break;
+		}
+	}
+
+	return false;
+}
+
+void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
+	LivingBeing *objBeingCorrected = nullptr;
+
+	// if a collision is happening
+	if (boxCollision(a->getX(), a->getY(), b->getX(), b->getY(), 32, 32)) {
+		// if objects are heading the same direction
+		if (a->getDir() == b->getDir()) {
+			switch (a->getDir()) {
+			case RIGHT:
+				{
+					if (a->getX() < b->getX())
+						objBeingCorrected = a;
+					else
+						objBeingCorrected = b;
+
+					objBeingCorrected->setX(objBeingCorrected->getX() - objBeingCorrected->getMoveSpeed());
+					break;
+				}
+			case LEFT:
+				{
+					if (a->getX() > b->getX())
+						objBeingCorrected = a;
+					else
+						objBeingCorrected = b;
+
+					objBeingCorrected->setX(objBeingCorrected->getX() + objBeingCorrected->getMoveSpeed());
+					break;
+				}
+			case UP:
+				{
+					if (a->getY() > b->getY())
+						objBeingCorrected = a;
+					else
+						objBeingCorrected = b;
+
+					objBeingCorrected->setY(objBeingCorrected->getY() + objBeingCorrected->getMoveSpeed());
+					break;
+				}
+			case DOWN:
+				{
+					if (a->getY() < b->getY())
+						objBeingCorrected = a;
+					else
+						objBeingCorrected = b;
+
+					objBeingCorrected->setY(objBeingCorrected->getY() - objBeingCorrected->getMoveSpeed());
+					break;
+				}
+			}
+		}
+	}
+
+	/*
+	if(a->getActiveState() && boxCollision(a->getX(), a->getY(), b->getX(), b->getY(), 32, 32)) {
+	if (a->getDir() == 0)
+	a->setY(a->getY() - a->getMoveSpeed());
+	else if (a->getDir() == 1)
+	a->setX(a->getX() + a->getMoveSpeed());
+	else if (a->getDir() == 2)
+	a->setX(a->getX() - a->getMoveSpeed());
+	else if (a->getDir() == 3)
+	a->setY(a->getY() + a->getMoveSpeed());
+	}
+	if(b->getActiveState() && boxCollision(b->getX(), b->getY(), a->getX(), a->getY(), 32, 32)) {
+	if (b->getDir() == 0)
+	b->setY(b->getY() - b->getMoveSpeed());
+	else if (b->getDir() == 1)
+	b->setX(b->getX() + b->getMoveSpeed());
+	else if (b->getDir() == 2)
+	b->setX(b->getX() - b->getMoveSpeed());
+	else if (b->getDir() == 3)
+	b->setY(b->getY() + b->getMoveSpeed());
+	}*/
+}
+
+void RPG::UpdateCamera(vector<vector<int> > &worldMap) {
+	CameraUpdate(worldMap, RPG::GetInstance()->cameraPosition, player->getX(), player->getY(), 32, 32);
+	al_identity_transform(RPG::GetInstance()->GetCamera());
+	al_translate_transform(RPG::GetInstance()->GetCamera(), -RPG::GetInstance()->cameraPosition[0], -RPG::GetInstance()->cameraPosition[1]);
+	al_use_transform(RPG::GetInstance()->GetCamera());
 }
 
 
@@ -234,6 +334,8 @@ void RPG::start_game () {
 		/* --- UPDATING --- */
 		draw = Mouse->Update(&ev);
 		states[state]->Update(&ev);
+		if (ev.type != ALLEGRO_EVENT_MOUSE_AXES)
+			draw = Mouse->CorrectMousePosition();
 
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
 			Mouse->SetAllReleaseValuesToFalse();
@@ -299,4 +401,23 @@ void RPG::Terminate() {
 	al_destroy_bitmap(loading_background);
 
 	delete instance;
+}
+
+
+ALLEGRO_TIMER * RPG::GetTimer( TimerType Timer ) {
+	switch (Timer) {
+	default:
+	case _RegularTimer:
+		return timer;
+		break;
+	case _MouseAnimTimer:
+		return mouseAnimTimer;
+		break;
+	case _DrawTimer:
+		return drawTimer;
+		break;
+	case _PlayerAnimTimer:
+		return playerAnimTimer;
+		break;
+	}
 }
