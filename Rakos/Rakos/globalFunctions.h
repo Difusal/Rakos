@@ -5,8 +5,9 @@
 
 int randomNumber (int min, int max);
 
-bool fileExists (const string &filename);
-void LoadMap (const char *filename, vector<vector<int> > &map);
+bool fileExists(const string &filename);
+void LoadMap(const char *filename, vector<vector<int> > &map);
+void DrawMap(const vector<vector<int> > &worldMap);
 
 void CameraUpdate(vector<vector<int> > &worldMap, float *cameraPosition, float x, float y, int width, int height);
 bool boxCollision(float x, float y, float ex, float ey, int width, int height);

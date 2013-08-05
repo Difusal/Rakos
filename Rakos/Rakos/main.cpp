@@ -2,7 +2,7 @@
 #include "RPG.h"
 
 int main () {
-	RPG::GetInstance()->start_game();
+	RPG::GetInstance()->StartGameControlCycle();
 
 	return 0;
 }

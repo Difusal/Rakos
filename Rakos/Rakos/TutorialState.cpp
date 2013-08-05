@@ -29,24 +29,6 @@ void TutorialState::InitializeLivingBeings() {
 	livingBeings.push_back(rabbit);
 }
 
-void TutorialState::UpdateAnimations(ALLEGRO_EVENT *ev) {
-	// creatures and npcs
-	if (ev->timer.source == RPG::GetInstance()->GetTimer(_DrawTimer))
-		for (LivingBeing *obj : livingBeings)
-			if (obj->getType() != _Player)
-				obj->UpdateAnimationFrame();
-
-	// player
-	if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerAnimTimer))
-		player->UpdateAnimationFrame();
-}
-
-void TutorialState::CheckIfAnyLivingBeingWasKilled() {
-	for (unsigned int i = 1; i < livingBeings.size(); i++)
-		if (livingBeings[i]->isDead())
-			livingBeings.erase(livingBeings.begin() + i);
-}
-
 
 void TutorialState::Initialize() {
 	// loading map
@@ -80,7 +62,7 @@ void TutorialState::Initialize() {
 bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 	al_get_keyboard_state(&keyState);
 
-	CheckIfAnyLivingBeingWasKilled();
+	RPG::GetInstance()->RemoveDeadLivingBeingsFromVector(livingBeings);
 
 	if (ev->type == ALLEGRO_EVENT_TIMER) {
 		if (ev->timer.source == RPG::GetInstance()->GetTimer(_RegularTimer)) {
@@ -154,7 +136,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 			RPG::GetInstance()->UpdateCamera(worldMap);
 		}
 
-		UpdateAnimations(ev);
+		RPG::GetInstance()->UpdateAnimationsFrame(livingBeings);
 
 		// sorting vector in the correct drawing order
 		sort(livingBeings.begin(), livingBeings.end(), [](LivingBeing *a, LivingBeing *b) { return a->getY() < b->getY(); });
@@ -165,37 +147,29 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 	return false;
 }
 
-void TutorialState::Draw()
-{
-	/* drawing world map */
-	for(unsigned int i = 0; i < worldMap.size(); i++) {
-		for(unsigned int j = 0; j < worldMap[i].size(); j++) {
-			if (switch_pressed && worldMap[i][j] == 14)
-				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), 15 * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
-			else if (!switch_pressed && worldMap[i][j] == 16)
-				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), 1 * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
-			else
-				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), worldMap[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
-		}
-	}
+void TutorialState::Draw() {
+	DrawMap(worldMap);
 
-	/* drawing moving things */
-	for (unsigned int i = 0; i < livingBeings.size(); i++) {
+	// drawing living beings
+	for (unsigned int i = 0; i < livingBeings.size(); i++)
 		livingBeings[i]->Draw();
-	}
 
-	/* drawing side bar */
+	// drawing side bar
 	al_draw_bitmap(side_bar, 600 + RPG::GetInstance()->cameraPosition[0], RPG::GetInstance()->cameraPosition[1], NULL);
 
-	/* drawing dialogs */
+	// drawing dialogs
 	/*
 	if (show_tutorial_dialog_1) { al_draw_bitmap(tutorial_dialog_1, 300 + RPG::GetInstance()->cameraPosition[0] - al_get_bitmap_width(tutorial_dialog_1)/2, RPG::GetInstance()->cameraPosition[1] + ScreenHeight/4, NULL); }
 	else if (show_tutorial_dialog_2) { al_draw_bitmap(tutorial_dialog_2, 300 + RPG::GetInstance()->cameraPosition[0] - al_get_bitmap_width(tutorial_dialog_2)/2, RPG::GetInstance()->cameraPosition[1] + ScreenHeight - al_get_bitmap_height(tutorial_dialog_2), NULL); }
 	else if (show_steve_dialog_1) { al_draw_bitmap(steve_dialog_1, steve->getX()-85, steve->getY()-al_get_bitmap_height(steve_dialog_1), NULL); }
 	else if (show_steve_dialog_2) { al_draw_bitmap(steve_dialog_2, steve->getX()-85, steve->getY()-al_get_bitmap_height(steve_dialog_2), NULL); }
 	*/
+
 	/*
-	// player temp coords
+	// ---------------
+	// Debugging code:
+	// Uncomment this block of code to display player coords.
+	// ------------------------------------------------------
 	cout << "Player coords: " << player->getFeetX() << " " << player->getFeetY()
 		<< "\t\t" << player->getX() << " " << player->getY() << endl;
 	// -----------------

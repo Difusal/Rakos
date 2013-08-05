@@ -26,12 +26,16 @@ public:
 	void LoadWeapons();
 	Weapon *GetWeapon(WeaponType Weapon);
 
+	void RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings);
 	bool livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles);
 	void UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b);
+	void UpdateAnimationsFrame(vector<LivingBeing*> &livingBeings);
 	void UpdateCamera(vector<vector<int> > &worldMap);
 
 	void Initialize();
-	void start_game();
+	void Update();
+	void Draw();
+	void StartGameControlCycle();
 	void Terminate();
 
 	ALLEGRO_DISPLAY *GetDisplay() { return display; }

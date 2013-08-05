@@ -10,7 +10,7 @@ int randomNumber (int min, int max) {
 }
 
 
-/* checks if a file exists */
+// checks if a file exists
 bool fileExists (const string &filename) {
 	/* trying to open input file stream */
 	ifstream infile(filename);
@@ -18,7 +18,7 @@ bool fileExists (const string &filename) {
 	return infile.good();
 }
 
-/* loads world maps from text files */
+// loads world maps from text files
 void LoadMap(const char *filename, vector<vector<int> > &map) {
 	int state = NULL;
 	enum LoadState {
@@ -68,6 +68,23 @@ void LoadMap(const char *filename, vector<vector<int> > &map) {
 	}
 }
 
+// draws world map to display
+void DrawMap(const vector<vector<int> > &worldMap) {
+	for(unsigned int i = 0; i < worldMap.size(); i++) {
+		for(unsigned int j = 0; j < worldMap[i].size(); j++) {
+			al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), worldMap[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
+			/*
+			if (switch_pressed && worldMap[i][j] == 14)
+				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), 15 * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
+			else if (!switch_pressed && worldMap[i][j] == 16)
+				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), 1 * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
+			else
+				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), worldMap[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
+				*/
+		}
+	}
+}
+
 
 /* updates camera position */
 void CameraUpdate(vector<vector<int> > &worldMap, float *cameraPosition, float x, float y, int width, int height) {
@@ -86,10 +103,8 @@ void CameraUpdate(vector<vector<int> > &worldMap, float *cameraPosition, float x
 
 /* returns true if bounding boxes are colliding */
 bool boxCollision(float x, float y, float ex, float ey, int width, int height) {
-	int x_correction = 15;
-	int y_correction = 25;
-	if (x + width - x_correction < ex || x > ex + width - x_correction ||
-		y + height - y_correction < ey || y > ey + height - y_correction) {
+	if (x + width - xCollisionCorrection < ex || x > ex + width - xCollisionCorrection ||
+		y + height - yCollisionCorrection < ey || y > ey + height - yCollisionCorrection) {
 		return false;
 	}
 

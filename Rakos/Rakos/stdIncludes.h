@@ -28,6 +28,8 @@ using namespace std;
 #define ScreenWidth 800
 #define ScreenHeight 600
 #define WorldBlockSize 40
+#define xCollisionCorrection 15
+#define yCollisionCorrection 25
 const float FPS = 60.0;
 const float mouseAnimFPS = 18.0;
 const float drawFPS = 8.0;

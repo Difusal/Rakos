@@ -13,8 +13,6 @@ class TutorialState: public State
 {
 public:
 	void InitializeLivingBeings();
-	void CheckIfAnyLivingBeingWasKilled();
-	void UpdateAnimations(ALLEGRO_EVENT *ev);
 
 	virtual void Initialize();
 	bool Update (ALLEGRO_EVENT *ev);

@@ -170,6 +170,12 @@ Weapon * RPG::GetWeapon(WeaponType Weapon) {
 }
 
 
+void RPG::RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings) {
+	for (unsigned int i = 1; i < livingBeings.size(); i++)
+		if (livingBeings[i]->isDead())
+			livingBeings.erase(livingBeings.begin() + i);
+}
+
 bool RPG::livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles) {
 	int north_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][player->getFeetX()/WorldBlockSize];
 	int ne_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
@@ -208,7 +214,7 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 	LivingBeing *objBeingCorrected = nullptr;
 
 	// if a collision is happening
-	if (boxCollision(a->getX(), a->getY(), b->getX(), b->getY(), 32, 32)) {
+	if (boxCollision(a->getX(), a->getY(), b->getX(), b->getY(), a->width(), 32)) {
 		// if objects are heading the same direction
 		if (a->getDir() == b->getDir()) {
 			switch (a->getDir()) {
@@ -254,29 +260,131 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 				}
 			}
 		}
-	}
+		// if objects are heading opposite directions
+		else if ((a->getDir() == RIGHT && b->getDir() == LEFT) || (a->getDir() == LEFT && b->getDir() == RIGHT) ||
+			(a->getDir() == UP && b->getDir() == DOWN) || (a->getDir() == DOWN && b->getDir() == UP))
+		{
+			switch (a->getDir())
+			{
+			case RIGHT:
+					// correct X coords
+					if (a->isActive())
+						a->setX(a->getX() - a->getMoveSpeed());
+					if (b->isActive())
+						b->setX(b->getX() + b->getMoveSpeed());
 
-	/*
-	if(a->getActiveState() && boxCollision(a->getX(), a->getY(), b->getX(), b->getY(), 32, 32)) {
-	if (a->getDir() == 0)
-	a->setY(a->getY() - a->getMoveSpeed());
-	else if (a->getDir() == 1)
-	a->setX(a->getX() + a->getMoveSpeed());
-	else if (a->getDir() == 2)
-	a->setX(a->getX() - a->getMoveSpeed());
-	else if (a->getDir() == 3)
-	a->setY(a->getY() + a->getMoveSpeed());
+					break;
+			case LEFT:
+					// correct X coords
+					if (a->isActive())
+						a->setX(a->getX() + a->getMoveSpeed());
+					if (b->isActive())
+						b->setX(b->getX() - b->getMoveSpeed());
+
+					break;
+			case DOWN:
+					// correct Y coords
+					if (a->isActive())
+						a->setY(a->getY() - a->getMoveSpeed());
+					if (b->isActive())
+						b->setY(b->getY() + b->getMoveSpeed());
+
+					break;
+			case UP:
+					// correct Y coords
+					if (a->isActive())
+						a->setY(a->getY() + a->getMoveSpeed());
+					if (b->isActive())
+						b->setY(b->getY() - b->getMoveSpeed());
+
+					break;
+			}
+		}
+		// if objects are heading different directions
+		else {
+			int xDistance;
+			int yDistance;
+
+			bool done = false;
+			while (!done) {
+				switch (a->getDir()) {
+				case RIGHT:
+				case LEFT:
+					break;
+				case DOWN:
+					yDistance = abs(a->bottomBorderY() - b->getY());
+
+					switch (b->getDir()) {
+					case RIGHT:
+						xDistance = abs(a->getX() - b->rightBorderX());
+
+						if (yDistance < xDistance)
+							a->setY(a->getY() - a->getMoveSpeed());
+						else
+							b->setX(b->getX() - b->getMoveSpeed());
+
+						break;
+					case LEFT:
+						xDistance = abs(a->rightBorderX() - b->getX());
+
+						if (yDistance < xDistance)
+							a->setY(a->getY() - a->getMoveSpeed());
+						else
+							b->setX(b->getX() + b->getMoveSpeed());
+
+						break;
+					}
+
+					done = true;
+					break;
+				case UP:
+					yDistance = abs(a->getY() - b->bottomBorderY());
+
+					switch (b->getDir()) {
+					case RIGHT:
+						xDistance = abs(a->getX() - b->rightBorderX());
+
+						if (yDistance < xDistance)
+							a->setY(a->getY() + a->getMoveSpeed());
+						else
+							b->setX(b->getX() - b->getMoveSpeed());
+
+						break;
+					case LEFT:
+						xDistance = abs(a->rightBorderX() - b->getX());
+
+						if (yDistance < xDistance)
+							a->setY(a->getY() + a->getMoveSpeed());
+						else
+							b->setX(b->getX() + b->getMoveSpeed());
+
+						break;
+					}
+
+					done = true;
+					break;
+				}
+
+				if (!done) {
+					LivingBeing *temp = a;
+					a = b;
+					b = temp;
+				}
+			}
+		}
 	}
-	if(b->getActiveState() && boxCollision(b->getX(), b->getY(), a->getX(), a->getY(), 32, 32)) {
-	if (b->getDir() == 0)
-	b->setY(b->getY() - b->getMoveSpeed());
-	else if (b->getDir() == 1)
-	b->setX(b->getX() + b->getMoveSpeed());
-	else if (b->getDir() == 2)
-	b->setX(b->getX() - b->getMoveSpeed());
-	else if (b->getDir() == 3)
-	b->setY(b->getY() + b->getMoveSpeed());
-	}*/
+}
+
+void RPG::UpdateAnimationsFrame(vector<LivingBeing*> &livingBeings) {
+	// creatures and npcs
+	if (ev.timer.source == drawTimer)
+		for (LivingBeing *obj : livingBeings)
+			if (obj->getType() != _Player)
+				obj->UpdateAnimationFrame();
+
+	// player
+	if (ev.timer.source == playerAnimTimer)
+		player->UpdateAnimationFrame();
 }
 
 void RPG::UpdateCamera(vector<vector<int> > &worldMap) {
@@ -317,58 +425,62 @@ void RPG::Initialize() {
 	StartTimers();
 }
 
-void RPG::start_game () {
+void RPG::Update() {
+	// if window is closed on dedicated button (upper right corner)
+	if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+		cout << "Close button pressed..." << endl;
+		done = true;
+	}
+
+	draw = Mouse->Update(&ev);
+	states[state]->Update(&ev);
+	if (ev.type != ALLEGRO_EVENT_MOUSE_AXES)
+		draw = Mouse->CorrectMousePosition();
+
+	if (ev.type == ALLEGRO_EVENT_TIMER) {
+		Mouse->SetAllReleaseValuesToFalse();
+		draw = true;
+	}
+}
+
+void RPG::Draw() {
+	if (draw && al_event_queue_is_empty(event_queue)) {
+		/*
+		// ---------------
+		// Debugging code:
+		// Uncomment this block of code to display mouse coords.
+		// -----------------------------------------------------
+		stringstream ss;
+		ss << mouse_x << " " << mouse_y;
+		al_draw_text(font, Yellow, 0, 0, NULL, ss.str().c_str());
+		cout << ss.str() << endl;
+		*/
+
+		states[state]->Draw();			
+		Mouse->Draw();
+
+		al_flip_display();
+		al_clear_to_color(Black);
+		draw = false;
+	}
+}
+
+void RPG::StartGameControlCycle() {
 	Initialize();
 
-	// TEMP EDIT THIS
+	// EDIT THIS
 	player = new Player("Difusal", no_weapon, 480, 580);
 
 	states.push_back(new TutorialState());
 	state = -1;
 	ChangeState(_Tutorial);
 
-	cout << "Starting control cycle..." << endl;
+	cout << "Starting game control cycle..." << endl;
 	while (!done) {
 		al_wait_for_event(event_queue, &ev);
-
-		/* --- UPDATING --- */
-		draw = Mouse->Update(&ev);
-		states[state]->Update(&ev);
-		if (ev.type != ALLEGRO_EVENT_MOUSE_AXES)
-			draw = Mouse->CorrectMousePosition();
-
-		if (ev.type == ALLEGRO_EVENT_TIMER) {
-			Mouse->SetAllReleaseValuesToFalse();
-
-			draw = true;
-		}
-
-		/* --- DRAWING --- */
-		if (draw && al_event_queue_is_empty(event_queue)) {
-			states[state]->Draw();			
-			Mouse->Draw();
-
-			/*
-			// mouse temp coords
-			stringstream ss;
-			ss << mouse_x << " " << mouse_y;
-			al_draw_text(font, Yellow, 0, 0, NULL, ss.str().c_str());
-			//cout << ss.str() << endl;
-			// -----------------
-			*/
-
-			al_flip_display();
-			al_clear_to_color(Black);
-			draw = false;
-		}
-
-		/* if window is closed */
-		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-			cout << "Close button pressed..." << endl;
-			done = true;
-		}
+		Update();
+		Draw();
 	}
-	cout << "* done = true; *" << endl;
 
 	Terminate();
 }
@@ -377,18 +489,16 @@ void RPG::Terminate() {
 	cout << "Deallocating memory and quitting..." << endl;
 
 	// destroying fonts
-	for (unsigned int i = 0; i < fonts.size(); i++) {
+	for (unsigned int i = 0; i < fonts.size(); i++)
 		al_destroy_font(fonts[i]);
-	}
 
 	// audio samples
 
 
 	// destroying event queue and timers
 	al_destroy_event_queue(event_queue);
-	for (unsigned int i = 0; i < timers.size(); i++) {
+	for (unsigned int i = 0; i < timers.size(); i++)
 		al_destroy_timer(timers[i]);
-	}
 	timers.clear();
 
 	// deleting mouse cursor

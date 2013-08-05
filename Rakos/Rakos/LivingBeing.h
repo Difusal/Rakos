@@ -11,14 +11,14 @@ public:
 	void DrawName();
 	void DrawLifeBar();
 
-	int getType() { return type; }
+	LivingBeingType getType() { return type; }
 	void setType(LivingBeingType Type) { type = Type; }
 	string getName() { return name; }
 	void setName(string Name) { name = Name; }
 	
 	bool isDead() { return dead; }
 	void setDeadState(bool Dead) { dead = Dead; }
-	bool getActiveState() { return active; }
+	bool isActive() { return active; }
 	void setActiveState(bool newState) { active = newState; }
 
 	void takeHP(unsigned int HPAmount) { hp -= HPAmount; }
@@ -46,6 +46,11 @@ public:
 	void setP2_x(double x) { p2_x = x; }
 	double getP2_y() { return p2_y; }
 	void setP2_y(double y) { p2_y = y; }
+
+	int width() { return al_get_bitmap_width(bitmap)/4.0; }
+	int height() { return al_get_bitmap_height(bitmap)/4.0; }
+	int rightBorderX() { return x + width() - xCollisionCorrection; }
+	int bottomBorderY() { return y + height() - yCollisionCorrection; }
 
 private:
 	LivingBeingType type;
