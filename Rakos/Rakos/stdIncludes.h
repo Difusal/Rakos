@@ -62,13 +62,17 @@ const float SlowCreaturesSpeed = 0.4;
 #define LoadingGameBackgroundPath "res//images//loading_game_bg.png"
 #define SideBarPath "res//images//side_bar.png"
 
-/* sprites */
+/* character sprites */
 #define playerPng "res//sprites//noob_yellow.png"
 #define explorer_greenPng "res//sprites//explorer_green.png"
 #define knight_whitePng "res//sprites//knight_white.png"
 #define sorcerer_bluePng "res//sprites//sorcerer_blue.png"
 #define warrior_yellowPng "res//sprites//warrior_yellow.png"
 #define rabbitPng "res//sprites//rabbit.png"
+
+/* sprites */
+#define PortalPng "res//sprites//portal.png"
+#define SwitchPng "res//sprites//switch.png"
 
 /* world maps */
 #define TutorialWorldMapPath "res//maps//tutorial.txt"

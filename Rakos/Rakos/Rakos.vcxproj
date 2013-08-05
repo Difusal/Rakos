@@ -20,6 +20,7 @@
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Rabbit.cpp" />
     <ClCompile Include="RPG.cpp" />
+    <ClCompile Include="Switch.cpp" />
     <ClCompile Include="TutorialState.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
@@ -35,6 +36,7 @@
     <ClInclude Include="RPG.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stdIncludes.h" />
+    <ClInclude Include="Switch.h" />
     <ClInclude Include="TutorialState.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>

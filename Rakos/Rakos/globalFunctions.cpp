@@ -73,14 +73,6 @@ void DrawMap(const vector<vector<int> > &worldMap) {
 	for(unsigned int i = 0; i < worldMap.size(); i++) {
 		for(unsigned int j = 0; j < worldMap[i].size(); j++) {
 			al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), worldMap[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
-			/*
-			if (switch_pressed && worldMap[i][j] == 14)
-				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), 15 * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
-			else if (!switch_pressed && worldMap[i][j] == 16)
-				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), 1 * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
-			else
-				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), worldMap[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
-				*/
 		}
 	}
 }

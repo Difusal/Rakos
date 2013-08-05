@@ -2,17 +2,18 @@
 
 #include "stdIncludes.h"
 #include "State.h"
-//#include "LivingBeing.h"
 #include "Weapon.h"
 #include "Player.h"
 #include "NPC.h"
 #include "Rabbit.h"
 #include "Portal.h"
+#include "Switch.h"
 
 class TutorialState: public State
 {
 public:
 	void InitializeLivingBeings();
+	void UpdateSwitches();
 
 	virtual void Initialize();
 	bool Update (ALLEGRO_EVENT *ev);
@@ -31,10 +32,11 @@ private:
 	NPC *warrior;
 	Rabbit *rabbit;
 
-	Portal *portal1;
+	vector<Portal*> portals;
+	Portal *tutorialPortal;
 
-	int switch_cooldown;
-	bool switch_pressed;
+	vector<Switch*> switches;
+	Switch *tutorialSwitch;
 
 	ALLEGRO_KEYBOARD_STATE keyState;
 	ALLEGRO_BITMAP *side_bar;

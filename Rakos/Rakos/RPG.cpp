@@ -105,6 +105,9 @@ void RPG::CreateTimers() {
 
 	playerAnimTimer = al_create_timer(1.0 / drawFPS);
 	timers.push_back(playerAnimTimer);
+
+	portalAnimTimer = al_create_timer(1.0 / 2);
+	timers.push_back(portalAnimTimer);
 }
 
 void RPG::CreateEventQueue() {
@@ -264,8 +267,7 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 		else if ((a->getDir() == RIGHT && b->getDir() == LEFT) || (a->getDir() == LEFT && b->getDir() == RIGHT) ||
 			(a->getDir() == UP && b->getDir() == DOWN) || (a->getDir() == DOWN && b->getDir() == UP))
 		{
-			switch (a->getDir())
-			{
+			switch (a->getDir()) {
 			case RIGHT:
 					// correct X coords
 					if (a->isActive())
@@ -385,6 +387,12 @@ void RPG::UpdateAnimationsFrame(vector<LivingBeing*> &livingBeings) {
 	// player
 	if (ev.timer.source == playerAnimTimer)
 		player->UpdateAnimationFrame();
+}
+
+void RPG::UpdateAnimationsFrame(vector<Portal*> &portals) {
+	if (ev.timer.source == portalAnimTimer)
+		for (Portal *obj : portals)
+			obj->UpdateAnimationFrame();
 }
 
 void RPG::UpdateCamera(vector<vector<int> > &worldMap) {
@@ -528,6 +536,9 @@ ALLEGRO_TIMER * RPG::GetTimer( TimerType Timer ) {
 		break;
 	case _PlayerAnimTimer:
 		return playerAnimTimer;
+		break;
+	case _PortalAnimTimer:
+		return portalAnimTimer;
 		break;
 	}
 }

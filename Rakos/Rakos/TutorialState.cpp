@@ -29,6 +29,24 @@ void TutorialState::InitializeLivingBeings() {
 	livingBeings.push_back(rabbit);
 }
 
+void TutorialState::UpdateSwitches() {
+	// tutorial switch
+	if (tutorialSwitch->isBeingPressed(player)) {
+		tutorialSwitch->Press();
+
+		// opening portal if not already opened
+		if (!tutorialPortal->isOpen())
+			tutorialPortal->Open();
+	}
+	else {
+		if (tutorialSwitch->isPressed())
+			tutorialSwitch->incrementUnpressDelayCounter();
+
+		if (tutorialSwitch->unpressDelayPassed())
+			tutorialPortal->Close();
+	}
+}
+
 
 void TutorialState::Initialize() {
 	// loading map
@@ -53,10 +71,12 @@ void TutorialState::Initialize() {
 	}
 
 	InitializeLivingBeings();
-	portal1 = new Portal();
 
-	switch_cooldown = 0;
-	switch_pressed = false;
+	tutorialPortal = new Portal(false, 12, 3, 17, 3);
+	portals.push_back(tutorialPortal);
+
+	tutorialSwitch = new Switch(3, 3, FPS*4.6);
+	switches.push_back(tutorialSwitch);
 }
 
 bool TutorialState::Update(ALLEGRO_EVENT *ev) {
@@ -68,13 +88,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 		if (ev->timer.source == RPG::GetInstance()->GetTimer(_RegularTimer)) {
 			player->ControlAttackRate();
 
-			// player used portal
-			if (switch_pressed &&
-				(483 <= player->getFeetX() && player->getFeetX() <= 515) &&
-				(123 <= player->getFeetY() && player->getFeetY() <= 156)) {
-				player->setX(700-16);
-				player->setY(142-32);
-			}
+			tutorialPortal->CheckIfPlayerPassedThrough(player);
 			
 			// player wants to chat
 			if (al_key_down(&keyState, ALLEGRO_KEY_C) &&
@@ -109,25 +123,14 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 			
 			player->Move(keyState, worldMap);
 
-			// --- interactive tiles --- //
-			// portal
-			if ((126 <= player->getFeetX() && player->getFeetX() <= 155) && (130 <= player->getFeetY() && player->getFeetY() <= 155))
-				switch_pressed = true;
-			else {
-				if (switch_pressed)
-					switch_cooldown++;
-				if (switch_cooldown > FPS*4.6) {
-					switch_cooldown = 0;
-					switch_pressed = false;
-				}
-			}
+			UpdateSwitches();
 
 			// moving npcs and creatures
 			for (unsigned int i = 1; i < livingBeings.size(); i++)
 				if (!livingBeings[i]->isDead())
 					livingBeings[i]->Move();
 
-			//  Collisions
+			// collisions
 			player->CorrectPositionIfCollidingWithMapLimits(worldMap, unaccessibleTiles);
 			for (unsigned int i = 0; i < livingBeings.size(); i++)
 				if (livingBeings[i]->getType() != _Player)
@@ -137,6 +140,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 		}
 
 		RPG::GetInstance()->UpdateAnimationsFrame(livingBeings);
+		RPG::GetInstance()->UpdateAnimationsFrame(portals);
 
 		// sorting vector in the correct drawing order
 		sort(livingBeings.begin(), livingBeings.end(), [](LivingBeing *a, LivingBeing *b) { return a->getY() < b->getY(); });
@@ -149,6 +153,14 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 
 void TutorialState::Draw() {
 	DrawMap(worldMap);
+
+	// drawing portals
+	for (Portal *obj : portals)
+		obj->Draw();
+
+	// drawing switches
+	for (Switch *obj : switches)
+		obj->Draw();
 
 	// drawing living beings
 	for (unsigned int i = 0; i < livingBeings.size(); i++)
@@ -170,16 +182,12 @@ void TutorialState::Draw() {
 	// Debugging code:
 	// Uncomment this block of code to display player coords.
 	// ------------------------------------------------------
-	cout << "Player coords: " << player->getFeetX() << " " << player->getFeetY()
-		<< "\t\t" << player->getX() << " " << player->getY() << endl;
+	cout << "Player feet coords: " << player->getFeetX() << " " << player->getFeetY()
+		<< "\t\tbitmap source: " << player->getX() << " " << player->getY() << endl;
 	// -----------------
 	*/
 }
 
 void TutorialState::Terminate() {
-	unaccessibleTiles.clear();
-	al_destroy_bitmap(tutorial_dialog_1);
-	al_destroy_bitmap(tutorial_dialog_2);
-	al_destroy_bitmap(steve_dialog_1);
-	al_destroy_bitmap(steve_dialog_2);
+
 }

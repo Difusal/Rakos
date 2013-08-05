@@ -4,6 +4,7 @@
 #include "state.h"
 #include "MouseCursor.h"
 #include "Player.h"
+#include "Portal.h"
 
 class RPG
 {
@@ -30,6 +31,7 @@ public:
 	bool livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles);
 	void UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b);
 	void UpdateAnimationsFrame(vector<LivingBeing*> &livingBeings);
+	void UpdateAnimationsFrame(vector<Portal*> &portals);
 	void UpdateCamera(vector<vector<int> > &worldMap);
 
 	void Initialize();
@@ -79,12 +81,15 @@ private:
 	bool done, draw;
 
 	ALLEGRO_DISPLAY *display;
+
 	ALLEGRO_TIMER *timer;
 	ALLEGRO_TIMER *mouseAnimTimer;
 	ALLEGRO_TIMER *drawTimer;
 	ALLEGRO_TIMER *playerAnimTimer;
-	ALLEGRO_BITMAP *tileSet;
+	ALLEGRO_TIMER *portalAnimTimer;
+
 	ALLEGRO_EVENT_QUEUE *event_queue;
 	ALLEGRO_EVENT ev;
+	ALLEGRO_BITMAP *tileSet;
 	ALLEGRO_TRANSFORM camera;
 };
