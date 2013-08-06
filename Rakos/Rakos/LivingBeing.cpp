@@ -96,3 +96,15 @@ void LivingBeing::DrawLifeBar() {
 	al_draw_filled_rectangle(pos_x-1, pos_y-1, pos_x+bar_width+1, pos_y+bar_height+1, Black);
 	al_draw_filled_rectangle(pos_x, pos_y, pos_x+hp_width, pos_y+bar_height, color);
 }
+
+
+void LivingBeing::Speak() {
+	speaking = true;
+	active = false;
+}
+
+void LivingBeing::StopSpeaking() {
+	speaking = false;
+	if (!alwaysInactive)
+		active = true;
+}

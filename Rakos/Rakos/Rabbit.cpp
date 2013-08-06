@@ -3,19 +3,22 @@
 Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 	type = _Creature;
 	name = "Rabbit";
-
+	
 	dead = false;
+	active = true;
+	alwaysInactive = !active;
+	speaking = false;
+
 	maxHp = 10;
 	hp = maxHp;
-
-	active = true;
-	direction = DOWN;
+	
 	p1_x = P1_X;
 	p1_y = P1_Y;
 	p2_x = P2_X;
 	p2_y = P2_Y;
 	x = P1_X;
 	y = P1_Y;
+	direction = DOWN;
 	moveSpeed = SlowCreaturesSpeed;
 
 	bitmap = al_load_bitmap(rabbitPng);

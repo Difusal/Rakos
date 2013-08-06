@@ -29,13 +29,6 @@ public:
 
 	~Player(void);
 
-
-	bool show_tutorial_dialog_1;
-	bool show_tutorial_dialog_2;
-	bool player_has_talked_to_steve;
-	bool show_steve_dialog_1;
-	bool show_steve_dialog_2;
-
 private:
 	Weapon *weapon;
 	int attackCooldown;

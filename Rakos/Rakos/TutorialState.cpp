@@ -11,22 +11,48 @@ void TutorialState::InitializeLivingBeings() {
 
 
 	// initializing npcs
-	steve = new NPC("Steve", 160, 200, 230, 320, explorer_greenPng);
-	livingBeings.push_back(steve);
+	Steve = new NPC("Steve", 160, 200, 230, 320, explorer_greenPng);
+	livingBeings.push_back(Steve);
 
-	knight = new NPC("White Knight", 670, 180, 740, 240, knight_whitePng);
-	livingBeings.push_back(knight);
+	WhiteKnight = new NPC("White Knight", 670, 180, 740, 240, knight_whitePng);
+	livingBeings.push_back(WhiteKnight);
 
-	sorcerer = new NPC("Sorcerer", 985, 90, sorcerer_bluePng);
-	livingBeings.push_back(sorcerer);
+	Sorcerer = new NPC("Sorcerer", 985, 90, sorcerer_bluePng);
+	livingBeings.push_back(Sorcerer);
 
-	warrior = new NPC("Warrior", 985, 250, warrior_yellowPng);
-	livingBeings.push_back(warrior);
+	Warrior = new NPC("Warrior", 985, 250, warrior_yellowPng);
+	livingBeings.push_back(Warrior);
 	
 
 	// initializing creatures
 	rabbit = new Rabbit(180, 390, 240, 390);
 	livingBeings.push_back(rabbit);
+}
+
+void TutorialState::UpdateDialogs() {
+	RPG::GetInstance()->CheckIfPlayerWantsToChat(livingBeings, keyState);
+
+	if (player->isActive() && !playerHasTalkedToSteve) {
+		showTutorialDialog1 = false;
+		showTutorialDialog2 = true;
+	}
+
+	if (Steve->isSpeaking()) {
+		if (!playerHasTalkedToSteve) {
+			playerHasTalkedToSteve = true;
+			showTutorialDialog2 = false;
+			player->setWeapon(RPG::GetInstance()->GetWeapon(_Knife));
+		}
+
+		if (rabbit->isDead())
+			showSteveDialog2 = true;
+		else
+			showSteveDialog1 = true;
+	}
+	else {
+		showSteveDialog1 = false;
+		showSteveDialog2 = false;
+	}
 }
 
 void TutorialState::UpdateSwitches() {
@@ -47,6 +73,17 @@ void TutorialState::UpdateSwitches() {
 	}
 }
 
+void TutorialState::DrawDialogs() {
+	if (showTutorialDialog1)
+		al_draw_bitmap(tutorialDialog1, 300 + RPG::GetInstance()->cameraPosition[0] - al_get_bitmap_width(tutorialDialog1)/2, RPG::GetInstance()->cameraPosition[1] + ScreenHeight/4, NULL);
+	else if (showTutorialDialog2)
+		al_draw_bitmap(tutorialDialog2, 300 + RPG::GetInstance()->cameraPosition[0] - al_get_bitmap_width(tutorialDialog2)/2, RPG::GetInstance()->cameraPosition[1] + ScreenHeight - al_get_bitmap_height(tutorialDialog2), NULL);
+	else if (showSteveDialog1)
+		al_draw_bitmap(steveDialog1, Steve->getX()-85, Steve->getY()-al_get_bitmap_height(steveDialog1), NULL);
+	else if (showSteveDialog2)
+		al_draw_bitmap(steveDialog2, Steve->getX()-85, Steve->getY()-al_get_bitmap_height(steveDialog2), NULL);
+}
+
 
 void TutorialState::Initialize() {
 	// loading map
@@ -54,29 +91,35 @@ void TutorialState::Initialize() {
 	unaccessibleTiles.push_back(0);
 
 	// loading images
-	side_bar = al_load_bitmap(SideBarPath);
-	if (!side_bar) {
+	sideBar = al_load_bitmap(SideBarPath);
+	if (!sideBar) {
 		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load side bar bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-		exit(-1);
-	}
-
-	// loading npc dialogs
-	tutorial_dialog_1 = al_load_bitmap(TutorialDialog1);
-	tutorial_dialog_2 = al_load_bitmap(TutorialDialog2);
-	steve_dialog_1 = al_load_bitmap(SteveDialog1);
-	steve_dialog_2 = al_load_bitmap(SteveDialog2);
-	if (!tutorial_dialog_1 || !tutorial_dialog_2 || !steve_dialog_1 || !steve_dialog_2) {
-		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load one or more dialogs.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
 	}
 
 	InitializeLivingBeings();
 
+	tutorialSwitch = new Switch(3, 3, FPS*4.6);
+	switches.push_back(tutorialSwitch);
+
 	tutorialPortal = new Portal(false, 12, 3, 17, 3);
 	portals.push_back(tutorialPortal);
 
-	tutorialSwitch = new Switch(3, 3, FPS*4.6);
-	switches.push_back(tutorialSwitch);
+	// loading dialogs
+	tutorialDialog1 = al_load_bitmap(TutorialDialog1);
+	tutorialDialog2 = al_load_bitmap(TutorialDialog2);
+	steveDialog1 = al_load_bitmap(SteveDialog1);
+	steveDialog2 = al_load_bitmap(SteveDialog2);
+	if (!tutorialDialog1 || !tutorialDialog2 || !steveDialog1 || !steveDialog2) {
+		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load one or more dialogs.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		exit(-1);
+	}
+
+	showTutorialDialog1 = true;
+	showTutorialDialog2 = false;
+	showSteveDialog1 = false;
+	showSteveDialog2 = false;
+	playerHasTalkedToSteve = false;
 }
 
 bool TutorialState::Update(ALLEGRO_EVENT *ev) {
@@ -88,28 +131,6 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 		if (ev->timer.source == RPG::GetInstance()->GetTimer(_RegularTimer)) {
 			player->ControlAttackRate();
 
-			tutorialPortal->CheckIfPlayerPassedThrough(player);
-			
-			// player wants to chat
-			if (al_key_down(&keyState, ALLEGRO_KEY_C) &&
-				calculateDistance(player->getX(), player->getY(), steve->getX(), steve->getY()) < 40) {
-				//show_tutorial_dialog_2 = false;
-				/*
-				if (rabbit->isDead())
-					show_steve_dialog_2 = true;
-				else
-					show_steve_dialog_1 = true;*/
-
-				//player_has_talked_to_steve = true;
-				player->setWeapon(RPG::GetInstance()->GetWeapon(_Knife));
-				steve->setActiveState(false);
-			}
-			if (calculateDistance(player->getX(), player->getY(), steve->getX(), steve->getY()) > 60) {
-				//show_steve_dialog_1 = false;
-				//show_steve_dialog_2 = false;
-				steve->setActiveState(true);
-			}
-			
 			// player attacks
 			if (al_key_down(&keyState, ALLEGRO_KEY_K) && player->CanAttack() &&
 				calculateDistance(player->getX(), player->getY(), rabbit->getX(), rabbit->getY()) < 40 &&
@@ -120,17 +141,18 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 				if (rabbit->getHP() <= 0)
 					rabbit->setDeadState(true);
 			}
-			
-			player->Move(keyState, worldMap);
 
 			UpdateSwitches();
+			tutorialPortal->CheckIfPlayerPassedThrough(player);
+			UpdateDialogs();
 
-			// moving npcs and creatures
+			// moving player, npcs and creatures
+			player->Move(keyState, worldMap);
 			for (unsigned int i = 1; i < livingBeings.size(); i++)
 				if (!livingBeings[i]->isDead())
 					livingBeings[i]->Move();
 
-			// collisions
+			// checking if something collided
 			player->CorrectPositionIfCollidingWithMapLimits(worldMap, unaccessibleTiles);
 			for (unsigned int i = 0; i < livingBeings.size(); i++)
 				if (livingBeings[i]->getType() != _Player)
@@ -167,15 +189,9 @@ void TutorialState::Draw() {
 		livingBeings[i]->Draw();
 
 	// drawing side bar
-	al_draw_bitmap(side_bar, 600 + RPG::GetInstance()->cameraPosition[0], RPG::GetInstance()->cameraPosition[1], NULL);
+	al_draw_bitmap(sideBar, 600 + RPG::GetInstance()->cameraPosition[0], RPG::GetInstance()->cameraPosition[1], NULL);
 
-	// drawing dialogs
-	/*
-	if (show_tutorial_dialog_1) { al_draw_bitmap(tutorial_dialog_1, 300 + RPG::GetInstance()->cameraPosition[0] - al_get_bitmap_width(tutorial_dialog_1)/2, RPG::GetInstance()->cameraPosition[1] + ScreenHeight/4, NULL); }
-	else if (show_tutorial_dialog_2) { al_draw_bitmap(tutorial_dialog_2, 300 + RPG::GetInstance()->cameraPosition[0] - al_get_bitmap_width(tutorial_dialog_2)/2, RPG::GetInstance()->cameraPosition[1] + ScreenHeight - al_get_bitmap_height(tutorial_dialog_2), NULL); }
-	else if (show_steve_dialog_1) { al_draw_bitmap(steve_dialog_1, steve->getX()-85, steve->getY()-al_get_bitmap_height(steve_dialog_1), NULL); }
-	else if (show_steve_dialog_2) { al_draw_bitmap(steve_dialog_2, steve->getX()-85, steve->getY()-al_get_bitmap_height(steve_dialog_2), NULL); }
-	*/
+	DrawDialogs();
 
 	/*
 	// ---------------

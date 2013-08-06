@@ -13,7 +13,9 @@ class TutorialState: public State
 {
 public:
 	void InitializeLivingBeings();
+	void UpdateDialogs();
 	void UpdateSwitches();
+	void DrawDialogs();
 
 	virtual void Initialize();
 	bool Update (ALLEGRO_EVENT *ev);
@@ -26,22 +28,28 @@ private:
 
 	vector<LivingBeing*> livingBeings;
 	Player *player;
-	NPC *steve;
-	NPC *knight;
-	NPC *sorcerer;
-	NPC *warrior;
+	NPC *Steve;
+	NPC *WhiteKnight;
+	NPC *Sorcerer;
+	NPC *Warrior;
 	Rabbit *rabbit;
-
-	vector<Portal*> portals;
-	Portal *tutorialPortal;
 
 	vector<Switch*> switches;
 	Switch *tutorialSwitch;
 
+	vector<Portal*> portals;
+	Portal *tutorialPortal;
+
 	ALLEGRO_KEYBOARD_STATE keyState;
-	ALLEGRO_BITMAP *side_bar;
-	ALLEGRO_BITMAP *tutorial_dialog_1;
-	ALLEGRO_BITMAP *tutorial_dialog_2;
-	ALLEGRO_BITMAP *steve_dialog_1;
-	ALLEGRO_BITMAP *steve_dialog_2;
+	ALLEGRO_BITMAP *sideBar;
+	ALLEGRO_BITMAP *tutorialDialog1;
+	ALLEGRO_BITMAP *tutorialDialog2;
+	ALLEGRO_BITMAP *steveDialog1;
+	ALLEGRO_BITMAP *steveDialog2;
+
+	bool showTutorialDialog1;
+	bool showTutorialDialog2;
+	bool playerHasTalkedToSteve;
+	bool showSteveDialog1;
+	bool showSteveDialog2;
 };

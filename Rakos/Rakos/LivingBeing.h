@@ -19,7 +19,11 @@ public:
 	bool isDead() { return dead; }
 	void setDeadState(bool Dead) { dead = Dead; }
 	bool isActive() { return active; }
-	void setActiveState(bool newState) { active = newState; }
+	void Activate() { active = true; }
+	void Deactivate() { active = false; }
+	bool isSpeaking() { return speaking; }
+	void Speak();
+	void StopSpeaking();
 
 	void takeHP(unsigned int HPAmount) { hp -= HPAmount; }
 	int getHP() { return hp; }
@@ -58,6 +62,8 @@ private:
 
 	bool dead;
 	bool active;
+	bool alwaysInactive;
+	bool speaking;
 
 	unsigned int hp;
 	unsigned int maxHp;

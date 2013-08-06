@@ -27,9 +27,12 @@ public:
 	void LoadWeapons();
 	Weapon *GetWeapon(WeaponType Weapon);
 
+	void CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
 	void RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings);
+
 	bool livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles);
 	void UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b);
+
 	void UpdateAnimationsFrame(vector<LivingBeing*> &livingBeings);
 	void UpdateAnimationsFrame(vector<Portal*> &portals);
 	void UpdateCamera(vector<vector<int> > &worldMap);
@@ -70,13 +73,10 @@ private:
 	ALLEGRO_BITMAP *loading_background;
 
 	Player *player;
+	LivingBeing *previousNPCWhoTalkedToPlayer;
 
 	Weapon *no_weapon;
 	Weapon *knife;
-
-	int scroll_time_pause;
-	bool background_going_left;
-	int background_mask;
 
 	bool done, draw;
 

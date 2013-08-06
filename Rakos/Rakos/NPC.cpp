@@ -6,6 +6,8 @@ NPC::NPC(string Name, double P1_X, double P1_Y, double P2_X, double P2_Y, const 
 
 	dead = false;
 	active = true;
+	alwaysInactive = !active;
+	speaking = false;
 
 	p1_x = P1_X;
 	p1_y = P1_Y;
@@ -32,6 +34,8 @@ NPC::NPC(string Name, double X, double Y, const char* Bitmap) {
 
 	dead = false;
 	active = false;
+	alwaysInactive = !active;
+	speaking = false;
 
 	p1_x = X;
 	p1_y = Y;

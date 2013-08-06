@@ -142,6 +142,8 @@ void RPG::InitializeVariables() {
 	cameraPosition[0] = 0;
 	cameraPosition[1] = 0;
 
+	previousNPCWhoTalkedToPlayer = NULL;
+
 	done = false;
 	draw = true;
 }
@@ -173,11 +175,44 @@ Weapon * RPG::GetWeapon(WeaponType Weapon) {
 }
 
 
+void RPG::CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState) {
+	int idOfClosestNPCAbleToTalk = -1;
+	int minimumDistance;
+	float currentDistance;
+
+	for (unsigned int i = 0; i < livingBeings.size(); i++) {
+		// skip if living being being scanned is not a npc
+		if (livingBeings[i]->getType() != _NPC)
+			continue;
+
+		if (al_key_down(&keyState, ALLEGRO_KEY_C)) {
+			currentDistance = calculateDistance(player->getX(), player->getY(), livingBeings[i]->getX(), livingBeings[i]->getY());
+
+			if (currentDistance < 40 && (idOfClosestNPCAbleToTalk == -1 || currentDistance < minimumDistance)) {
+				minimumDistance = currentDistance;
+				idOfClosestNPCAbleToTalk = i;
+			}
+		}
+	}
+
+	// if player spoke to npc, enable npc speaking
+	if (idOfClosestNPCAbleToTalk != -1) {
+		livingBeings[idOfClosestNPCAbleToTalk]->Speak();
+		previousNPCWhoTalkedToPlayer = livingBeings[idOfClosestNPCAbleToTalk];
+	}
+
+	// if no npc is talking to player, activate previous npc who talked to player, if there is one
+	if (idOfClosestNPCAbleToTalk == -1 && previousNPCWhoTalkedToPlayer != NULL)
+		if (calculateDistance(player->getX(),player->getY(), previousNPCWhoTalkedToPlayer->getX(), previousNPCWhoTalkedToPlayer->getY()) > 60)
+			previousNPCWhoTalkedToPlayer->StopSpeaking();
+}
+
 void RPG::RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings) {
 	for (unsigned int i = 1; i < livingBeings.size(); i++)
 		if (livingBeings[i]->isDead())
 			livingBeings.erase(livingBeings.begin() + i);
 }
+
 
 bool RPG::livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles) {
 	int north_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][player->getFeetX()/WorldBlockSize];
@@ -269,37 +304,37 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 		{
 			switch (a->getDir()) {
 			case RIGHT:
-					// correct X coords
-					if (a->isActive())
-						a->setX(a->getX() - a->getMoveSpeed());
-					if (b->isActive())
-						b->setX(b->getX() + b->getMoveSpeed());
+				// correct X coords
+				if (a->isActive())
+					a->setX(a->getX() - a->getMoveSpeed());
+				if (b->isActive())
+					b->setX(b->getX() + b->getMoveSpeed());
 
-					break;
+				break;
 			case LEFT:
-					// correct X coords
-					if (a->isActive())
-						a->setX(a->getX() + a->getMoveSpeed());
-					if (b->isActive())
-						b->setX(b->getX() - b->getMoveSpeed());
+				// correct X coords
+				if (a->isActive())
+					a->setX(a->getX() + a->getMoveSpeed());
+				if (b->isActive())
+					b->setX(b->getX() - b->getMoveSpeed());
 
-					break;
+				break;
 			case DOWN:
-					// correct Y coords
-					if (a->isActive())
-						a->setY(a->getY() - a->getMoveSpeed());
-					if (b->isActive())
-						b->setY(b->getY() + b->getMoveSpeed());
+				// correct Y coords
+				if (a->isActive())
+					a->setY(a->getY() - a->getMoveSpeed());
+				if (b->isActive())
+					b->setY(b->getY() + b->getMoveSpeed());
 
-					break;
+				break;
 			case UP:
-					// correct Y coords
-					if (a->isActive())
-						a->setY(a->getY() + a->getMoveSpeed());
-					if (b->isActive())
-						b->setY(b->getY() - b->getMoveSpeed());
+				// correct Y coords
+				if (a->isActive())
+					a->setY(a->getY() + a->getMoveSpeed());
+				if (b->isActive())
+					b->setY(b->getY() - b->getMoveSpeed());
 
-					break;
+				break;
 			}
 		}
 		// if objects are heading different directions
@@ -376,6 +411,7 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 		}
 	}
 }
+
 
 void RPG::UpdateAnimationsFrame(vector<LivingBeing*> &livingBeings) {
 	// creatures and npcs
