@@ -3,6 +3,7 @@
 Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 	type = _Creature;
 	name = "Rabbit";
+	weapon = RPG::GetInstance()->GetWeapon(_None);
 	
 	dead = false;
 	active = true;

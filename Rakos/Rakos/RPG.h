@@ -6,8 +6,7 @@
 #include "Player.h"
 #include "Portal.h"
 
-class RPG
-{
+class RPG {
 public:
 	// Public Methods
 	static RPG *GetInstance();
@@ -36,7 +35,7 @@ public:
 
 	void UpdateAnimationsFrame(vector<LivingBeing*> &livingBeings);
 	void UpdateAnimationsFrame(vector<Portal*> &portals);
-	void UpdateCamera(vector<vector<int> > &worldMap);
+	void UpdateCamera(vector<vector<int> > &worldMap, vector<LivingBeing*> &livingBeings);
 
 	void Initialize();
 	void Update();
@@ -62,6 +61,8 @@ public:
 
 	MouseCursor *Mouse;
 	float cameraPosition[2];
+	int prevCameraX;
+	int prevCameraY;
 
 private:
 	static RPG *instance;

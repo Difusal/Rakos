@@ -60,7 +60,8 @@ void RPG::DisplayLoadingSplashScreen() {
 	loading_background = al_load_bitmap(LoadingGameBackgroundPath);
 	if (!loading_background)
 		cout << "Error loading loading game bitmap... Proceeding anyway." << endl;
-	al_draw_bitmap(loading_background, 0, 0, NULL);
+	else
+		al_draw_bitmap(loading_background, 0, 0, NULL);
 	al_flip_display();
 }
 
@@ -158,8 +159,8 @@ void RPG::StartTimers() {
 
 void RPG::LoadWeapons() {
 	cout << "Loading weapons..." << endl;
-	no_weapon = new Weapon();
-	knife = new Weapon("knife", 1, 2);
+	no_weapon = new Weapon(_None, 0, 0);
+	knife = new Weapon(_Knife, 1, 2);
 }
 
 Weapon * RPG::GetWeapon(WeaponType Weapon) {
@@ -192,7 +193,7 @@ void RPG::CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALL
 					!(livingBeings[i]->getX() > player->getX() && player->getDir() == LEFT) &&
 					!(livingBeings[i]->getX() < player->getX() && player->getDir() == RIGHT))
 				{
-					livingBeings[i]->takeHP(player->getWeapon()->Damage());
+					livingBeings[i]->takeHP(player->getWeapon()->getDamage());
 					if (livingBeings[i]->getHP() <= 0)
 						livingBeings[i]->setDeadState(true);
 				}
@@ -200,8 +201,10 @@ void RPG::CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALL
 		}
 	}
 
-	if (playerAttackedSomething)
+	if (playerAttackedSomething) {
 		player->CanNotAttackNow();
+		player->getWeapon()->PlayAttackAnim();
+	}
 }
 
 void RPG::CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState) {
@@ -460,7 +463,7 @@ void RPG::UpdateAnimationsFrame(vector<Portal*> &portals) {
 			obj->UpdateAnimationFrame();
 }
 
-void RPG::UpdateCamera(vector<vector<int> > &worldMap) {
+void RPG::UpdateCamera(vector<vector<int> > &worldMap, vector<LivingBeing*> &livingBeings) {
 	CameraUpdate(worldMap, RPG::GetInstance()->cameraPosition, player->getX(), player->getY(), 32, 32);
 	al_identity_transform(RPG::GetInstance()->GetCamera());
 	al_translate_transform(RPG::GetInstance()->GetCamera(), -RPG::GetInstance()->cameraPosition[0], -RPG::GetInstance()->cameraPosition[1]);

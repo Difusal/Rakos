@@ -1,8 +1,10 @@
 #include "NPC.h"
+#include "RPG.h"
 
 NPC::NPC(string Name, double P1_X, double P1_Y, double P2_X, double P2_Y, const char* Bitmap) {
 	type = _NPC;
 	name = Name;
+	weapon = RPG::GetInstance()->GetWeapon(_None);
 
 	dead = false;
 	active = true;
@@ -31,6 +33,7 @@ NPC::NPC(string Name, double P1_X, double P1_Y, double P2_X, double P2_Y, const 
 NPC::NPC(string Name, double X, double Y, const char* Bitmap) {
 	type = _NPC;
 	name = Name;
+	weapon = RPG::GetInstance()->GetWeapon(_None);
 
 	dead = false;
 	active = false;

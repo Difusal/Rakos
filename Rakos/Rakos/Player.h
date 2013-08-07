@@ -1,7 +1,6 @@
 #pragma once
 
 #include "LivingBeing.h"
-#include "Weapon.h"
 #include "globalEnums.h"
 
 class Player: public LivingBeing {
@@ -30,7 +29,6 @@ public:
 	~Player(void);
 
 private:
-	Weapon *weapon;
 	int attackCooldown;
 	bool playerCanAttack;
 

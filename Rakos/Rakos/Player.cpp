@@ -4,6 +4,9 @@
 Player::Player(string Name, Weapon *weapon, double X, double Y) {
 	type = _Player;
 	name = Name;
+	// EDIT THIS
+	//weapon = RPG::GetInstance()->GetWeapon(_None);
+	weapon = RPG::GetInstance()->GetWeapon(_Knife);
 
 	dead = false;
 	active = false;

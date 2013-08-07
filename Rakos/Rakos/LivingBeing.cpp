@@ -55,8 +55,24 @@ void LivingBeing::UpdateAnimationFrame() {
 }
 
 void LivingBeing::Draw() {
-	// drawing bitmap
-	al_draw_bitmap_region(bitmap, bitmap_sourceX, bitmap_sourceY * al_get_bitmap_height(bitmap)/4.0, 32, 32, x, y, NULL);
+	switch (direction) {
+	case DOWN:
+	case RIGHT:
+		DrawBeing();
+		if (this->weapon->animationIsPlaying())
+			weapon->DrawAttackAnim();
+		else
+			weapon->Draw();
+		break;
+	case UP:
+	case LEFT:
+		if (this->weapon->animationIsPlaying())
+			weapon->DrawAttackAnim();
+		else
+			weapon->Draw();
+		DrawBeing();
+		break;
+	}
 
 	DrawName();
 	DrawLifeBar();
@@ -97,6 +113,10 @@ void LivingBeing::DrawLifeBar() {
 	al_draw_filled_rectangle(pos_x, pos_y, pos_x+hp_width, pos_y+bar_height, color);
 }
 
+void LivingBeing::DrawBeing() {
+	al_draw_bitmap_region(bitmap, bitmap_sourceX, bitmap_sourceY * al_get_bitmap_height(bitmap)/4.0, al_get_bitmap_width(bitmap)/4.0, al_get_bitmap_height(bitmap)/4.0, x, y, NULL);
+}
+
 
 void LivingBeing::Speak() {
 	speaking = true;
@@ -107,4 +127,8 @@ void LivingBeing::StopSpeaking() {
 	speaking = false;
 	if (!alwaysInactive)
 		active = true;
+}
+
+int LivingBeing::getCurrentFrame() {
+	return bitmap_sourceX / (al_get_bitmap_height(bitmap)/4.0);
 }

@@ -63,14 +63,15 @@ const float SlowCreaturesSpeed = 0.4;
 #define SideBarPath "res//images//side_bar.png"
 
 /* character sprites */
-#define playerPng "res//sprites//noob_yellow.png"
-#define explorer_greenPng "res//sprites//explorer_green.png"
-#define knight_whitePng "res//sprites//knight_white.png"
-#define sorcerer_bluePng "res//sprites//sorcerer_blue.png"
-#define warrior_yellowPng "res//sprites//warrior_yellow.png"
-#define rabbitPng "res//sprites//rabbit.png"
+#define playerPng "res//sprites//living beings//noob_yellow.png"
+#define explorer_greenPng "res//sprites//living beings//explorer_green.png"
+#define knight_whitePng "res//sprites//living beings//knight_white.png"
+#define sorcerer_bluePng "res//sprites//living beings//sorcerer_blue.png"
+#define warrior_yellowPng "res//sprites//living beings//warrior_yellow.png"
+#define rabbitPng "res//sprites//living beings//rabbit.png"
 
 /* sprites */
+#define SwordsPng "res//sprites//swords.png"
 #define PortalPng "res//sprites//portal.png"
 #define SwitchPng "res//sprites//switch.png"
 

@@ -2,6 +2,7 @@
 
 #include "stdIncludes.h"
 #include "globalEnums.h"
+#include "Weapon.h"
 
 class LivingBeing {
 public:
@@ -10,11 +11,13 @@ public:
 	void Draw();
 	void DrawName();
 	void DrawLifeBar();
+	void DrawBeing();
 
 	LivingBeingType getType() { return type; }
 	void setType(LivingBeingType Type) { type = Type; }
 	string getName() { return name; }
 	void setName(string Name) { name = Name; }
+	Weapon *getWeapon() { return weapon; }
 	
 	bool isDead() { return dead; }
 	void setDeadState(bool Dead) { dead = Dead; }
@@ -35,7 +38,7 @@ public:
 	void setX(double X) { x = X; }
 	double getY() { return y; }
 	void setY(double Y) { y = Y; }
-	int getDir() { return direction; }
+	Direction getDir() { return direction; }
 	void setDir(Direction Direction) { direction = Direction; }
 	double getMoveSpeed() { return moveSpeed; }
 	void setMoveSpeed(double newSpeed) { moveSpeed = newSpeed; }
@@ -56,9 +59,12 @@ public:
 	int rightBorderX() { return x + width() - xCollisionCorrection; }
 	int bottomBorderY() { return y + height() - yCollisionCorrection; }
 
+	int getCurrentFrame();
+
 private:
 	LivingBeingType type;
 	string name;
+	Weapon *weapon;
 
 	bool dead;
 	bool active;
@@ -75,11 +81,12 @@ private:
 	double x, y;
 	Direction direction;
 	double moveSpeed;
-	
+
 	ALLEGRO_BITMAP *bitmap;
 	int bitmap_sourceX, bitmap_sourceY;
 
 	friend class Player;
 	friend class NPC;
 	friend class Rabbit;
+	friend class Weapon;
 };

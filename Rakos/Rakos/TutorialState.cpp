@@ -148,11 +148,17 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 				for (unsigned int j = i+1; j < livingBeings.size(); j++)
 						RPG::GetInstance()->UpdateLivingBeingsCollisions(livingBeings[i], livingBeings[j]);
 
-			RPG::GetInstance()->UpdateCamera(worldMap);
+			RPG::GetInstance()->UpdateCamera(worldMap, livingBeings);
 		}
 
 		RPG::GetInstance()->UpdateAnimationsFrame(livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(portals);
+		// possible refactoring here?
+		for (LivingBeing *being : livingBeings)
+			being->getWeapon()->UpdatePosition(being->getDir(), being->getCurrentFrame(), being->getX(), being->getY());
+		if (ev->timer.source == RPG::GetInstance()->GetTimer(_MouseAnimTimer))
+			for (unsigned int i = 0; i < livingBeings.size(); i++)
+				livingBeings[i]->getWeapon()->UpdateAttackAnimation();
 
 		// sorting vector in the correct drawing order
 		sort(livingBeings.begin(), livingBeings.end(), [](LivingBeing *a, LivingBeing *b) { return a->getY() < b->getY(); });
