@@ -28,6 +28,7 @@ public:
 	Weapon *GetWeapon(WeaponType Weapon);
 
 	void CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
+	void CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
 	void RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings);
 
 	bool livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles);

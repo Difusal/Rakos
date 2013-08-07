@@ -175,6 +175,35 @@ Weapon * RPG::GetWeapon(WeaponType Weapon) {
 }
 
 
+void RPG::CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState) {
+	bool playerAttackedSomething = false;
+
+	for (unsigned int i = 0; i < livingBeings.size(); i++) {
+		// skip if scanning something player can not attack
+		if (livingBeings[i]->getType() != _Creature)
+			continue;
+
+		if (al_key_down(&keyState, ALLEGRO_KEY_K) && player->CanAttack()) {
+			playerAttackedSomething = true;
+
+			if (calculateDistance(player->getX(), player->getY(), livingBeings[i]->getX(), livingBeings[i]->getY()) < 40) {
+				if (!(livingBeings[i]->getY() > player->getY() && player->getDir() == UP) &&
+					!(livingBeings[i]->getY() < player->getY() && player->getDir() == DOWN) &&
+					!(livingBeings[i]->getX() > player->getX() && player->getDir() == LEFT) &&
+					!(livingBeings[i]->getX() < player->getX() && player->getDir() == RIGHT))
+				{
+					livingBeings[i]->takeHP(player->getWeapon()->Damage());
+					if (livingBeings[i]->getHP() <= 0)
+						livingBeings[i]->setDeadState(true);
+				}
+			}
+		}
+	}
+
+	if (playerAttackedSomething)
+		player->CanNotAttackNow();
+}
+
 void RPG::CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState) {
 	int idOfClosestNPCAbleToTalk = -1;
 	int minimumDistance;

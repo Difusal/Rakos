@@ -130,17 +130,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 	if (ev->type == ALLEGRO_EVENT_TIMER) {
 		if (ev->timer.source == RPG::GetInstance()->GetTimer(_RegularTimer)) {
 			player->ControlAttackRate();
-
-			// player attacks
-			if (al_key_down(&keyState, ALLEGRO_KEY_K) && player->CanAttack() &&
-				calculateDistance(player->getX(), player->getY(), rabbit->getX(), rabbit->getY()) < 40 &&
-				((player->getDir() != UP && rabbit->getDir() != DOWN) || (player->getDir() != LEFT && rabbit->getDir() != RIGHT) ||
-				(player->getDir() != RIGHT && rabbit->getDir() != LEFT) || (player->getDir() != DOWN && rabbit->getDir() != UP))) {
-				player->CanNotAttackNow();
-				rabbit->takeHP(player->getWeapon()->Damage());
-				if (rabbit->getHP() <= 0)
-					rabbit->setDeadState(true);
-			}
+			RPG::GetInstance()->CheckIfPlayerAttackedSomething(livingBeings, keyState);
 
 			UpdateSwitches();
 			tutorialPortal->CheckIfPlayerPassedThrough(player);
@@ -154,9 +144,9 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 
 			// checking if something collided
 			player->CorrectPositionIfCollidingWithMapLimits(worldMap, unaccessibleTiles);
-			for (unsigned int i = 0; i < livingBeings.size(); i++)
-				if (livingBeings[i]->getType() != _Player)
-					RPG::GetInstance()->UpdateLivingBeingsCollisions(player, livingBeings[i]);
+			for (unsigned int i = 0; i < livingBeings.size()-1; i++)
+				for (unsigned int j = i+1; j < livingBeings.size(); j++)
+						RPG::GetInstance()->UpdateLivingBeingsCollisions(livingBeings[i], livingBeings[j]);
 
 			RPG::GetInstance()->UpdateCamera(worldMap);
 		}
@@ -176,12 +166,12 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 void TutorialState::Draw() {
 	DrawMap(worldMap);
 
-	// drawing portals
-	for (Portal *obj : portals)
-		obj->Draw();
-
 	// drawing switches
 	for (Switch *obj : switches)
+		obj->Draw();
+
+	// drawing portals
+	for (Portal *obj : portals)
 		obj->Draw();
 
 	// drawing living beings
