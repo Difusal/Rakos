@@ -17,10 +17,10 @@ void TutorialState::InitializeLivingBeings() {
 	WhiteKnight = new NPC("White Knight", 670, 180, 740, 240, knight_whitePng);
 	livingBeings.push_back(WhiteKnight);
 
-	Sorcerer = new NPC("Sorcerer", 985, 90, sorcerer_bluePng);
+	Sorcerer = new NPC("Sorcerer", 984, 90, sorcerer_bluePng);
 	livingBeings.push_back(Sorcerer);
 
-	Warrior = new NPC("Warrior", 985, 250, warrior_yellowPng);
+	Warrior = new NPC("Warrior", 984, 250, warrior_yellowPng);
 	livingBeings.push_back(Warrior);
 	
 
@@ -123,9 +123,10 @@ void TutorialState::Initialize() {
 }
 
 bool TutorialState::Update(ALLEGRO_EVENT *ev) {
+	bool draw = false;
 	al_get_keyboard_state(&keyState);
 
-	RPG::GetInstance()->RemoveDeadLivingBeingsFromVector(livingBeings);
+	draw = RPG::GetInstance()->RemoveDeadLivingBeingsFromVector(livingBeings);
 
 	if (ev->type == ALLEGRO_EVENT_TIMER) {
 		if (ev->timer.source == RPG::GetInstance()->GetTimer(_RegularTimer)) {
@@ -153,20 +154,16 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 
 		RPG::GetInstance()->UpdateAnimationsFrame(livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(portals);
-		// possible refactoring here?
-		for (LivingBeing *being : livingBeings)
-			being->getWeapon()->UpdatePosition(being->getDir(), being->getCurrentFrame(), being->getX(), being->getY());
-		if (ev->timer.source == RPG::GetInstance()->GetTimer(_WeaponAnimTimer))
-			for (unsigned int i = 0; i < livingBeings.size(); i++)
-				livingBeings[i]->getWeapon()->UpdateAttackAnimation();
+		RPG::GetInstance()->UpdateWeaponPositions(livingBeings);
+		RPG::GetInstance()->UpdateWeaponAttackAnimations(livingBeings);
 
 		// sorting vector in the correct drawing order
 		sort(livingBeings.begin(), livingBeings.end(), [](LivingBeing *a, LivingBeing *b) { return a->getY() < b->getY(); });
 
-		return true;
+		draw = true;
 	}
 
-	return false;
+	return draw;
 }
 
 void TutorialState::Draw() {
@@ -201,5 +198,17 @@ void TutorialState::Draw() {
 }
 
 void TutorialState::Terminate() {
+	for (LivingBeing *being : livingBeings)
+		delete being;
+	livingBeings.clear();
 
+	for (Switch *obj : switches)
+		delete obj;
+	switches.clear();
+
+	for (Portal *obj : portals)
+		delete obj;
+	portals.clear();
+
+	al_destroy_bitmap(sideBar);
 }

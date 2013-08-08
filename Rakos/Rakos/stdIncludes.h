@@ -31,7 +31,6 @@ using namespace std;
 #define xCollisionCorrection 15
 #define yCollisionCorrection 25
 const float FPS = 60.0;
-const float mouseAnimFPS = 18.0;
 const float drawFPS = 8.0;
 const float AttackRate = FPS*0.8;
 const float HumansWalkingSpeed = 1.0;

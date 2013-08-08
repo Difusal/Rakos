@@ -318,6 +318,6 @@ Weapon::~Weapon(void) {
 	if (bitmap)
 		al_destroy_bitmap(bitmap);
 
-	if (sprite)
+	if (type != _None)
 		al_destroy_bitmap(sprite);
 }

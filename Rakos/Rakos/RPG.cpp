@@ -98,7 +98,7 @@ void RPG::CreateTimers() {
 	timer = al_create_timer(1.0 / FPS);
 	timers.push_back(timer);
 
-	mouseAnimTimer = al_create_timer(1.0 / mouseAnimFPS);
+	mouseAnimTimer = al_create_timer(1.0 / 18);
 	timers.push_back(mouseAnimTimer);
 
 	drawTimer = al_create_timer(1.0 / drawFPS);
@@ -163,19 +163,14 @@ void RPG::StartTimers() {
 void RPG::LoadWeapons() {
 	cout << "Loading weapons..." << endl;
 	no_weapon = new Weapon(_None, 0, 0);
+	weapons.push_back(no_weapon);
+
 	knife = new Weapon(_Knife, 1, 2);
+	weapons.push_back(knife);
 }
 
 Weapon * RPG::GetWeapon(WeaponType Weapon) {
-	switch (Weapon) {
-	default:
-	case _None:
-		return no_weapon;
-		break;
-	case _Knife:
-		return knife;
-		break;
-	}
+	return weapons[Weapon];
 }
 
 
@@ -242,10 +237,16 @@ void RPG::CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_K
 			previousNPCWhoTalkedToPlayer->StopSpeaking();
 }
 
-void RPG::RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings) {
+bool RPG::RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings) {
+	bool changedSomething = false;
+
 	for (unsigned int i = 1; i < livingBeings.size(); i++)
-		if (livingBeings[i]->isDead())
+		if (livingBeings[i]->isDead()) {
 			livingBeings.erase(livingBeings.begin() + i);
+			changedSomething = true;
+		}
+
+	return changedSomething;
 }
 
 
@@ -466,6 +467,17 @@ void RPG::UpdateAnimationsFrame(vector<Portal*> &portals) {
 			obj->UpdateAnimationFrame();
 }
 
+void RPG::UpdateWeaponPositions(vector<LivingBeing*> &livingBeings) {
+	for (LivingBeing *being : livingBeings)
+		being->getWeapon()->UpdatePosition(being->getDir(), being->getCurrentFrame(), being->getX(), being->getY());
+}
+
+void RPG::UpdateWeaponAttackAnimations(vector<LivingBeing*> &livingBeings) {
+	if (ev.timer.source == RPG::GetInstance()->GetTimer(_WeaponAnimTimer))
+		for (unsigned int i = 0; i < livingBeings.size(); i++)
+			livingBeings[i]->getWeapon()->UpdateAttackAnimation();
+}
+
 void RPG::UpdateCamera(vector<vector<int> > &worldMap, vector<LivingBeing*> &livingBeings) {
 	CameraUpdate(worldMap, RPG::GetInstance()->cameraPosition, player->getX(), player->getY(), 32, 32);
 	al_identity_transform(RPG::GetInstance()->GetCamera());
@@ -567,18 +579,8 @@ void RPG::StartGameControlCycle() {
 void RPG::Terminate() {
 	cout << "Deallocating memory and quitting..." << endl;
 
-	// destroying fonts
-	for (unsigned int i = 0; i < fonts.size(); i++)
-		al_destroy_font(fonts[i]);
-
 	// audio samples
 
-
-	// destroying event queue and timers
-	al_destroy_event_queue(event_queue);
-	for (unsigned int i = 0; i < timers.size(); i++)
-		al_destroy_timer(timers[i]);
-	timers.clear();
 
 	// deleting mouse cursor
 	delete Mouse;
@@ -586,8 +588,29 @@ void RPG::Terminate() {
 	// destroying display
 	al_destroy_display(display);
 
+	// weapons
+	for (Weapon *obj : weapons)
+		delete obj;
+	weapons.clear();
+
+	// living beings
+	delete player;
+	delete previousNPCWhoTalkedToPlayer;
+
 	// bitmaps
 	al_destroy_bitmap(loading_background);
+	al_destroy_bitmap(tileSet);
+
+	// destroying fonts
+	for (unsigned int i = 0; i < fonts.size(); i++)
+		al_destroy_font(fonts[i]);
+	fonts.clear();
+
+	// destroying event queue and timers
+	al_destroy_event_queue(event_queue);
+	for (unsigned int i = 0; i < timers.size(); i++)
+		al_destroy_timer(timers[i]);
+	timers.clear();
 
 	delete instance;
 }

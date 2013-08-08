@@ -28,13 +28,15 @@ public:
 
 	void CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
 	void CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
-	void RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings);
+	bool RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings);
 
 	bool livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles);
 	void UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b);
 
 	void UpdateAnimationsFrame(vector<LivingBeing*> &livingBeings);
 	void UpdateAnimationsFrame(vector<Portal*> &portals);
+	void UpdateWeaponPositions(vector<LivingBeing*> &livingBeings);
+	void UpdateWeaponAttackAnimations(vector<LivingBeing*> &livingBeings);
 	void UpdateCamera(vector<vector<int> > &worldMap, vector<LivingBeing*> &livingBeings);
 
 	void Initialize();
@@ -70,20 +72,6 @@ private:
 	int state;
 
 	vector<ALLEGRO_TIMER*> timers;
-	vector<ALLEGRO_FONT*> fonts;
-
-	ALLEGRO_BITMAP *loading_background;
-
-	Player *player;
-	LivingBeing *previousNPCWhoTalkedToPlayer;
-
-	Weapon *no_weapon;
-	Weapon *knife;
-
-	bool done, draw;
-
-	ALLEGRO_DISPLAY *display;
-
 	ALLEGRO_TIMER *timer;
 	ALLEGRO_TIMER *mouseAnimTimer;
 	ALLEGRO_TIMER *drawTimer;
@@ -91,8 +79,23 @@ private:
 	ALLEGRO_TIMER *weaponAnimTimer;
 	ALLEGRO_TIMER *portalAnimTimer;
 
+	vector<ALLEGRO_FONT*> fonts;
+
+	ALLEGRO_BITMAP *loading_background;
+	ALLEGRO_BITMAP *tileSet;
+
+	Player *player;
+	LivingBeing *previousNPCWhoTalkedToPlayer;
+
+	vector<Weapon*> weapons;
+	Weapon *no_weapon;
+	Weapon *knife;
+
+	bool done, draw;
+
+	ALLEGRO_DISPLAY *display;
+	
 	ALLEGRO_EVENT_QUEUE *event_queue;
 	ALLEGRO_EVENT ev;
-	ALLEGRO_BITMAP *tileSet;
 	ALLEGRO_TRANSFORM camera;
 };
