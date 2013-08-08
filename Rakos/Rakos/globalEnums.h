@@ -27,6 +27,7 @@ enum TimerType {
 	_MouseAnimTimer,
 	_DrawTimer,
 	_PlayerAnimTimer,
+	_WeaponAnimTimer,
 	_PortalAnimTimer
 };
 

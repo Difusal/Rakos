@@ -16,6 +16,9 @@ Weapon::Weapon(WeaponType Type, int minAttack, int maxAttack) {
 	min_attack = minAttack;
 	max_attack = maxAttack;
 
+	xCorrection = 0;
+	yCorrection = 0;
+
 	bitmap = al_load_bitmap(SwordsPng);
 	if (!bitmap) {
 		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load weapon bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
@@ -31,6 +34,7 @@ Weapon::Weapon(WeaponType Type, int minAttack, int maxAttack) {
 			exit(-1);
 		}
 	}
+	startPlayingAnimation = false;
 	playingAnimation = false;
 	frame = 0;
 }
@@ -112,39 +116,169 @@ void Weapon::UpdatePosition(Direction direction, int frame, double x, double y) 
 }
 
 void Weapon::PlayAttackAnim() {
-	playingAnimation = true;
-	frame = 0;
+	startPlayingAnimation = true;
+	frame = -1;
 }
 
 void Weapon::UpdateAttackAnimation() {
+	if (startPlayingAnimation) {
+		startPlayingAnimation = false;
+		playingAnimation = true;
+	}
+
 	// skipping if not supposed to play animation
 	if (!playingAnimation)
 		return;
+	
+	frame++;
+	if (frame > 3)
+		playingAnimation = false;
 
 	switch (type) {
 	case _None:
 		break;
 	case _Knife:
 		switch (direction) {
+		case DOWN:
+			switch (frame) {
+			case 0:
+				spriteX1 = 4;
+				spriteY1 = 24;
+				width = height = 11;
+				xCorrection = -11;
+				yCorrection = 0;
+				break;
+			case 1:
+				spriteX1 = 16;
+				spriteY1 = 25;
+				width = 7;
+				height = 14;
+				xCorrection = -4;
+				yCorrection = 0;
+				break;
+			case 2:
+				spriteX1 = 24;
+				spriteY1 = 24;
+				width = height = 11;
+				xCorrection = 0;
+				yCorrection = 0;
+				break;
+			case 3:
+				spriteX1 = 25;
+				spriteY1 = 16;
+				width = 14;
+				height = 7;
+				xCorrection = 0;
+				yCorrection = -4;
+				break;
+			}
+			break;
+		case LEFT:
+			switch (frame) {
+			case 0:
+				spriteX1 = 16;
+				spriteY1 = 0;
+				width = 7;
+				height = 14;
+				xCorrection = -4;
+				yCorrection = -14;
+				break;
+			case 1:
+				spriteX1 = 4;
+				spriteY1 = 4;
+				width = height = 11;
+				xCorrection = -11;
+				yCorrection = -11;
+				break;
+			case 2:
+				spriteX1 = 0;
+				spriteY1 = 16;
+				width = 14;
+				height = 7;
+				xCorrection = -14;
+				yCorrection = -4;
+				break;
+			case 3:
+				spriteX1 = 4;
+				spriteY1 = 24;
+				width = 11;
+				height = 11;
+				xCorrection = -11;
+				yCorrection = 0;
+				break;
+			}
+			break;
+		case RIGHT:
+			switch (frame) {
+			case 0:
+				spriteX1 = 16;
+				spriteY1 = 0;
+				width = 7;
+				height = 14;
+				xCorrection = -4;
+				yCorrection = -14;
+				break;
+			case 1:
+				spriteX1 = 24;
+				spriteY1 = 4;
+				width = height = 11;
+				xCorrection = 0;
+				yCorrection = -11;
+				break;
+			case 2:
+				spriteX1 = 25;
+				spriteY1 = 16;
+				width = 14;
+				height = 7;
+				xCorrection = 0;
+				yCorrection = -4;
+				break;
+			case 3:
+				spriteX1 = 24;
+				spriteY1 = 24;
+				width = height = 11;
+				xCorrection = 0;
+				yCorrection = 0;
+				break;
+			}
+			break;
 		case UP:
 			switch (frame) {
 			case 0:
+				spriteX1 = 24;
+				spriteY1 = 4;
+				width = height = 11;
+				xCorrection = 0;
+				yCorrection = -11;
 				break;
 			case 1:
+				spriteX1 = 16;
+				spriteY1 = 0;
+				width = 7;
+				height = 14;
+				xCorrection = -4;
+				yCorrection = -14;
 				break;
 			case 2:
+				spriteX1 = 4;
+				spriteY1 = 4;
+				width = height = 11;
+				xCorrection = -11;
+				yCorrection = -11;
 				break;
 			case 3:
+				spriteX1 = 0;
+				spriteY1 = 16;
+				width = 14;
+				height = 7;
+				xCorrection = -14;
+				yCorrection = -4;
 				break;
 			}
 			break;
 		}
 		break;
 	}
-
-	frame++;
-	if (frame > 3)
-		playingAnimation = false;
 }
 
 void Weapon::Draw() {
@@ -171,7 +305,7 @@ void Weapon::Draw() {
 }
 
 void Weapon::DrawAttackAnim() {
-
+	al_draw_bitmap_region(sprite, spriteX1, spriteY1, width, height, x + xCorrection, y + yCorrection, NULL);
 }
 
 

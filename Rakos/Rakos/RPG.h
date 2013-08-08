@@ -88,6 +88,7 @@ private:
 	ALLEGRO_TIMER *mouseAnimTimer;
 	ALLEGRO_TIMER *drawTimer;
 	ALLEGRO_TIMER *playerAnimTimer;
+	ALLEGRO_TIMER *weaponAnimTimer;
 	ALLEGRO_TIMER *portalAnimTimer;
 
 	ALLEGRO_EVENT_QUEUE *event_queue;

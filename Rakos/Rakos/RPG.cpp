@@ -107,6 +107,9 @@ void RPG::CreateTimers() {
 	playerAnimTimer = al_create_timer(1.0 / drawFPS);
 	timers.push_back(playerAnimTimer);
 
+	weaponAnimTimer = al_create_timer(1.0 / 20);
+	timers.push_back(weaponAnimTimer);
+
 	portalAnimTimer = al_create_timer(1.0 / 2);
 	timers.push_back(portalAnimTimer);
 }
@@ -179,13 +182,13 @@ Weapon * RPG::GetWeapon(WeaponType Weapon) {
 void RPG::CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState) {
 	bool playerAttackedSomething = false;
 
-	for (unsigned int i = 0; i < livingBeings.size(); i++) {
-		// skip if scanning something player can not attack
-		if (livingBeings[i]->getType() != _Creature)
-			continue;
+	if (al_key_down(&keyState, ALLEGRO_KEY_K) && player->CanAttack()) {
+		playerAttackedSomething = true;
 
-		if (al_key_down(&keyState, ALLEGRO_KEY_K) && player->CanAttack()) {
-			playerAttackedSomething = true;
+		for (unsigned int i = 0; i < livingBeings.size(); i++) {
+			// skip if scanning something player can not attack
+			if (livingBeings[i]->getType() != _Creature)
+				continue;
 
 			if (calculateDistance(player->getX(), player->getY(), livingBeings[i]->getX(), livingBeings[i]->getY()) < 40) {
 				if (!(livingBeings[i]->getY() > player->getY() && player->getDir() == UP) &&
@@ -590,23 +593,6 @@ void RPG::Terminate() {
 }
 
 
-ALLEGRO_TIMER * RPG::GetTimer( TimerType Timer ) {
-	switch (Timer) {
-	default:
-	case _RegularTimer:
-		return timer;
-		break;
-	case _MouseAnimTimer:
-		return mouseAnimTimer;
-		break;
-	case _DrawTimer:
-		return drawTimer;
-		break;
-	case _PlayerAnimTimer:
-		return playerAnimTimer;
-		break;
-	case _PortalAnimTimer:
-		return portalAnimTimer;
-		break;
-	}
+ALLEGRO_TIMER * RPG::GetTimer(TimerType Timer) {
+	return timers[Timer];
 }

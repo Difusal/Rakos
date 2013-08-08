@@ -27,11 +27,13 @@ private:
 	int max_attack;
 
 	int x, y;
+	int xCorrection, yCorrection;
 	Direction direction;
 
 	ALLEGRO_BITMAP *bitmap;
 	ALLEGRO_BITMAP *sprite;
-	int spriteX1, spriteY1, spriteX2, spriteY2;
+	int spriteX1, spriteY1, width, height;
+	bool startPlayingAnimation;
 	bool playingAnimation;
 	int frame;
 };

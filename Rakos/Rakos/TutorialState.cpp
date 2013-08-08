@@ -156,7 +156,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 		// possible refactoring here?
 		for (LivingBeing *being : livingBeings)
 			being->getWeapon()->UpdatePosition(being->getDir(), being->getCurrentFrame(), being->getX(), being->getY());
-		if (ev->timer.source == RPG::GetInstance()->GetTimer(_MouseAnimTimer))
+		if (ev->timer.source == RPG::GetInstance()->GetTimer(_WeaponAnimTimer))
 			for (unsigned int i = 0; i < livingBeings.size(); i++)
 				livingBeings[i]->getWeapon()->UpdateAttackAnimation();
 
