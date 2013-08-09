@@ -15,6 +15,7 @@ public:
 
 	LivingBeingType getType() { return type; }
 	void setType(LivingBeingType Type) { type = Type; }
+	TimerType getTimerType() { return timer; }
 	string getName() { return name; }
 	void setName(string Name) { name = Name; }
 	Weapon *getWeapon() { return weapon; }
@@ -34,14 +35,17 @@ public:
 	int getMaxHP() { return maxHp; }
 	void setMaxHP(int MaxHP) { maxHp = MaxHP; }
 
+	void incX() { x++; }
+	void incY() { y++; }
+	void decX() { x--; }
+	void decY() { y--; }
+
 	double getX() { return x; }
-	void setX(double X) { x = X; }
 	double getY() { return y; }
+	void setX(double X) { x = X; }
 	void setY(double Y) { y = Y; }
 	Direction getDir() { return direction; }
 	void setDir(Direction Direction) { direction = Direction; }
-	double getMoveSpeed() { return moveSpeed; }
-	void setMoveSpeed(double newSpeed) { moveSpeed = newSpeed; }
 
 	double getWanderRadius() { return wanderRadius; }
 	void setWanderRadius(double Radius) { wanderRadius = Radius; }
@@ -63,6 +67,7 @@ public:
 
 private:
 	LivingBeingType type;
+	TimerType timer;
 	string name;
 	Weapon *weapon;
 

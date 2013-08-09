@@ -29,18 +29,52 @@ void TutorialState::InitializeLivingBeings() {
 	livingBeings.push_back(rabbit);
 }
 
+void TutorialState::InitializeDialogs() {
+	// temporary vector to initialize text boxes content
+	vector<string> tempVec;
+
+	tempVec.clear();
+	tempVec.push_back("Welcome to Rakos!");
+	tempVec.push_back("Move yourself using WASD keys.");
+	tempVec.push_back("Try it now.");
+	tutorialDialog1 = new TextBox(_Center, tempVec);
+	dialogs.push_back(tutorialDialog1);
+
+	tempVec.clear();
+	tempVec.push_back("Congratulations!");
+	tempVec.push_back("You should go talk to Steve now.");
+	tempVec.push_back("He is a bit to the north. To chat, get close to him and press \"C\".");
+	tutorialDialog2 = new TextBox(_Bottom, tempVec);
+	dialogs.push_back(tutorialDialog2);
+}
+
+void TutorialState::MoveLivingBeings(ALLEGRO_EVENT *ev) {
+	// moving player, npcs and creatures
+	if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerMoveTimer))
+		player->Move(keyState, worldMap, unaccessibleTiles);
+	for (unsigned int i = 1; i < livingBeings.size(); i++)
+		if (!livingBeings[i]->isDead())
+			if (ev->timer.source == RPG::GetInstance()->GetTimer(livingBeings[i]->getTimerType()))
+				livingBeings[i]->Move();
+
+	// checking if something collided with something
+	for (unsigned int i = 0; i < livingBeings.size()-1; i++)
+		for (unsigned int j = i+1; j < livingBeings.size(); j++)
+			RPG::GetInstance()->UpdateLivingBeingsCollisions(livingBeings[i], livingBeings[j]);
+}
+
 void TutorialState::UpdateDialogs() {
 	RPG::GetInstance()->CheckIfPlayerWantsToChat(livingBeings, keyState);
 
 	if (player->isActive() && !playerHasTalkedToSteve) {
-		showTutorialDialog1 = false;
-		showTutorialDialog2 = true;
+		tutorialDialog1->Hide();
+		tutorialDialog2->Show();
 	}
 
 	if (Steve->isSpeaking()) {
 		if (!playerHasTalkedToSteve) {
 			playerHasTalkedToSteve = true;
-			showTutorialDialog2 = false;
+			tutorialDialog2->Hide();
 			player->setWeapon(RPG::GetInstance()->GetWeapon(_Knife));
 		}
 
@@ -74,16 +108,13 @@ void TutorialState::UpdateSwitches() {
 }
 
 void TutorialState::DrawDialogs() {
-	if (showTutorialDialog1)
-		al_draw_bitmap(tutorialDialog1, 300 + RPG::GetInstance()->cameraPosition[0] - al_get_bitmap_width(tutorialDialog1)/2, RPG::GetInstance()->cameraPosition[1] + ScreenHeight/4, NULL);
-	else if (showTutorialDialog2)
-		al_draw_bitmap(tutorialDialog2, 300 + RPG::GetInstance()->cameraPosition[0] - al_get_bitmap_width(tutorialDialog2)/2, RPG::GetInstance()->cameraPosition[1] + ScreenHeight - al_get_bitmap_height(tutorialDialog2), NULL);
-	else if (showSteveDialog1)
+	if (showSteveDialog1)
 		al_draw_bitmap(steveDialog1, Steve->getX()-85, Steve->getY()-al_get_bitmap_height(steveDialog1), NULL);
 	else if (showSteveDialog2)
 		al_draw_bitmap(steveDialog2, Steve->getX()-85, Steve->getY()-al_get_bitmap_height(steveDialog2), NULL);
 	
-	tutorialDialogBox1->Draw();
+	for (TextBox *obj: dialogs)
+		obj->Draw();
 }
 
 
@@ -100,8 +131,6 @@ void TutorialState::Initialize() {
 	}
 
 	InitializeLivingBeings();
-	// EDIT THIS
-	player->Move(keyState, worldMap);
 
 	tutorialSwitch = new Switch(3, 3, FPS*4.6);
 	switches.push_back(tutorialSwitch);
@@ -109,25 +138,17 @@ void TutorialState::Initialize() {
 	tutorialPortal = new Portal(false, 12, 3, 17, 3);
 	portals.push_back(tutorialPortal);
 
-	vector<string> tempVec;
-	tempVec.push_back("Welcome to Rakos!");
-	tempVec.push_back("Move yourself using WASD keys.");
-	tempVec.push_back("Try it now.");
-	tutorialDialogBox1 = new TextBox(Bottom, tempVec);
-	tempVec.clear();
+	InitializeDialogs();
 
 	// loading dialogs
-	tutorialDialog1 = al_load_bitmap(TutorialDialog1);
-	tutorialDialog2 = al_load_bitmap(TutorialDialog2);
 	steveDialog1 = al_load_bitmap(SteveDialog1);
 	steveDialog2 = al_load_bitmap(SteveDialog2);
-	if (!tutorialDialog1 || !tutorialDialog2 || !steveDialog1 || !steveDialog2) {
+	if (!steveDialog1 || !steveDialog2) {
 		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load one or more dialogs.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
 	}
 
-	showTutorialDialog1 = true;
-	showTutorialDialog2 = false;
+	tutorialDialog1->Show();
 	showSteveDialog1 = false;
 	showSteveDialog2 = false;
 	playerHasTalkedToSteve = false;
@@ -137,36 +158,13 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 	bool draw = false;
 	al_get_keyboard_state(&keyState);
 
-	draw = RPG::GetInstance()->RemoveDeadLivingBeingsFromVector(livingBeings);
-
 	if (ev->type == ALLEGRO_EVENT_TIMER) {
-		// moving player, npcs and creatures
-		if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerMoveTimer))
-			player->Move(keyState, worldMap);
-		for (unsigned int i = 1; i < livingBeings.size(); i++)
-			if (!livingBeings[i]->isDead()) {
-				switch (livingBeings[i]->getType()) {
-				case _NPC:
-					if (ev->timer.source == RPG::GetInstance()->GetTimer(_NPCMoveTimer))
-						livingBeings[i]->Move();
-					break;
-				case _Creature:
-					if (ev->timer.source == RPG::GetInstance()->GetTimer(_SlowCreatureMoveTimer))
-						livingBeings[i]->Move();
-					break;
-				}
-			}
+		MoveLivingBeings(ev);
 
-		// checking if something collided
-		player->CorrectPositionIfCollidingWithMapLimits(worldMap, unaccessibleTiles);
-		for (unsigned int i = 0; i < livingBeings.size()-1; i++)
-			for (unsigned int j = i+1; j < livingBeings.size(); j++)
-				RPG::GetInstance()->UpdateLivingBeingsCollisions(livingBeings[i], livingBeings[j]);
-
-		// REGULAR TIMER
 		if (ev->timer.source == RPG::GetInstance()->GetTimer(_RegularTimer)) {
 			player->ControlAttackRate();
 			RPG::GetInstance()->CheckIfPlayerAttackedSomething(livingBeings, keyState);
+			RPG::GetInstance()->RemoveDeadLivingBeingsFromVector(livingBeings);
 
 			UpdateSwitches();
 			tutorialPortal->CheckIfPlayerPassedThrough(player);
@@ -208,6 +206,7 @@ void TutorialState::Draw() {
 	al_draw_bitmap(sideBar, 600 + RPG::GetInstance()->cameraPosition[0], RPG::GetInstance()->cameraPosition[1], NULL);
 	
 	DrawDialogs();
+
 	/*
 	// ---------------
 	// Debugging code:
@@ -224,13 +223,18 @@ void TutorialState::Terminate() {
 		delete being;
 	livingBeings.clear();
 
-	for (Switch *obj : switches)
+	for (Switch *obj: switches)
 		delete obj;
 	switches.clear();
 
-	for (Portal *obj : portals)
+	for (Portal *obj: portals)
 		delete obj;
 	portals.clear();
 
+	for (TextBox *obj: dialogs)
+		delete obj;
+	dialogs.clear();
+
 	al_destroy_bitmap(sideBar);
 }
+

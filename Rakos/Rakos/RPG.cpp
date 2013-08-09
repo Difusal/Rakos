@@ -76,7 +76,7 @@ void RPG::LoadFonts() {
 	big_font = al_load_font(ConsolaTTF, 36, ALLEGRO_ALIGN_CENTER);
 	fonts.push_back(big_font);
 
-	medium_font = al_load_font(ConsolaTTF, 20, ALLEGRO_ALIGN_CENTER);
+	medium_font = al_load_font(CalibriTTF, 20, ALLEGRO_ALIGN_CENTER);
 	fonts.push_back(medium_font);
 
 	small_font = al_load_font(ConsolaTTF, 12, ALLEGRO_ALIGN_CENTER);
@@ -308,7 +308,8 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 					else
 						objBeingCorrected = b;
 
-					objBeingCorrected->setX(objBeingCorrected->getX() - objBeingCorrected->getMoveSpeed());
+					if (ev.timer.source == GetTimer(objBeingCorrected->getTimerType()))
+						objBeingCorrected->decX();
 					break;
 				}
 			case LEFT:
@@ -318,7 +319,8 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 					else
 						objBeingCorrected = b;
 
-					objBeingCorrected->setX(objBeingCorrected->getX() + objBeingCorrected->getMoveSpeed());
+					if (ev.timer.source == GetTimer(objBeingCorrected->getTimerType()))
+						objBeingCorrected->incX();
 					break;
 				}
 			case UP:
@@ -328,7 +330,8 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 					else
 						objBeingCorrected = b;
 
-					objBeingCorrected->setY(objBeingCorrected->getY() + objBeingCorrected->getMoveSpeed());
+					if (ev.timer.source == GetTimer(objBeingCorrected->getTimerType()))
+						objBeingCorrected->incY();
 					break;
 				}
 			case DOWN:
@@ -338,7 +341,8 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 					else
 						objBeingCorrected = b;
 
-					objBeingCorrected->setY(objBeingCorrected->getY() - objBeingCorrected->getMoveSpeed());
+					if (ev.timer.source == GetTimer(objBeingCorrected->getTimerType()))
+						objBeingCorrected->decY();
 					break;
 				}
 			}
@@ -350,34 +354,34 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 			switch (a->getDir()) {
 			case RIGHT:
 				// correct X coords
-				if (a->isActive())
-					a->setX(a->getX() - a->getMoveSpeed());
-				if (b->isActive())
-					b->setX(b->getX() + b->getMoveSpeed());
+				if (a->isActive() && ev.timer.source == GetTimer(a->getTimerType()))
+					a->decX();
+				if (b->isActive() && ev.timer.source == GetTimer(b->getTimerType()))
+					b->incX();
 
 				break;
 			case LEFT:
 				// correct X coords
-				if (a->isActive())
-					a->setX(a->getX() + a->getMoveSpeed());
-				if (b->isActive())
-					b->setX(b->getX() - b->getMoveSpeed());
+				if (a->isActive() && ev.timer.source == GetTimer(a->getTimerType()))
+					a->incX();
+				if (b->isActive() && ev.timer.source == GetTimer(b->getTimerType()))
+					b->decX();
 
 				break;
 			case DOWN:
 				// correct Y coords
-				if (a->isActive())
-					a->setY(a->getY() - a->getMoveSpeed());
-				if (b->isActive())
-					b->setY(b->getY() + b->getMoveSpeed());
+				if (a->isActive() && ev.timer.source == GetTimer(a->getTimerType()))
+					a->decY();
+				if (b->isActive() && ev.timer.source == GetTimer(b->getTimerType()))
+					b->incY();
 
 				break;
 			case UP:
 				// correct Y coords
-				if (a->isActive())
-					a->setY(a->getY() + a->getMoveSpeed());
-				if (b->isActive())
-					b->setY(b->getY() - b->getMoveSpeed());
+				if (a->isActive() && ev.timer.source == GetTimer(a->getTimerType()))
+					a->incY();
+				if (b->isActive() && ev.timer.source == GetTimer(b->getTimerType()))
+					b->decY();
 
 				break;
 			}
@@ -400,19 +404,25 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 					case RIGHT:
 						xDistance = abs(a->getX() - b->rightBorderX());
 
-						if (yDistance < xDistance)
-							a->setY(a->getY() - a->getMoveSpeed());
+						if (yDistance < xDistance) {
+							if (ev.timer.source == GetTimer(a->getTimerType()))
+								a->decY();
+						}
 						else
-							b->setX(b->getX() - b->getMoveSpeed());
+							if (ev.timer.source == GetTimer(b->getTimerType()))
+								b->decX();
 
 						break;
 					case LEFT:
 						xDistance = abs(a->rightBorderX() - b->getX());
 
-						if (yDistance < xDistance)
-							a->setY(a->getY() - a->getMoveSpeed());
+						if (yDistance < xDistance) {
+							if (ev.timer.source == GetTimer(a->getTimerType()))
+								a->decY();
+						}
 						else
-							b->setX(b->getX() + b->getMoveSpeed());
+							if (ev.timer.source == GetTimer(b->getTimerType()))
+								b->incX();
 
 						break;
 					}
@@ -426,19 +436,25 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 					case RIGHT:
 						xDistance = abs(a->getX() - b->rightBorderX());
 
-						if (yDistance < xDistance)
-							a->setY(a->getY() + a->getMoveSpeed());
+						if (yDistance < xDistance) {
+							if (ev.timer.source == GetTimer(a->getTimerType()))
+								a->incY();
+						}
 						else
-							b->setX(b->getX() - b->getMoveSpeed());
+							if (ev.timer.source == GetTimer(b->getTimerType()))
+								b->decX();
 
 						break;
 					case LEFT:
 						xDistance = abs(a->rightBorderX() - b->getX());
 
-						if (yDistance < xDistance)
-							a->setY(a->getY() + a->getMoveSpeed());
+						if (yDistance < xDistance) {
+							if (ev.timer.source == GetTimer(a->getTimerType()))
+								a->incY();
+						}
 						else
-							b->setX(b->getX() + b->getMoveSpeed());
+							if (ev.timer.source == GetTimer(b->getTimerType()))
+								b->incX();
 
 						break;
 					}

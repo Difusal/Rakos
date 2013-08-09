@@ -3,6 +3,7 @@
 
 NPC::NPC(string Name, double P1_X, double P1_Y, double P2_X, double P2_Y, const char* Bitmap) {
 	type = _NPC;
+	timer = _NPCMoveTimer;
 	name = Name;
 	weapon = RPG::GetInstance()->GetWeapon(_None);
 
@@ -19,7 +20,6 @@ NPC::NPC(string Name, double P1_X, double P1_Y, double P2_X, double P2_Y, const 
 	x = P1_X;
 	y = P1_Y;
 	direction = DOWN;
-	moveSpeed = NPCWalkingSpeed;
 
 	bitmap = al_load_bitmap(Bitmap);
 	if (!bitmap) {
@@ -32,6 +32,7 @@ NPC::NPC(string Name, double P1_X, double P1_Y, double P2_X, double P2_Y, const 
 
 NPC::NPC(string Name, double X, double Y, const char* Bitmap) {
 	type = _NPC;
+	timer = _NPCMoveTimer;
 	name = Name;
 	weapon = RPG::GetInstance()->GetWeapon(_None);
 
@@ -48,7 +49,6 @@ NPC::NPC(string Name, double X, double Y, const char* Bitmap) {
 	x = X;
 	y = Y;
 	direction = DOWN;
-	moveSpeed = NPCWalkingSpeed;
 
 	bitmap = al_load_bitmap(Bitmap);
 	if (!bitmap) {

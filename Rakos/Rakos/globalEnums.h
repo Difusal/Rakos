@@ -10,8 +10,8 @@ enum GameState {
 };
 
 enum Alignment {
-	Center,
-	Bottom
+	_Center,
+	_Bottom
 };
 
 enum Direction {

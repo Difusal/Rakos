@@ -107,3 +107,13 @@ bool boxCollision(float x, float y, float ex, float ey, int width, int height) {
 float calculateDistance(float p1_x, float p1_y, float p2_x, float p2_y) {
 	return sqrt(pow(p2_y-p1_y, 2) + pow(p2_x-p1_x, 2));
 }
+
+int getLengthOfBiggestSentenceOnVector(vector<string> &vec) {
+	unsigned int max = 0;
+
+	for (unsigned int i = 0; i < vec.size(); i++)
+		if (vec[i].length() > max)
+			max = vec[i].length();
+
+	return max;
+}

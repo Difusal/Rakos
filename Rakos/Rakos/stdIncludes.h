@@ -34,7 +34,7 @@ const float FPS = 60.0;
 const float drawFPS = 8.0;
 const float AttackRate = FPS*0.8;
 const float HumansWalkingSpeed = FPS;
-const float HumansRunningSpeed = FPS*3/2.0;
+const float HumansRunningSpeed = FPS*3/2;
 const float NPCWalkingSpeed = FPS/2.0;
 const float SlowCreaturesSpeed = FPS/2.5;
 
@@ -55,6 +55,7 @@ const float SlowCreaturesSpeed = FPS/2.5;
 
 /* fonts */
 #define ConsolaTTF "res//fonts//consola.ttf"
+#define CalibriTTF "res//fonts//calibri.ttf"
 
 /* images */
 #define MouseCursorPng "res//images//mouse_cursor.png"
@@ -78,7 +79,5 @@ const float SlowCreaturesSpeed = FPS/2.5;
 #define TutorialWorldMapPath "res//maps//tutorial.txt"
 
 /* dialogs */
-#define TutorialDialog1 "res//images//tutorial_dialog_1.png"
-#define TutorialDialog2 "res//images//tutorial_dialog_2.png"
 #define SteveDialog1 "res//images//steve_dialog_1.png"
 #define SteveDialog2 "res//images//steve_dialog_2.png"

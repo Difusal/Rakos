@@ -9,7 +9,7 @@ public:
 
 	void CheckIfRunning(ALLEGRO_KEYBOARD_STATE keyState);
 	void UpdatePosition(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMap);
-	void Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMap);
+	void Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles);
 	void CorrectPositionIfCollidingWithMapLimits(const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles);
 	void ControlAttackRate();
 	void UpdateFeetCoords();

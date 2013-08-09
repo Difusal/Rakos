@@ -2,6 +2,7 @@
 
 Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 	type = _Creature;
+	timer = _SlowCreatureMoveTimer;
 	name = "Rabbit";
 	weapon = RPG::GetInstance()->GetWeapon(_None);
 	
@@ -20,7 +21,6 @@ Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 	x = P1_X;
 	y = P1_Y;
 	direction = DOWN;
-	moveSpeed = SlowCreaturesSpeed;
 
 	bitmap = al_load_bitmap(rabbitPng);
 	if (!bitmap) {

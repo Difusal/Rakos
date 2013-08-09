@@ -14,6 +14,8 @@ class TutorialState: public State
 {
 public:
 	void InitializeLivingBeings();
+	void InitializeDialogs();
+	void MoveLivingBeings(ALLEGRO_EVENT *ev);
 	void UpdateDialogs();
 	void UpdateSwitches();
 	void DrawDialogs();
@@ -43,14 +45,13 @@ private:
 
 	ALLEGRO_KEYBOARD_STATE keyState;
 	ALLEGRO_BITMAP *sideBar;
-	TextBox *tutorialDialogBox1;
-	ALLEGRO_BITMAP *tutorialDialog1;
-	ALLEGRO_BITMAP *tutorialDialog2;
+
+	vector<TextBox*> dialogs;
+	TextBox *tutorialDialog1;
+	TextBox *tutorialDialog2;
 	ALLEGRO_BITMAP *steveDialog1;
 	ALLEGRO_BITMAP *steveDialog2;
 
-	bool showTutorialDialog1;
-	bool showTutorialDialog2;
 	bool playerHasTalkedToSteve;
 	bool showSteveDialog1;
 	bool showSteveDialog2;

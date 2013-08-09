@@ -1,28 +1,37 @@
 #include "TextBox.h"
 #include "RPG.h"
+#include "globalFunctions.h"
 
 TextBox::TextBox(Alignment Position, vector<string> Text) {
+	showing = false;
+	text = Text;
+	font = RPG::GetInstance()->medium_font;
+
+	height = (Text.size() + 1) * font->height;
 	switch (Position) {
-	case Center:
+	case _Center:
+		width = (getLengthOfBiggestSentenceOnVector(text)+1) * font->height/2.5;
+		x = 600/2 - width/2;
+		y = ScreenHeight/2 - height/2;
 		break;
-	case Bottom:
+	case _Bottom:
 		width = 600;
-		height = (Text.size() + 1) * RPG::GetInstance()->medium_font->height;
 		x = 1;
 		y = ScreenHeight - height;
 		break;
 	}
-
-	text = Text;
-	font = RPG::GetInstance()->medium_font;
 }
 
 
 void TextBox::Draw() {
+	// skipping if not supposed to draw dialog
+	if (!showing)
+		return;
+
 	int destX = x + RPG::GetInstance()->cameraPosition[0];
 	int destY = y + RPG::GetInstance()->cameraPosition[1];
 
-	unsigned int alpha = 180;
+	unsigned int alpha = 190;
 	unsigned int lol = 128;
 	ALLEGRO_COLOR backgroundColor = al_map_rgba(lol*alpha, lol*alpha, lol*alpha, alpha);
 
@@ -32,7 +41,6 @@ void TextBox::Draw() {
 	// box frame
 	al_draw_rectangle(destX, destY, destX + width, destY + height, Black, 1.0);
 
-	al_draw_text(font, White, 100 + RPG::GetInstance()->cameraPosition[0], 500 + RPG::GetInstance()->cameraPosition[1], NULL, "TESTE");
 	// text
 	for (unsigned int i = 0; i < text.size(); i++)
 		al_draw_text(font, White, destX + width/2, destY + i*font->height + 1 + font->height/2, ALLEGRO_ALIGN_CENTER, text[i].c_str());

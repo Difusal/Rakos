@@ -3,6 +3,7 @@
 
 Player::Player(string Name, Weapon *weapon, double X, double Y) {
 	type = _Player;
+	timer = _PlayerMoveTimer;
 	name = Name;
 	weapon = RPG::GetInstance()->GetWeapon(_None);
 
@@ -23,7 +24,6 @@ Player::Player(string Name, Weapon *weapon, double X, double Y) {
 	x = X;
 	y = Y;
 	direction = DOWN;
-	moveSpeed = HumansWalkingSpeed;
 
 	bitmap = al_load_bitmap(playerPng);
 	if (!bitmap) {
@@ -85,10 +85,11 @@ void Player::UpdatePosition(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector
 		active = false;
 }
 
-void Player::Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMap) {
+void Player::Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles) {
 	CheckIfRunning(keyState);
 	UpdatePosition(keyState, worldMap);
 	UpdateFeetCoords();
+	CorrectPositionIfCollidingWithMapLimits(worldMap, unaccessibleTiles);
 }
 
 void Player::CorrectPositionIfCollidingWithMapLimits(const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles) {
@@ -96,16 +97,16 @@ void Player::CorrectPositionIfCollidingWithMapLimits(const vector<vector<int> > 
 		switch (direction) {
 		default:
 		case UP:
-			y += moveSpeed;
+			y++;
 			break;
 		case DOWN:
-			y -= moveSpeed;
+			y--;
 			break;
 		case LEFT:
-			x += moveSpeed;
+			x++;
 			break;
 		case RIGHT:
-			x -= moveSpeed;
+			x--;
 			break;
 		}
 	}
