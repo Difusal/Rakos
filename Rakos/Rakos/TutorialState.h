@@ -46,13 +46,14 @@ private:
 	ALLEGRO_KEYBOARD_STATE keyState;
 	ALLEGRO_BITMAP *sideBar;
 
-	vector<TextBox*> dialogs;
+	vector<TextBox*> textBoxes;
 	TextBox *tutorialDialog1;
 	TextBox *tutorialDialog2;
-	ALLEGRO_BITMAP *steveDialog1;
-	ALLEGRO_BITMAP *steveDialog2;
+
+	vector<SpeechBubble*> speechBubbles;
+	SpeechBubble *steveDialog1;
+	SpeechBubble *steveDialog2;
+	SpeechBubble *whiteKnightDialog1;
 
 	bool playerHasTalkedToSteve;
-	bool showSteveDialog1;
-	bool showSteveDialog2;
 };

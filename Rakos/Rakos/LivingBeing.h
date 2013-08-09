@@ -3,6 +3,7 @@
 #include "stdIncludes.h"
 #include "globalEnums.h"
 #include "Weapon.h"
+#include "SpeechBubble.h"
 
 class LivingBeing {
 public:
@@ -40,6 +41,9 @@ public:
 	void decX() { x--; }
 	void decY() { y--; }
 
+	unsigned int *getAddressOfX() { return &x; }
+	unsigned int *getAddressOfY() { return &y; }
+
 	double getX() { return x; }
 	double getY() { return y; }
 	void setX(double X) { x = X; }
@@ -64,6 +68,9 @@ public:
 	int bottomBorderY() { return y + height() - yCollisionCorrection; }
 
 	int getCurrentFrame();
+
+	// public variables
+	vector<SpeechBubble*> speechBubbles;
 
 private:
 	LivingBeingType type;

@@ -74,6 +74,10 @@ void LivingBeing::Draw() {
 		break;
 	}
 
+	// drawing speech bubbles if there are any and if any is activated
+	for (SpeechBubble *obj: speechBubbles)
+		obj->Draw();
+
 	DrawName();
 	DrawLifeBar();
 }
@@ -103,12 +107,16 @@ void LivingBeing::DrawLifeBar() {
 	float percentage = (hp * 100.0) / maxHp;
 
 	ALLEGRO_COLOR color;
-	if (percentage >= 50) { color = Green; }
-	else if (percentage >= 25) { color = Yellow; }
-	else { color = Red; }
+	if (percentage >= 50)
+		color = Green;
+	else if (percentage >= 25)
+		color = Yellow;
+	else
+		color = Red;
 
 	int hp_width = bar_width * percentage / 100.0;
 
+	// now drawing bar...
 	al_draw_filled_rectangle(pos_x-1, pos_y-1, pos_x+bar_width+1, pos_y+bar_height+1, Black);
 	al_draw_filled_rectangle(pos_x, pos_y, pos_x+hp_width, pos_y+bar_height, color);
 }

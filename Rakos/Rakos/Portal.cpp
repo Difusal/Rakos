@@ -37,7 +37,8 @@ void Portal::Close() {
 void Portal::CheckIfPlayerPassedThrough(Player *player) {
 	// if player passed through portal, transport player to destiny
 	if (isOpen()) {
-		if ((483 <= player->getFeetX() && player->getFeetX() <= 515) && (123 <= player->getFeetY() && player->getFeetY() <= 156)) {
+		if ((sourceX+3 <= player->getFeetX() && player->getFeetX() <= sourceX+35) &&
+			(sourceY+3 <= player->getFeetY() && player->getFeetY() <= sourceY+36)) {
 			player->setX(destinyX + al_get_bitmap_width(bitmap)/7.0/2 - player->width()/2);
 			player->setY(player->getY());
 		}

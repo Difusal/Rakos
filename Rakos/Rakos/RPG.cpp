@@ -76,7 +76,7 @@ void RPG::LoadFonts() {
 	big_font = al_load_font(ConsolaTTF, 36, ALLEGRO_ALIGN_CENTER);
 	fonts.push_back(big_font);
 
-	medium_font = al_load_font(CalibriTTF, 20, ALLEGRO_ALIGN_CENTER);
+	medium_font = al_load_font(ConsolaTTF, 18, ALLEGRO_ALIGN_CENTER);
 	fonts.push_back(medium_font);
 
 	small_font = al_load_font(ConsolaTTF, 12, ALLEGRO_ALIGN_CENTER);

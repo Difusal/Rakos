@@ -77,7 +77,3 @@ const float SlowCreaturesSpeed = FPS/2.5;
 
 /* world maps */
 #define TutorialWorldMapPath "res//maps//tutorial.txt"
-
-/* dialogs */
-#define SteveDialog1 "res//images//steve_dialog_1.png"
-#define SteveDialog2 "res//images//steve_dialog_2.png"

@@ -7,25 +7,27 @@ void TutorialState::InitializeLivingBeings() {
 
 	// initializing player
 	player = RPG::GetInstance()->GetPlayer();
+	player->setX(WorldBlockSize*20);
+	player->setY(WorldBlockSize*23.5);
 	livingBeings.push_back(player);
 
 
 	// initializing npcs
-	Steve = new NPC("Steve", 160, 200, 230, 320, explorer_greenPng);
+	Steve = new NPC("Steve", WorldBlockSize*12, WorldBlockSize*14, WorldBlockSize*14, WorldBlockSize*17, explorer_greenPng);
 	livingBeings.push_back(Steve);
 
-	WhiteKnight = new NPC("White Knight", 670, 180, 740, 240, knight_whitePng);
+	WhiteKnight = new NPC("White Knight", WorldBlockSize*25, WorldBlockSize*13, WorldBlockSize*26, WorldBlockSize*15, knight_whitePng);
 	livingBeings.push_back(WhiteKnight);
 
-	Sorcerer = new NPC("Sorcerer", 984, 90, sorcerer_bluePng);
+	Sorcerer = new NPC("Sorcerer", WorldBlockSize*32.6, WorldBlockSize*11.25, sorcerer_bluePng);
 	livingBeings.push_back(Sorcerer);
 
-	Warrior = new NPC("Warrior", 984, 250, warrior_yellowPng);
+	Warrior = new NPC("Warrior", WorldBlockSize*32.6, WorldBlockSize*15.25, warrior_yellowPng);
 	livingBeings.push_back(Warrior);
 	
 
 	// initializing creatures
-	rabbit = new Rabbit(180, 390, 240, 390);
+	rabbit = new Rabbit(WorldBlockSize*12, WorldBlockSize*19, WorldBlockSize*14, WorldBlockSize*19);
 	livingBeings.push_back(rabbit);
 }
 
@@ -38,14 +40,43 @@ void TutorialState::InitializeDialogs() {
 	tempVec.push_back("Move yourself using WASD keys.");
 	tempVec.push_back("Try it now.");
 	tutorialDialog1 = new TextBox(_Center, tempVec);
-	dialogs.push_back(tutorialDialog1);
+	textBoxes.push_back(tutorialDialog1);
 
 	tempVec.clear();
 	tempVec.push_back("Congratulations!");
 	tempVec.push_back("You should go talk to Steve now.");
-	tempVec.push_back("He is a bit to the north. To chat, get close to him and press \"C\".");
+	tempVec.push_back("He is a bit to the north. To chat, get close to him and press <C>.");
 	tutorialDialog2 = new TextBox(_Bottom, tempVec);
-	dialogs.push_back(tutorialDialog2);
+	textBoxes.push_back(tutorialDialog2);
+
+	tempVec.clear();
+	tempVec.push_back("Hello there! You must be new here...");
+	tempVec.push_back("Take this knife and kill that rabbit.");
+	tempVec.push_back("Press <K> to attack.");
+	tempVec.push_back("After that, talk to me again.");
+	steveDialog1 = new SpeechBubble(Steve->getAddressOfX(), Steve->getAddressOfY(), tempVec);
+	Steve->speechBubbles.push_back(steveDialog1);
+	speechBubbles.push_back(steveDialog1);
+
+	tempVec.clear();
+	tempVec.push_back("Very well! Now step onto that brown");
+	tempVec.push_back("switch and a portal will open.");
+	tempVec.push_back("Go through it! Here is a tip:");
+	tempVec.push_back("Hold <SHIFT> to run.");
+	steveDialog2 = new SpeechBubble(Steve->getAddressOfX(), Steve->getAddressOfY(), tempVec);
+	Steve->speechBubbles.push_back(steveDialog2);
+	speechBubbles.push_back(steveDialog2);
+
+	tempVec.clear();
+	tempVec.push_back("Hello " + RPG::GetInstance()->GetPlayer()->getName() + "! I can see you are doing pretty well.");
+	tempVec.push_back("The time for you to choose a vocation has come.");
+	tempVec.push_back("There are 2 vocations: Sorcerer and Warrior.");
+	tempVec.push_back("Speak to each of the masters ahead to learn details");
+	tempVec.push_back("about each vocation. And CHOOSE WISELY!");
+	tempVec.push_back("You only get to choose your vocation ONCE!");
+	whiteKnightDialog1 = new SpeechBubble(WhiteKnight->getAddressOfX(), WhiteKnight->getAddressOfY(), tempVec);
+	WhiteKnight->speechBubbles.push_back(whiteKnightDialog1);
+	speechBubbles.push_back(whiteKnightDialog1);
 }
 
 void TutorialState::MoveLivingBeings(ALLEGRO_EVENT *ev) {
@@ -79,14 +110,19 @@ void TutorialState::UpdateDialogs() {
 		}
 
 		if (rabbit->isDead())
-			showSteveDialog2 = true;
+			steveDialog2->Show();
 		else
-			showSteveDialog1 = true;
+			steveDialog1->Show();
 	}
 	else {
-		showSteveDialog1 = false;
-		showSteveDialog2 = false;
+		steveDialog1->Hide();
+		steveDialog2->Hide();
 	}
+
+	if (WhiteKnight->isSpeaking())
+		whiteKnightDialog1->Show();
+	else
+		whiteKnightDialog1->Hide();
 }
 
 void TutorialState::UpdateSwitches() {
@@ -108,12 +144,7 @@ void TutorialState::UpdateSwitches() {
 }
 
 void TutorialState::DrawDialogs() {
-	if (showSteveDialog1)
-		al_draw_bitmap(steveDialog1, Steve->getX()-85, Steve->getY()-al_get_bitmap_height(steveDialog1), NULL);
-	else if (showSteveDialog2)
-		al_draw_bitmap(steveDialog2, Steve->getX()-85, Steve->getY()-al_get_bitmap_height(steveDialog2), NULL);
-	
-	for (TextBox *obj: dialogs)
+	for (TextBox *obj: textBoxes)
 		obj->Draw();
 }
 
@@ -132,25 +163,15 @@ void TutorialState::Initialize() {
 
 	InitializeLivingBeings();
 
-	tutorialSwitch = new Switch(3, 3, FPS*4.6);
+	tutorialSwitch = new Switch(11, 12, FPS*4.6);
 	switches.push_back(tutorialSwitch);
 
-	tutorialPortal = new Portal(false, 12, 3, 17, 3);
+	tutorialPortal = new Portal(false, 20, 12, 25, 12);
 	portals.push_back(tutorialPortal);
 
 	InitializeDialogs();
 
-	// loading dialogs
-	steveDialog1 = al_load_bitmap(SteveDialog1);
-	steveDialog2 = al_load_bitmap(SteveDialog2);
-	if (!steveDialog1 || !steveDialog2) {
-		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load one or more dialogs.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-		exit(-1);
-	}
-
 	tutorialDialog1->Show();
-	showSteveDialog1 = false;
-	showSteveDialog2 = false;
 	playerHasTalkedToSteve = false;
 }
 
@@ -178,6 +199,11 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 		RPG::GetInstance()->UpdateWeaponPositions(livingBeings);
 		RPG::GetInstance()->UpdateWeaponAttackAnimations(livingBeings);
 
+		// if left mouse pressed and any being is speaking, stop speaking
+		if (RPG::GetInstance()->Mouse->left_mouse_button_released)
+			for (LivingBeing *being: livingBeings)
+				being->StopSpeaking();
+
 		// sorting vector in the correct drawing order
 		sort(livingBeings.begin(), livingBeings.end(), [](LivingBeing *a, LivingBeing *b) { return a->getY() < b->getY(); });
 
@@ -204,7 +230,7 @@ void TutorialState::Draw() {
 
 	// drawing side bar
 	al_draw_bitmap(sideBar, 600 + RPG::GetInstance()->cameraPosition[0], RPG::GetInstance()->cameraPosition[1], NULL);
-	
+
 	DrawDialogs();
 
 	/*
@@ -231,10 +257,13 @@ void TutorialState::Terminate() {
 		delete obj;
 	portals.clear();
 
-	for (TextBox *obj: dialogs)
+	for (TextBox *obj: textBoxes)
 		delete obj;
-	dialogs.clear();
+	textBoxes.clear();
+
+	for (SpeechBubble *obj: speechBubbles)
+		delete obj;
+	speechBubbles.clear();
 
 	al_destroy_bitmap(sideBar);
 }
-

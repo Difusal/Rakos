@@ -10,6 +10,4 @@ public:
 	NPC(string Name, double X, double Y, const char* Bitmap);
 	
 	~NPC(void);
-
-private:
 };
