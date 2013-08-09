@@ -157,6 +157,17 @@ void RPG::InitializeVariables() {
 
 	previousNPCWhoTalkedToPlayer = NULL;
 
+	LanguageBeingUsed = DefaultLanguage = _English;
+	cout << "Language being used: ";
+	switch (LanguageBeingUsed) {
+	case _English:
+		cout << "English" << endl;
+		break;
+	case _Portuguese:
+		cout << "Portuguese" << endl;
+		break;
+	}
+
 	done = false;
 	draw = true;
 }

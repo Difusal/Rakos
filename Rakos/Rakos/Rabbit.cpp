@@ -3,7 +3,14 @@
 Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 	type = _Creature;
 	timer = _SlowCreatureMoveTimer;
-	name = "Rabbit";
+	switch (RPG::GetInstance()->LanguageBeingUsed) {
+	case _English:
+		name = "Rabbit";
+		break;
+	case _Portuguese:
+		name = "Coelho";
+		break;
+	}
 	weapon = RPG::GetInstance()->GetWeapon(_None);
 	
 	dead = false;

@@ -45,6 +45,10 @@ void TextBox::Draw() {
 
 	// box frame
 	/*
+	// --------------
+	// Optional code:
+	// Uncomment this block of code to draw a more complex frame
+	// ---------------------------------------------------------
 	al_draw_rectangle(destX+3, destY+3, destX+width-3, destY+height-3, DarkGray, 1.0);
 	al_draw_rectangle(destX+2, destY+2, destX+width-2, destY+height-2, Gray, 1.0);
 	al_draw_rectangle(destX+1, destY+1, destX+width-1, destY+height-1, LightGray, 1.0);

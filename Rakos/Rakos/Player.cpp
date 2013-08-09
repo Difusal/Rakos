@@ -36,7 +36,7 @@ Player::Player(string Name, Weapon *weapon, double X, double Y) {
 
 
 void Player::CheckIfRunning(ALLEGRO_KEYBOARD_STATE keyState) {
-	if (al_key_down(&keyState, ALLEGRO_KEY_LSHIFT)) {
+	if (al_key_down(&keyState, ALLEGRO_KEY_LSHIFT) || al_key_down(&keyState, ALLEGRO_KEY_RSHIFT)) {
 		al_set_timer_speed(RPG::GetInstance()->GetTimer(_PlayerMoveTimer), 1.0 / HumansRunningSpeed);
 		if (!running)
 			al_set_timer_speed(RPG::GetInstance()->GetTimer(_PlayerAnimTimer), 1.0/(1.5*drawFPS));

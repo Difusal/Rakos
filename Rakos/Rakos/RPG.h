@@ -56,6 +56,8 @@ public:
 
 
 	// Public Variables
+	Language LanguageBeingUsed;
+
 	ALLEGRO_FONT *big_font;
 	ALLEGRO_FONT *medium_font;
 	ALLEGRO_FONT *small_font;
@@ -94,6 +96,7 @@ private:
 	Weapon *no_weapon;
 	Weapon *knife;
 
+	Language DefaultLanguage;
 	bool done, draw;
 
 	ALLEGRO_DISPLAY *display;

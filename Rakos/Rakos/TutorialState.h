@@ -33,7 +33,7 @@ private:
 	Player *player;
 	NPC *Steve;
 	NPC *WhiteKnight;
-	NPC *Sorcerer;
+	NPC *Mage;
 	NPC *Warrior;
 	Rabbit *rabbit;
 
@@ -53,7 +53,9 @@ private:
 	vector<SpeechBubble*> speechBubbles;
 	SpeechBubble *steveDialog1;
 	SpeechBubble *steveDialog2;
-	SpeechBubble *whiteKnightDialog1;
+	SpeechBubble *whiteKnightDialog;
+	SpeechBubble *mageDialog1;
+	SpeechBubble *warriorDialog1;
 
 	bool playerHasTalkedToSteve;
 };

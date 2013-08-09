@@ -19,7 +19,6 @@
 #include <math.h>
 #include <fstream>
 #include <algorithm>
-//#include <direct.h>
 
 using namespace std;
 
@@ -34,7 +33,7 @@ const float FPS = 60.0;
 const float drawFPS = 8.0;
 const float AttackRate = FPS*0.8;
 const float HumansWalkingSpeed = FPS;
-const float HumansRunningSpeed = FPS*3/2;
+const float HumansRunningSpeed = FPS+FPS/3;
 const float NPCWalkingSpeed = FPS/2.0;
 const float SlowCreaturesSpeed = FPS/2.5;
 
@@ -66,7 +65,7 @@ const float SlowCreaturesSpeed = FPS/2.5;
 #define playerPng "res//sprites//living beings//noob_yellow.png"
 #define explorer_greenPng "res//sprites//living beings//explorer_green.png"
 #define knight_whitePng "res//sprites//living beings//knight_white.png"
-#define sorcerer_bluePng "res//sprites//living beings//sorcerer_blue.png"
+#define mage_bluePng "res//sprites//living beings//mage_blue.png"
 #define warrior_yellowPng "res//sprites//living beings//warrior_yellow.png"
 #define rabbitPng "res//sprites//living beings//rabbit.png"
 

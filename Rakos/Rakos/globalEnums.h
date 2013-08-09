@@ -5,8 +5,18 @@
 * Except for Direction enum, because allegro 5 uses _UP...			*
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+enum Language {
+	_English,
+	_Portuguese
+};
+
 enum GameState {
 	_Tutorial
+};
+
+enum Vocation {
+	_Mage,
+	_Warrior
 };
 
 enum Alignment {
