@@ -9,6 +9,11 @@ enum GameState {
 	_Tutorial
 };
 
+enum Alignment {
+	Center,
+	Bottom
+};
+
 enum Direction {
 	DOWN,
 	LEFT,
@@ -24,6 +29,9 @@ enum LivingBeingType {
 
 enum TimerType {
 	_RegularTimer,
+	_PlayerMoveTimer,
+	_NPCMoveTimer,
+	_SlowCreatureMoveTimer,
 	_MouseAnimTimer,
 	_DrawTimer,
 	_PlayerAnimTimer,

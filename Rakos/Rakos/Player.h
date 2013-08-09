@@ -33,5 +33,5 @@ private:
 	bool playerCanAttack;
 
 	bool running;
-	double feet_x, feet_y;
+	unsigned int feet_x, feet_y;
 };

@@ -11,28 +11,28 @@ void LivingBeing::Move() {
 		switch (direction) {
 		default:
 		case DOWN:
-			y += moveSpeed;
+			y++;
 			if (y > p2_y) {
 				y = p2_y;
 				direction = RIGHT;
 			}	
 			break;
 		case RIGHT:
-			x += moveSpeed;
+			x++;
 			if (x > p2_x) {
 				x = p2_x;
 				direction = UP;
 			}				
 			break;
 		case UP:
-			y -= moveSpeed;
+			y--;
 			if (y < p1_y) {
 				y = p1_y;
 				direction = LEFT;
 			}
 			break;
 		case LEFT:
-			x -= moveSpeed;
+			x--;
 			if (x < p1_x) {
 				x = p1_x;
 				direction = DOWN;

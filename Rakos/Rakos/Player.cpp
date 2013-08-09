@@ -37,13 +37,13 @@ Player::Player(string Name, Weapon *weapon, double X, double Y) {
 
 void Player::CheckIfRunning(ALLEGRO_KEYBOARD_STATE keyState) {
 	if (al_key_down(&keyState, ALLEGRO_KEY_LSHIFT)) {
-		moveSpeed = HumansRunningSpeed;
+		al_set_timer_speed(RPG::GetInstance()->GetTimer(_PlayerMoveTimer), 1.0 / HumansRunningSpeed);
 		if (!running)
 			al_set_timer_speed(RPG::GetInstance()->GetTimer(_PlayerAnimTimer), 1.0/(1.5*drawFPS));
 		running = true;
 	}
 	else {
-		moveSpeed = HumansWalkingSpeed;
+		al_set_timer_speed(RPG::GetInstance()->GetTimer(_PlayerMoveTimer), 1.0 / HumansWalkingSpeed);
 		if (running)
 			al_set_timer_speed(RPG::GetInstance()->GetTimer(_PlayerAnimTimer), 1.0/drawFPS);
 		running = false;
@@ -54,28 +54,28 @@ void Player::UpdatePosition(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector
 	active = true;
 
 	if(al_key_down(&keyState, ALLEGRO_KEY_S)) {
-		y += moveSpeed;
+		y++;
 		if (y > worldMap.size()*WorldBlockSize - 32)
 			y = worldMap.size()*WorldBlockSize - 32;
 
 		direction = DOWN;
 	}
 	else if(al_key_down(&keyState, ALLEGRO_KEY_W)) {
-		y -= moveSpeed;
+		y--;
 		if (y < 0)
 			y = 0;
 
 		direction = UP;
 	}
 	else if(al_key_down(&keyState, ALLEGRO_KEY_D)) {
-		x += moveSpeed;
+		x++;
 		if (x > worldMap[0].size()*WorldBlockSize - 32)
 			x = worldMap[0].size()*WorldBlockSize - 32;
 
 		direction = RIGHT;
 	}
 	else if(al_key_down(&keyState, ALLEGRO_KEY_A)) {
-		x -= moveSpeed;
+		x--;
 		if (x < 0)
 			x = 0;
 

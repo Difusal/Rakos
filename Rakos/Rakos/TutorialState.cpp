@@ -82,6 +82,8 @@ void TutorialState::DrawDialogs() {
 		al_draw_bitmap(steveDialog1, Steve->getX()-85, Steve->getY()-al_get_bitmap_height(steveDialog1), NULL);
 	else if (showSteveDialog2)
 		al_draw_bitmap(steveDialog2, Steve->getX()-85, Steve->getY()-al_get_bitmap_height(steveDialog2), NULL);
+	
+	tutorialDialogBox1->Draw();
 }
 
 
@@ -98,12 +100,21 @@ void TutorialState::Initialize() {
 	}
 
 	InitializeLivingBeings();
+	// EDIT THIS
+	player->Move(keyState, worldMap);
 
 	tutorialSwitch = new Switch(3, 3, FPS*4.6);
 	switches.push_back(tutorialSwitch);
 
 	tutorialPortal = new Portal(false, 12, 3, 17, 3);
 	portals.push_back(tutorialPortal);
+
+	vector<string> tempVec;
+	tempVec.push_back("Welcome to Rakos!");
+	tempVec.push_back("Move yourself using WASD keys.");
+	tempVec.push_back("Try it now.");
+	tutorialDialogBox1 = new TextBox(Bottom, tempVec);
+	tempVec.clear();
 
 	// loading dialogs
 	tutorialDialog1 = al_load_bitmap(TutorialDialog1);
@@ -129,6 +140,30 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 	draw = RPG::GetInstance()->RemoveDeadLivingBeingsFromVector(livingBeings);
 
 	if (ev->type == ALLEGRO_EVENT_TIMER) {
+		// moving player, npcs and creatures
+		if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerMoveTimer))
+			player->Move(keyState, worldMap);
+		for (unsigned int i = 1; i < livingBeings.size(); i++)
+			if (!livingBeings[i]->isDead()) {
+				switch (livingBeings[i]->getType()) {
+				case _NPC:
+					if (ev->timer.source == RPG::GetInstance()->GetTimer(_NPCMoveTimer))
+						livingBeings[i]->Move();
+					break;
+				case _Creature:
+					if (ev->timer.source == RPG::GetInstance()->GetTimer(_SlowCreatureMoveTimer))
+						livingBeings[i]->Move();
+					break;
+				}
+			}
+
+		// checking if something collided
+		player->CorrectPositionIfCollidingWithMapLimits(worldMap, unaccessibleTiles);
+		for (unsigned int i = 0; i < livingBeings.size()-1; i++)
+			for (unsigned int j = i+1; j < livingBeings.size(); j++)
+				RPG::GetInstance()->UpdateLivingBeingsCollisions(livingBeings[i], livingBeings[j]);
+
+		// REGULAR TIMER
 		if (ev->timer.source == RPG::GetInstance()->GetTimer(_RegularTimer)) {
 			player->ControlAttackRate();
 			RPG::GetInstance()->CheckIfPlayerAttackedSomething(livingBeings, keyState);
@@ -136,18 +171,6 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 			UpdateSwitches();
 			tutorialPortal->CheckIfPlayerPassedThrough(player);
 			UpdateDialogs();
-
-			// moving player, npcs and creatures
-			player->Move(keyState, worldMap);
-			for (unsigned int i = 1; i < livingBeings.size(); i++)
-				if (!livingBeings[i]->isDead())
-					livingBeings[i]->Move();
-
-			// checking if something collided
-			player->CorrectPositionIfCollidingWithMapLimits(worldMap, unaccessibleTiles);
-			for (unsigned int i = 0; i < livingBeings.size()-1; i++)
-				for (unsigned int j = i+1; j < livingBeings.size(); j++)
-						RPG::GetInstance()->UpdateLivingBeingsCollisions(livingBeings[i], livingBeings[j]);
 
 			RPG::GetInstance()->UpdateCamera(worldMap, livingBeings);
 		}
@@ -183,9 +206,8 @@ void TutorialState::Draw() {
 
 	// drawing side bar
 	al_draw_bitmap(sideBar, 600 + RPG::GetInstance()->cameraPosition[0], RPG::GetInstance()->cameraPosition[1], NULL);
-
+	
 	DrawDialogs();
-
 	/*
 	// ---------------
 	// Debugging code:

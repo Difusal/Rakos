@@ -74,13 +74,12 @@ private:
 	unsigned int hp;
 	unsigned int maxHp;
 
-	double wanderRadius;
-	double p1_x, p1_y;
-	double p2_x, p2_y;
+	unsigned int wanderRadius;
+	unsigned int p1_x, p1_y;
+	unsigned int p2_x, p2_y;
 
-	double x, y;
+	unsigned int x, y;
 	Direction direction;
-	double moveSpeed;
 
 	ALLEGRO_BITMAP *bitmap;
 	int bitmap_sourceX, bitmap_sourceY;

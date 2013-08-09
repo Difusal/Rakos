@@ -98,6 +98,15 @@ void RPG::CreateTimers() {
 	timer = al_create_timer(1.0 / FPS);
 	timers.push_back(timer);
 
+	playerMoveTimer = al_create_timer(1.0 / HumansWalkingSpeed);
+	timers.push_back(playerMoveTimer);
+
+	NPCMoveTimer = al_create_timer(1.0 / NPCWalkingSpeed);
+	timers.push_back(NPCMoveTimer);
+
+	slowCreatureMoveTimer = al_create_timer(1.0 / SlowCreaturesSpeed);
+	timers.push_back(slowCreatureMoveTimer);
+
 	mouseAnimTimer = al_create_timer(1.0 / 18);
 	timers.push_back(mouseAnimTimer);
 

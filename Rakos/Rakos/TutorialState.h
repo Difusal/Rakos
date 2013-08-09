@@ -8,6 +8,7 @@
 #include "Rabbit.h"
 #include "Portal.h"
 #include "Switch.h"
+#include "TextBox.h"
 
 class TutorialState: public State
 {
@@ -42,6 +43,7 @@ private:
 
 	ALLEGRO_KEYBOARD_STATE keyState;
 	ALLEGRO_BITMAP *sideBar;
+	TextBox *tutorialDialogBox1;
 	ALLEGRO_BITMAP *tutorialDialog1;
 	ALLEGRO_BITMAP *tutorialDialog2;
 	ALLEGRO_BITMAP *steveDialog1;

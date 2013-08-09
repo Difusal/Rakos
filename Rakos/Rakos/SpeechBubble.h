@@ -1,8 +1,7 @@
 #pragma once
-class SpeechBubble
-{
+
+class SpeechBubble {
 public:
 	SpeechBubble(void);
 	~SpeechBubble(void);
 };
-

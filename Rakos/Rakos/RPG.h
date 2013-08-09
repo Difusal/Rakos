@@ -73,6 +73,9 @@ private:
 
 	vector<ALLEGRO_TIMER*> timers;
 	ALLEGRO_TIMER *timer;
+	ALLEGRO_TIMER *playerMoveTimer;
+	ALLEGRO_TIMER *NPCMoveTimer;
+	ALLEGRO_TIMER *slowCreatureMoveTimer;
 	ALLEGRO_TIMER *mouseAnimTimer;
 	ALLEGRO_TIMER *drawTimer;
 	ALLEGRO_TIMER *playerAnimTimer;
