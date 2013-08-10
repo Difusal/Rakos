@@ -5,12 +5,14 @@
 Weapon::Weapon(WeaponType Type, int minAttack, int maxAttack) {
 	type = Type;
 	switch (type) {
-	case _None:
+	case _NoWeapon:
 		name = "none";
 		break;
 	case _Knife:
 		name = "Knife";
 		break;
+	case _Sword:
+		name = "Sword";
 	}
 
 	min_attack = minAttack;
@@ -19,15 +21,29 @@ Weapon::Weapon(WeaponType Type, int minAttack, int maxAttack) {
 	xCorrection = 0;
 	yCorrection = 0;
 
-	bitmap = al_load_bitmap(SwordsPng);
+	switch (type) {
+	case _NoWeapon:
+		bitmap = al_load_bitmap(SwordsPng);
+		break;
+	case _Knife:
+		bitmap = al_load_bitmap(SwordsPng);
+		break;
+	case _Sword:
+		bitmap = al_load_bitmap(SwordsPng);
+		break;
+	}
 	if (!bitmap) {
 		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load weapon bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
 	}
 
-	if (type != _None) {
-		if (type == _Knife)
+	if (type != _NoWeapon) {
+		switch (type) {
+		case _Knife:
+		case _Sword:
 			sprite = al_load_bitmap(SwordsPng);
+			break;
+		}
 
 		if (!sprite) {
 			al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load weapon sprite.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
@@ -135,9 +151,10 @@ void Weapon::UpdateAttackAnimation() {
 		playingAnimation = false;
 
 	switch (type) {
-	case _None:
+	case _NoWeapon:
 		break;
 	case _Knife:
+	case _Sword:
 		switch (direction) {
 		case DOWN:
 			switch (frame) {
@@ -283,9 +300,10 @@ void Weapon::UpdateAttackAnimation() {
 
 void Weapon::Draw() {
 	switch (type) {
-	case _None:
+	case _NoWeapon:
 		break;
 	case _Knife:
+	case _Sword:
 		switch (direction) {
 		case DOWN:
 			al_draw_bitmap_region(sprite, 16, 0, 7, 14, x-4, y-14, NULL);
@@ -318,6 +336,6 @@ Weapon::~Weapon(void) {
 	if (bitmap)
 		al_destroy_bitmap(bitmap);
 
-	if (type != _None)
+	if (type != _NoWeapon)
 		al_destroy_bitmap(sprite);
 }

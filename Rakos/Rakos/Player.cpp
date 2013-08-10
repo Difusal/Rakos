@@ -3,9 +3,10 @@
 
 Player::Player(string Name, Weapon *weapon, double X, double Y) {
 	type = _Player;
+	vocation = _NoVocation;
 	timer = _PlayerMoveTimer;
 	name = Name;
-	weapon = RPG::GetInstance()->GetWeapon(_None);
+	weapon = RPG::GetInstance()->GetWeapon(_NoWeapon);
 
 	dead = false;
 	active = false;
@@ -124,6 +125,12 @@ void Player::ControlAttackRate() {
 void Player::UpdateFeetCoords() {
 	feet_x = this->getX() + 16;
 	feet_y = this->getY() + 32;
+}
+
+
+void Player::setWeapon(Weapon *newWeapon) {
+	weapon = newWeapon;
+	cout << "Player weapon set: " << weapon->getName() << endl;
 }
 
 

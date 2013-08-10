@@ -17,8 +17,11 @@ public:
 	bool CanAttack() { return playerCanAttack; }
 	void CanNotAttackNow() { playerCanAttack = false; }
 
+	Vocation getVocation() { return vocation; }
+	void setVocation(Vocation PlayerVocation) { vocation = PlayerVocation; }
+
 	Weapon *getWeapon() { return weapon; }
-	void setWeapon(Weapon *newWeapon) { weapon = newWeapon; }
+	void setWeapon(Weapon *newWeapon);
 
 	bool getRunningState() { return running; }
 	void setRunningState(bool newState) { running = newState; }
@@ -29,6 +32,8 @@ public:
 	~Player(void);
 
 private:
+	Vocation vocation;
+
 	int attackCooldown;
 	bool playerCanAttack;
 

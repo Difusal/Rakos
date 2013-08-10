@@ -18,6 +18,7 @@ public:
 	void MoveLivingBeings(ALLEGRO_EVENT *ev);
 	void UpdateDialogs();
 	void UpdateSwitches();
+	bool CheckIfPlayerChoseAVocation(ALLEGRO_EVENT *ev);
 	void DrawDialogs();
 
 	virtual void Initialize();
@@ -54,8 +55,12 @@ private:
 	SpeechBubble *steveDialog1;
 	SpeechBubble *steveDialog2;
 	SpeechBubble *whiteKnightDialog;
-	SpeechBubble *mageDialog1;
-	SpeechBubble *warriorDialog1;
+	SpeechBubble *mageDialog;
+	SpeechBubble *mageDialogIfPlayerIsAMage;
+	SpeechBubble *mageDialogIfPlayerIsNOTAMage;
+	SpeechBubble *warriorDialog;
+	SpeechBubble *warriorDialogIfPlayerIsAWarrior;
+	SpeechBubble *warriorDialogIfPlayerIsNOTAWarrior;
 
 	bool playerHasTalkedToSteve;
 };

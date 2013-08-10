@@ -24,7 +24,6 @@ public:
 	void StartTimers();
 
 	void LoadWeapons();
-	Weapon *GetWeapon(WeaponType Weapon);
 
 	void CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
 	void CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
@@ -53,6 +52,7 @@ public:
 	void SetTileSet (ALLEGRO_BITMAP *png) { tileSet = png; }
 
 	Player *GetPlayer() { return player; }
+	Weapon *GetWeapon(WeaponType Weapon);
 
 
 	// Public Variables
@@ -95,6 +95,7 @@ private:
 	vector<Weapon*> weapons;
 	Weapon *no_weapon;
 	Weapon *knife;
+	Weapon *sword;
 
 	Language DefaultLanguage;
 	bool done, draw;

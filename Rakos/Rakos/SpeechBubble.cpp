@@ -28,7 +28,7 @@ void SpeechBubble::Draw() {
 
 	int beingWidth = RPG::GetInstance()->GetPlayer()->width();
 
-	bubbleX = *x - width/4.0 + beingWidth/2.0;
+	bubbleX = *x - width/3.0 + beingWidth/2.0;
 	bubbleY = *y - height - 10;
 	shadowX = bubbleX-4;
 	shadowY = bubbleY+5;

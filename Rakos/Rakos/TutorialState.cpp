@@ -91,9 +91,32 @@ void TutorialState::InitializeDialogs() {
 			tempVec.push_back("because we aren't as good as warriors using shields.");
 			tempVec.push_back("");
 			tempVec.push_back("If you want to become a Mage, press <ENTER> now.");
-			mageDialog1 = new SpeechBubble(Mage->getAddressOfX(), Mage->getAddressOfY(), tempVec);
-			Mage->speechBubbles.push_back(mageDialog1);
-			speechBubbles.push_back(mageDialog1);
+			mageDialog = new SpeechBubble(Mage->getAddressOfX(), Mage->getAddressOfY(), tempVec);
+			Mage->speechBubbles.push_back(mageDialog);
+			speechBubbles.push_back(mageDialog);
+
+			tempVec.clear();
+			tempVec.push_back("Very well " + RPG::GetInstance()->GetPlayer()->getName() + "!");
+			tempVec.push_back("You are now officially a Mage!");
+			tempVec.push_back("Take this WAND as a gift.");
+			tempVec.push_back("");
+			tempVec.push_back("Now go through the portal located East.");
+			tempVec.push_back("It will take you to the Temple of Rakos.");
+			tempVec.push_back("Have fun, brave adventurer!");
+			mageDialogIfPlayerIsAMage = new SpeechBubble(Mage->getAddressOfX(), Mage->getAddressOfY(), tempVec);
+			Mage->speechBubbles.push_back(mageDialogIfPlayerIsAMage);
+			speechBubbles.push_back(mageDialogIfPlayerIsAMage);
+
+			tempVec.clear();
+			tempVec.push_back("Hi again " + RPG::GetInstance()->GetPlayer()->getName() + "!");
+			tempVec.push_back("I can see you have become a Warrior.");
+			tempVec.push_back("");
+			tempVec.push_back("Go through the portal located East.");
+			tempVec.push_back("It will take you to the Temple of Rakos.");
+			tempVec.push_back("Have fun, brave adventurer!");
+			mageDialogIfPlayerIsNOTAMage = new SpeechBubble(Mage->getAddressOfX(), Mage->getAddressOfY(), tempVec);
+			Mage->speechBubbles.push_back(mageDialogIfPlayerIsNOTAMage);
+			speechBubbles.push_back(mageDialogIfPlayerIsNOTAMage);
 
 			tempVec.clear();
 			tempVec.push_back("Hey there " + RPG::GetInstance()->GetPlayer()->getName() + ".");
@@ -105,9 +128,32 @@ void TutorialState::InitializeDialogs() {
 			tempVec.push_back("even Dragons will fear the swing of your sword.");
 			tempVec.push_back("");
 			tempVec.push_back("If you want to become a Warrior, press <ENTER> now.");
-			warriorDialog1 = new SpeechBubble(Warrior->getAddressOfX(), Warrior->getAddressOfY(), tempVec);
-			Warrior->speechBubbles.push_back(warriorDialog1);
-			speechBubbles.push_back(warriorDialog1);
+			warriorDialog = new SpeechBubble(Warrior->getAddressOfX(), Warrior->getAddressOfY(), tempVec);
+			Warrior->speechBubbles.push_back(warriorDialog);
+			speechBubbles.push_back(warriorDialog);
+
+			tempVec.clear();
+			tempVec.push_back("Very well " + RPG::GetInstance()->GetPlayer()->getName() + "!");
+			tempVec.push_back("You are now officially a Warrior!");
+			tempVec.push_back("Take this SWORD as a gift.");
+			tempVec.push_back("");
+			tempVec.push_back("Now go through the portal located East.");
+			tempVec.push_back("It will take you to the Temple of Rakos.");
+			tempVec.push_back("Have fun, brave adventurer!");
+			warriorDialogIfPlayerIsAWarrior = new SpeechBubble(Warrior->getAddressOfX(), Warrior->getAddressOfY(), tempVec);
+			Warrior->speechBubbles.push_back(warriorDialogIfPlayerIsAWarrior);
+			speechBubbles.push_back(warriorDialogIfPlayerIsAWarrior);
+
+			tempVec.clear();
+			tempVec.push_back("Hi again " + RPG::GetInstance()->GetPlayer()->getName() + "!");
+			tempVec.push_back("I can see you have become a Mage.");
+			tempVec.push_back("");
+			tempVec.push_back("Go through the portal located East.");
+			tempVec.push_back("It will take you to the Temple of Rakos.");
+			tempVec.push_back("Have fun, brave adventurer!");
+			warriorDialogIfPlayerIsNOTAWarrior = new SpeechBubble(Warrior->getAddressOfX(), Warrior->getAddressOfY(), tempVec);
+			Warrior->speechBubbles.push_back(warriorDialogIfPlayerIsNOTAWarrior);
+			speechBubbles.push_back(warriorDialogIfPlayerIsNOTAWarrior);
 
 			break;
 		}
@@ -167,9 +213,32 @@ void TutorialState::InitializeDialogs() {
 			tempVec.push_back("os Warriors a usar escudos.");
 			tempVec.push_back("");
 			tempVec.push_back("Se queres ser um Mage, carrega agora na tecla <ENTER>.");
-			mageDialog1 = new SpeechBubble(Mage->getAddressOfX(), Mage->getAddressOfY(), tempVec);
-			Mage->speechBubbles.push_back(mageDialog1);
-			speechBubbles.push_back(mageDialog1);
+			mageDialog = new SpeechBubble(Mage->getAddressOfX(), Mage->getAddressOfY(), tempVec);
+			Mage->speechBubbles.push_back(mageDialog);
+			speechBubbles.push_back(mageDialog);
+
+			tempVec.clear();
+			tempVec.push_back("Muito bem " + RPG::GetInstance()->GetPlayer()->getName() + "!");
+			tempVec.push_back("Agora es oficialmente um Mage!");
+			tempVec.push_back("Aceita esta VARINHA como presente.");
+			tempVec.push_back("");
+			tempVec.push_back("Agora atravessa o portal a Este daqui.");
+			tempVec.push_back("Vai levar-te para o Templo de Rakos.");
+			tempVec.push_back("Diverte-te, corajoso aventureiro!");
+			mageDialogIfPlayerIsAMage = new SpeechBubble(Mage->getAddressOfX(), Mage->getAddressOfY(), tempVec);
+			Mage->speechBubbles.push_back(mageDialogIfPlayerIsAMage);
+			speechBubbles.push_back(mageDialogIfPlayerIsAMage);
+
+			tempVec.clear();
+			tempVec.push_back("Ola outra vez, " + RPG::GetInstance()->GetPlayer()->getName() + "!");
+			tempVec.push_back("Vejo que te tornaste num Warrior");
+			tempVec.push_back("");
+			tempVec.push_back("Atravessa o portal a Este daqui.");
+			tempVec.push_back("Vai levar-te para o Templo de Rakos.");
+			tempVec.push_back("Diverte-te, corajoso aventureiro!");
+			mageDialogIfPlayerIsNOTAMage = new SpeechBubble(Mage->getAddressOfX(), Mage->getAddressOfY(), tempVec);
+			Mage->speechBubbles.push_back(mageDialogIfPlayerIsNOTAMage);
+			speechBubbles.push_back(mageDialogIfPlayerIsNOTAMage);
 
 			tempVec.clear();
 			tempVec.push_back("Hey " + RPG::GetInstance()->GetPlayer()->getName() + ".");
@@ -181,9 +250,32 @@ void TutorialState::InitializeDialogs() {
 			tempVec.push_back("ate os Dragoes vao ter medo da tua espada.");
 			tempVec.push_back("");
 			tempVec.push_back("Se queres ser um Warrior, carrega agora na tecla <ENTER>.");
-			warriorDialog1 = new SpeechBubble(Warrior->getAddressOfX(), Warrior->getAddressOfY(), tempVec);
-			Warrior->speechBubbles.push_back(warriorDialog1);
-			speechBubbles.push_back(warriorDialog1);
+			warriorDialog = new SpeechBubble(Warrior->getAddressOfX(), Warrior->getAddressOfY(), tempVec);
+			Warrior->speechBubbles.push_back(warriorDialog);
+			speechBubbles.push_back(warriorDialog);
+
+			tempVec.clear();
+			tempVec.push_back("Muito bem " + RPG::GetInstance()->GetPlayer()->getName() + "!");
+			tempVec.push_back("Agora es oficialmente um Warrior!");
+			tempVec.push_back("Aceita esta ESPADA como presente.");
+			tempVec.push_back("");
+			tempVec.push_back("Agora atravessa o portal a Este daqui.");
+			tempVec.push_back("Vai levar-te para o Templo de Rakos.");
+			tempVec.push_back("Diverte-te, corajoso aventureiro!");
+			warriorDialogIfPlayerIsAWarrior = new SpeechBubble(Warrior->getAddressOfX(), Warrior->getAddressOfY(), tempVec);
+			Warrior->speechBubbles.push_back(warriorDialogIfPlayerIsAWarrior);
+			speechBubbles.push_back(warriorDialogIfPlayerIsAWarrior);
+
+			tempVec.clear();
+			tempVec.push_back("Ola outra vez, " + RPG::GetInstance()->GetPlayer()->getName() + "!");
+			tempVec.push_back("Vejo que te tornaste um Mage");
+			tempVec.push_back("");
+			tempVec.push_back("Atravessa o portal a Este daqui.");
+			tempVec.push_back("Vai levar-te para o Templo de Rakos.");
+			tempVec.push_back("Diverte-te, corajoso aventureiro!");
+			warriorDialogIfPlayerIsNOTAWarrior = new SpeechBubble(Warrior->getAddressOfX(), Warrior->getAddressOfY(), tempVec);
+			Warrior->speechBubbles.push_back(warriorDialogIfPlayerIsNOTAWarrior);
+			speechBubbles.push_back(warriorDialogIfPlayerIsNOTAWarrior);
 
 			break;
 		}
@@ -235,15 +327,47 @@ void TutorialState::UpdateDialogs() {
 	else
 		whiteKnightDialog->Hide();
 
-	if (Mage->isSpeaking())
-		mageDialog1->Show();
-	else
-		mageDialog1->Hide();
+	if (Mage->isSpeaking()) {
+		switch (player->getVocation()) {
+		case _NoVocation:
+			mageDialog->Show();
+			break;
+		case _Mage:
+			mageDialog->Hide();
+			mageDialogIfPlayerIsAMage->Show();
+			break;
+		case _Warrior:
+			mageDialog->Hide();
+			mageDialogIfPlayerIsNOTAMage->Show();
+			break;
+		}
+	}
+	else {
+		mageDialog->Hide();
+		mageDialogIfPlayerIsAMage->Hide();
+		mageDialogIfPlayerIsNOTAMage->Hide();
+	}
 
-	if (Warrior->isSpeaking())
-		warriorDialog1->Show();
-	else
-		warriorDialog1->Hide();
+	if (Warrior->isSpeaking()) {
+		switch (player->getVocation()) {
+		case _NoVocation:
+			warriorDialog->Show();
+			break;
+		case _Warrior:
+			warriorDialog->Hide();
+			warriorDialogIfPlayerIsAWarrior->Show();
+			break;
+		case _Mage:
+			warriorDialog->Hide();
+			warriorDialogIfPlayerIsNOTAWarrior->Show();
+			break;
+		}
+	}
+	else {
+		warriorDialog->Hide();
+		warriorDialogIfPlayerIsAWarrior->Hide();
+		warriorDialogIfPlayerIsNOTAWarrior->Hide();
+	}
 }
 
 void TutorialState::UpdateSwitches() {
@@ -262,6 +386,63 @@ void TutorialState::UpdateSwitches() {
 		if (tutorialSwitch->unpressDelayPassed())
 			tutorialPortal->Close();
 	}
+}
+
+bool TutorialState::CheckIfPlayerChoseAVocation(ALLEGRO_EVENT *ev) {
+	if (player->getVocation() == _NoVocation) {
+		if (ev->type == ALLEGRO_EVENT_KEY_UP && ev->keyboard.keycode == ALLEGRO_KEY_ENTER) {
+			const char *str1;
+			const char *str2;
+
+			if (Mage->isSpeaking()) {
+				switch (RPG::GetInstance()->LanguageBeingUsed) {
+				case _English:
+					str1 = "You only get to choose your vocation ONCE!";
+					str2 = "Do you really want to become a Mage?";
+					break;
+				case _Portuguese:
+					str1 = "ATENCAO! So podes escolher a tua profissao uma vez!";
+					str2 = "Tens a certeza que te queres tornar um Mage?";
+				}
+
+				switch (al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Rakos", str1, str2, NULL, ALLEGRO_MESSAGEBOX_YES_NO)) {
+				case 0:
+					cout << "NO button pressed." << endl;
+					break;
+				case 1:
+					cout << "YES button pressed." << endl;
+					player->setVocation(_Mage);
+					break;
+				}
+			}
+			else if (Warrior->isSpeaking()) {
+				switch (RPG::GetInstance()->LanguageBeingUsed) {
+				case _English:
+					str1 = "You only get to choose your vocation ONCE!";
+					str2 = "Do you really want to become a Warrior?";
+					break;
+				case _Portuguese:
+					str1 = "ATENCAO! So podes escolher a tua profissao uma vez!";
+					str2 = "Tens a certeza que te queres tornar um Warrior?";
+				}
+
+				switch (al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Rakos", str1, str2, NULL, ALLEGRO_MESSAGEBOX_YES_NO)) {
+				case 0:
+					cout << "NO button pressed." << endl;
+					break;
+				case 1:
+					cout << "YES button pressed." << endl;
+					player->setVocation(_Warrior);
+					player->setWeapon(RPG::GetInstance()->GetWeapon(_Sword));
+					break;
+				}
+			}
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void TutorialState::DrawDialogs() {
@@ -311,7 +492,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 			UpdateSwitches();
 			tutorialPortal->CheckIfPlayerPassedThrough(player);
 			UpdateDialogs();
-		}
+}
 
 		RPG::GetInstance()->UpdateCamera(worldMap, livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(livingBeings);
@@ -329,6 +510,8 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 
 		draw = true;
 	}
+
+	draw = CheckIfPlayerChoseAVocation(ev);
 
 	return draw;
 }

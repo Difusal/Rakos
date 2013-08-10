@@ -42,7 +42,7 @@ void TextBox::Draw() {
 
 	// box background
 	al_draw_filled_rectangle(destX, destY, destX + width, destY + height, backgroundColor);
-
+	
 	// box frame
 	/*
 	// --------------

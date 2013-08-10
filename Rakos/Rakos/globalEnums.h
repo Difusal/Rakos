@@ -15,6 +15,7 @@ enum GameState {
 };
 
 enum Vocation {
+	_NoVocation,
 	_Mage,
 	_Warrior
 };
@@ -50,6 +51,7 @@ enum TimerType {
 };
 
 enum WeaponType {
-	_None,
-	_Knife
+	_NoWeapon,
+	_Knife,
+	_Sword
 };

@@ -11,7 +11,7 @@ Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 		name = "Coelho";
 		break;
 	}
-	weapon = RPG::GetInstance()->GetWeapon(_None);
+	weapon = RPG::GetInstance()->GetWeapon(_NoWeapon);
 	
 	dead = false;
 	active = true;

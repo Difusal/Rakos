@@ -158,6 +158,8 @@ void RPG::InitializeVariables() {
 	previousNPCWhoTalkedToPlayer = NULL;
 
 	LanguageBeingUsed = DefaultLanguage = _English;
+	// EDIT THIS
+	//LanguageBeingUsed = _Portuguese;
 	cout << "Language being used: ";
 	switch (LanguageBeingUsed) {
 	case _English:
@@ -182,11 +184,14 @@ void RPG::StartTimers() {
 
 void RPG::LoadWeapons() {
 	cout << "Loading weapons..." << endl;
-	no_weapon = new Weapon(_None, 0, 0);
+	no_weapon = new Weapon(_NoWeapon, 0, 0);
 	weapons.push_back(no_weapon);
 
 	knife = new Weapon(_Knife, 1, 2);
 	weapons.push_back(knife);
+
+	sword = new Weapon(_Sword, 2, 5);
+	weapons.push_back(sword);
 }
 
 Weapon * RPG::GetWeapon(WeaponType Weapon) {
