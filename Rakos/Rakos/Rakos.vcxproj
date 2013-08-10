@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConfirmationDialog.cpp" />
     <ClCompile Include="globalFunctions.cpp" />
     <ClCompile Include="LivingBeing.cpp" />
     <ClCompile Include="main.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConfirmationDialog.h" />
     <ClInclude Include="globalFunctions.h" />
     <ClInclude Include="LivingBeing.h" />
     <ClInclude Include="globalEnums.h" />
