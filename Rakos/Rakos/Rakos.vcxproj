@@ -12,7 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfirmationDialog.cpp" />
+    <ClCompile Include="CreaturesWindow.cpp" />
+    <ClCompile Include="EquipmentWindow.cpp" />
     <ClCompile Include="globalFunctions.cpp" />
+    <ClCompile Include="InfoWindow.cpp" />
     <ClCompile Include="LivingBeing.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MouseCursor.cpp" />
@@ -21,6 +24,7 @@
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Rabbit.cpp" />
     <ClCompile Include="RPG.cpp" />
+    <ClCompile Include="SideBarWindow.cpp" />
     <ClCompile Include="SpeechBubble.cpp" />
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="TextBox.cpp" />
@@ -29,7 +33,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConfirmationDialog.h" />
+    <ClInclude Include="CreaturesWindow.h" />
+    <ClInclude Include="EquipmentWindow.h" />
     <ClInclude Include="globalFunctions.h" />
+    <ClInclude Include="InfoWindow.h" />
     <ClInclude Include="LivingBeing.h" />
     <ClInclude Include="globalEnums.h" />
     <ClInclude Include="MouseCursor.h" />
@@ -38,6 +45,7 @@
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Rabbit.h" />
     <ClInclude Include="RPG.h" />
+    <ClInclude Include="SideBarWindow.h" />
     <ClInclude Include="SpeechBubble.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stdIncludes.h" />
