@@ -14,8 +14,10 @@ public:
 
 	~MouseCursor(void);
 
-	unsigned int mouse_x, mouse_y;
-	bool left_mouse_button_pressed;
+	unsigned int x, y;
+	bool leftMouseButtonHasJustBeenPressed;
+	bool leftMouseButtonWasBeingPressedBefore;
+	bool leftMouseButtonPressed;
 	bool left_mouse_button_released;
 	bool left_mouse_button_pressed_twice;
 	bool right_mouse_button_pressed;

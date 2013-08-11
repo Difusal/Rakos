@@ -1,9 +1,15 @@
 #pragma once
 
+#include "SideBarWindow.h"
 
-
-class InfoWindow {
+class InfoWindow: public SideBarWindow {
 public:
-	InfoWindow(void);
+	InfoWindow(string Title);
+
+
+
 	~InfoWindow(void);
+
+private:
+
 };

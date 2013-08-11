@@ -184,7 +184,7 @@ void TutorialState::InitializeDialogs() {
 
 			tempVec.clear();
 			tempVec.push_back("Muito bem! Agora caminha em cima daquele");
-			tempVec.push_back("botao castanho ali e um portal ira abrir-se.");
+			tempVec.push_back("botao castanho e um portal ira abrir-se.");
 			tempVec.push_back("Atravessa o portal! Aqui esta uma dica:");
 			tempVec.push_back("Carrega na tecla <SHIFT> para correres.");
 			steveDialog2 = new SpeechBubble(Steve->getAddressOfX(), Steve->getAddressOfY(), tempVec);
@@ -456,12 +456,7 @@ void TutorialState::Initialize() {
 	LoadMap(TutorialWorldMapPath, worldMap);
 	unaccessibleTiles.push_back(0);
 
-	// loading images
-	sideBar = al_load_bitmap(SideBarPath);
-	if (!sideBar) {
-		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load side bar bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-		exit(-1);
-	}
+	sideBar = new SideBar();
 
 	InitializeLivingBeings();
 
@@ -492,13 +487,15 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 			UpdateSwitches();
 			tutorialPortal->CheckIfPlayerPassedThrough(player);
 			UpdateDialogs();
-}
+		}
 
 		RPG::GetInstance()->UpdateCamera(worldMap, livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(portals);
 		RPG::GetInstance()->UpdateWeaponPositions(livingBeings);
 		RPG::GetInstance()->UpdateWeaponAttackAnimations(livingBeings);
+
+		sideBar->Update();
 
 		// if left mouse pressed and any being is speaking, stop speaking
 		if (RPG::GetInstance()->Mouse->left_mouse_button_released)
@@ -517,6 +514,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 }
 
 void TutorialState::Draw() {
+	// drawing world map
 	DrawMap(worldMap);
 
 	// drawing switches
@@ -532,8 +530,9 @@ void TutorialState::Draw() {
 		livingBeings[i]->Draw();
 
 	// drawing side bar
-	al_draw_bitmap(sideBar, 600 + RPG::GetInstance()->cameraPosition[0], RPG::GetInstance()->cameraPosition[1], NULL);
+	sideBar->Draw();
 
+	// drawing dialogs
 	DrawDialogs();
 
 	/*
@@ -568,5 +567,5 @@ void TutorialState::Terminate() {
 		delete obj;
 	speechBubbles.clear();
 
-	al_destroy_bitmap(sideBar);
+	delete sideBar;
 }

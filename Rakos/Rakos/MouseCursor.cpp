@@ -4,10 +4,12 @@
 MouseCursor::MouseCursor(void) {
 	cout << "Creating mouse cursor..." << endl;
 
-	mouse_x = ScreenWidth;
-	mouse_y = ScreenHeight;
+	x = ScreenWidth;
+	y = ScreenHeight;
 
-	left_mouse_button_pressed = false;
+	leftMouseButtonHasJustBeenPressed = false;
+	leftMouseButtonWasBeingPressedBefore = false;
+	leftMouseButtonPressed = false;
 	left_mouse_button_released = false;
 	right_mouse_button_pressed = false;
 	right_mouse_button_released = false;
@@ -35,8 +37,8 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 
 	/* --- tracking mouse position --- */
 	if (ev->type == ALLEGRO_EVENT_MOUSE_AXES) {
-		mouse_x = ev->mouse.x + RPG::GetInstance()->cameraPosition[0];
-		mouse_y = ev->mouse.y + RPG::GetInstance()->cameraPosition[1];
+		x = ev->mouse.x + RPG::GetInstance()->cameraPosition[0];
+		y = ev->mouse.y + RPG::GetInstance()->cameraPosition[1];
 
 		prevMouseRawX = ev->mouse.x;
 		prevMouseRawY = ev->mouse.y;
@@ -48,7 +50,7 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 	if (ev->type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 		if (ev->mouse.button &1) {
 			//cout << "* Left mouse button pressed *" << endl;
-			left_mouse_button_pressed = true;
+			leftMouseButtonPressed = true;
 			left_mouse_button_released = false;
 			draw = true;
 		}
@@ -69,7 +71,7 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 				cout << "* Left mouse button released *" << endl;
 
 			possible_double_press = true;
-			left_mouse_button_pressed = false;
+			leftMouseButtonPressed = false;
 			left_mouse_button_released = true;
 
 			playAnim = true;
@@ -88,6 +90,11 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 			draw = true;
 		}
 	}
+	
+	if (leftMouseButtonPressed && !leftMouseButtonWasBeingPressedBefore)
+		leftMouseButtonHasJustBeenPressed = true;
+	else
+		leftMouseButtonHasJustBeenPressed = false;
 
 	// controlling animation
 	if (ev->timer.source == RPG::GetInstance()->GetTimer(_MouseAnimTimer) && playAnim) {
@@ -104,18 +111,19 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 }
 
 bool MouseCursor::CorrectMousePosition() {
-	mouse_x = prevMouseRawX + RPG::GetInstance()->cameraPosition[0];
-	mouse_y = prevMouseRawY + RPG::GetInstance()->cameraPosition[1];
+	x = prevMouseRawX + RPG::GetInstance()->cameraPosition[0];
+	y = prevMouseRawY + RPG::GetInstance()->cameraPosition[1];
 
 	return true;
 }
 
 void MouseCursor::Draw() {
 	double size = al_get_bitmap_height(bitmap);
-	al_draw_bitmap_region(bitmap, animFrame*size, 0, size, size, mouse_x-size/2.0, mouse_y-size/2.0, NULL);
+	al_draw_bitmap_region(bitmap, animFrame*size, 0, size, size, x-size/2.0, y-size/2.0, NULL);
 }
 
 void MouseCursor::SetAllReleaseValuesToFalse() {
+	leftMouseButtonWasBeingPressedBefore = leftMouseButtonPressed;
 	left_mouse_button_released = false;
 	left_mouse_button_pressed_twice = false;
 	right_mouse_button_released = false;

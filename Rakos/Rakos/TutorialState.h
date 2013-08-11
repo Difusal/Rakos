@@ -2,6 +2,7 @@
 
 #include "stdIncludes.h"
 #include "State.h"
+#include "SideBar.h"
 #include "Weapon.h"
 #include "Player.h"
 #include "NPC.h"
@@ -9,9 +10,9 @@
 #include "Portal.h"
 #include "Switch.h"
 #include "TextBox.h"
+#include "SideBarWindow.h"
 
-class TutorialState: public State
-{
+class TutorialState: public State {
 public:
 	void InitializeLivingBeings();
 	void InitializeDialogs();
@@ -30,6 +31,8 @@ private:
 	vector<vector<int> > worldMap;
 	vector<int> unaccessibleTiles;
 
+	SideBar *sideBar;
+
 	vector<LivingBeing*> livingBeings;
 	Player *player;
 	NPC *Steve;
@@ -45,7 +48,6 @@ private:
 	Portal *tutorialPortal;
 
 	ALLEGRO_KEYBOARD_STATE keyState;
-	ALLEGRO_BITMAP *sideBar;
 
 	vector<TextBox*> textBoxes;
 	TextBox *tutorialDialog1;

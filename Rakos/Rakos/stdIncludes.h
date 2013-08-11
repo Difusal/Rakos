@@ -39,6 +39,7 @@ const float SlowCreaturesSpeed = FPS/2.5;
 
 /* user friendly names */
 #define Black al_map_rgb(0, 0, 0)
+#define DarkerGray al_map_rgb(32, 32, 32)
 #define DarkGray al_map_rgb(64, 64, 64)
 #define Gray al_map_rgb(128, 128, 128)
 #define LightGray al_map_rgb(192, 192, 192)
