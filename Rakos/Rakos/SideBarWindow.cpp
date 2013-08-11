@@ -7,6 +7,7 @@ void SideBarWindow::Initialize() {
 	cameraX = &RPG::GetInstance()->cameraPosition[0];
 	cameraY = &RPG::GetInstance()->cameraPosition[1];
 
+	titleBarHeight = 24;
 	width = 200-1;
 
 	mouse = RPG::GetInstance()->Mouse;
@@ -36,7 +37,7 @@ void SideBarWindow::CheckIfWindowIsBeingMoved() {
 	}
 }
 
-void SideBarWindow::Update() {
+void SideBarWindow::UpdateBase() {
 	CheckIfWindowIsBeingMoved();
 
 	// if being dragged, move window to current mouse y coord
@@ -53,7 +54,7 @@ void SideBarWindow::Update() {
 	y = titleBarY + titleBarHeight;
 }
 
-void SideBarWindow::Draw() {
+void SideBarWindow::DrawBase() {
 	unsigned int alpha = 190;
 	unsigned int rgb = 128;
 	ALLEGRO_COLOR backgroundColor = al_map_rgba(rgb*alpha, rgb*alpha, rgb*alpha, alpha);
@@ -77,6 +78,7 @@ void SideBarWindow::Draw() {
 	al_draw_rectangle(x, y, x + width, y + height, Black, 1.0);
 
 	// title
-	al_draw_text(font, Black, titleBarX + width/2.0 + 2, titleBarY + 2 + 1, ALLEGRO_ALIGN_CENTER, title.c_str());
-	al_draw_text(font, White, titleBarX + width/2.0, titleBarY + 2, ALLEGRO_ALIGN_CENTER, title.c_str());
+	unsigned int yCorrection = 4;
+	al_draw_text(font, Black, titleBarX + width/2.0 + 2, titleBarY+yCorrection + 1, ALLEGRO_ALIGN_CENTER, title.c_str());
+	al_draw_text(font, White, titleBarX + width/2.0, titleBarY+yCorrection, ALLEGRO_ALIGN_CENTER, title.c_str());
 }

@@ -1,11 +1,21 @@
 #include "CreaturesWindow.h"
 
 CreaturesWindow::CreaturesWindow(string Title) {
-	title = Title;
-	titleBarHeight = 20;
+	Initialize();
 
+	title = Title;
 	height = 250;
 }
+
+
+void CreaturesWindow::Update() {
+	UpdateBase();
+}
+
+void CreaturesWindow::Draw(){
+	DrawBase();
+}
+
 
 CreaturesWindow::~CreaturesWindow(void) {
 	delete cameraX;

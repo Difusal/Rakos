@@ -30,9 +30,6 @@ void SideBar::InitializeWindows() {
 	
 	creaturesWindow = new CreaturesWindow("Creatures");
 	windows.push_back(creaturesWindow);
-
-	for (SideBarWindow *obj: windows)
-		obj->Initialize();
 }
 
 void SideBar::DistributeWindowsAlongSideBar() {

@@ -7,8 +7,10 @@ class SideBarWindow {
 public:
 	void Initialize();
 	void CheckIfWindowIsBeingMoved();
-	void Update();
-	void Draw();
+	virtual void Update() = 0;
+	void UpdateBase();
+	virtual void Draw() = 0;
+	void DrawBase();
 
 	void setTitle(string Title) { title = Title; }
 	void setHeight(unsigned int Height) { height = Height; }
