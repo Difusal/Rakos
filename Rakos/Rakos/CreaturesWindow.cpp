@@ -1,11 +1,14 @@
 #include "CreaturesWindow.h"
 
+CreaturesWindow::CreaturesWindow(string Title) {
+	title = Title;
+	titleBarHeight = 20;
 
-CreaturesWindow::CreaturesWindow(void)
-{
+	height = 250;
 }
 
-
-CreaturesWindow::~CreaturesWindow(void)
-{
+CreaturesWindow::~CreaturesWindow(void) {
+	delete cameraX;
+	delete cameraY;
+	al_destroy_font(font);
 }

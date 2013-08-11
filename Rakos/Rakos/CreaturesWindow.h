@@ -1,9 +1,9 @@
 #pragma once
 
+#include "SideBarWindow.h"
 
-
-class CreaturesWindow {
+class CreaturesWindow: public SideBarWindow {
 public:
-	CreaturesWindow(void);
+	CreaturesWindow(string Title);
 	~CreaturesWindow(void);
 };

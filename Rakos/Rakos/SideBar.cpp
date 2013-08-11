@@ -25,11 +25,11 @@ void SideBar::InitializeWindows() {
 	infoWindow = new InfoWindow("Info");
 	windows.push_back(infoWindow);
 
-	testWindow2 = new InfoWindow("Equipment");
-	windows.push_back(testWindow2);
-	/*
-	testWindow3 = new SideBarWindow("Creatures");
-	windows.push_back(testWindow3);*/
+	equipmentWindow = new EquipmentWindow("Equipment");
+	windows.push_back(equipmentWindow);
+	
+	creaturesWindow = new CreaturesWindow("Creatures");
+	windows.push_back(creaturesWindow);
 
 	for (SideBarWindow *obj: windows)
 		obj->Initialize();
@@ -62,14 +62,14 @@ void SideBar::Update() {
 	if (someWindowBeingMoved) {
 		if (movingWindowID+1 < windows.size()) {
 			// if window was moved down enough to swap with other window, swap them
-			if (windows[movingWindowID]->middleYPos() > windows[movingWindowID+1]->middleYPos()) {
+			if (windows[movingWindowID]->currentBottomYPos() > windows[movingWindowID+1]->middleYPos()) {
 				swap(windows[movingWindowID], windows[movingWindowID+1]);
 				DistributeWindowsAlongSideBar();
 			}
 		}
 		if (1 <= movingWindowID) {
 			// if window was moved up enough to swap with other window, swap them
-			if (windows[movingWindowID]->middleYPos() < windows[movingWindowID-1]->middleYPos()) {
+			if (windows[movingWindowID]->currentYPos() < windows[movingWindowID-1]->middleYPos()) {
 				swap(windows[movingWindowID], windows[movingWindowID-1]);
 				DistributeWindowsAlongSideBar();
 			}

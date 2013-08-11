@@ -15,9 +15,9 @@ public:
 
 	bool isBeingDragged() { return beingDragged; }
 
-	unsigned int currentYPos() { return titleBarY - *cameraY; }
-	unsigned int middleYPos() { return titleBarY + width/2.0; }
-	unsigned int currentBottomYPos() { return titleBarY + width; }
+	unsigned int currentYPos() { return titleBarY; }
+	unsigned int middleYPos() { return titleBarY + titleBarHeight + height/2.0; }
+	unsigned int currentBottomYPos() { return titleBarY + getHeight(); }
 	unsigned int getHeight() { return titleBarHeight + height; }
 	void setDefaultWindowY(unsigned int Y) { defaultWindowY = Y; }
 
@@ -39,4 +39,6 @@ private:
 	ALLEGRO_FONT *font;
 
 	friend class InfoWindow;
+	friend class EquipmentWindow;
+	friend class CreaturesWindow;
 };

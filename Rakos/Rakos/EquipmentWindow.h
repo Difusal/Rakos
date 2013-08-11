@@ -1,9 +1,12 @@
 #pragma once
 
+#include "SideBarWindow.h"
 
-
-class EquipmentWindow {
+class EquipmentWindow: public SideBarWindow {
 public:
-	EquipmentWindow(void);
+	EquipmentWindow(string Title);
 	~EquipmentWindow(void);
+
+private:
+
 };

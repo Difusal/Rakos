@@ -3,6 +3,8 @@
 #include "stdIncludes.h"
 #include "SideBarWindow.h"
 #include "InfoWindow.h"
+#include "EquipmentWindow.h"
+#include "CreaturesWindow.h"
 
 class SideBar {
 public:
@@ -23,8 +25,8 @@ private:
 	unsigned int movingWindowID;
 	vector<SideBarWindow*> windows;
 	InfoWindow *infoWindow;
-	SideBarWindow *testWindow2;
-	SideBarWindow *testWindow3;
+	EquipmentWindow *equipmentWindow;
+	CreaturesWindow *creaturesWindow;
 
 	float *cameraX, *cameraY;
 	unsigned int width, height;
