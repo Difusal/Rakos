@@ -63,17 +63,24 @@ const float SlowCreaturesSpeed = FPS/2.5;
 #define SideBarPath "res//images//side_bar.png"
 
 /* character sprites */
-#define playerPng "res//sprites//living beings//noob_yellow.png"
-#define explorer_greenPng "res//sprites//living beings//explorer_green.png"
-#define knight_whitePng "res//sprites//living beings//knight_white.png"
-#define mage_bluePng "res//sprites//living beings//mage_blue.png"
-#define warrior_yellowPng "res//sprites//living beings//warrior_yellow.png"
-#define rabbitPng "res//sprites//living beings//rabbit.png"
+#define playerPng "res//living beings sprites//noob_yellow.png"
+#define explorer_greenPng "res//living beings sprites//explorer_green.png"
+#define knight_whitePng "res//living beings sprites//knight_white.png"
+#define mage_bluePng "res//living beings sprites//mage_blue.png"
+#define warrior_yellowPng "res//living beings sprites//warrior_yellow.png"
+#define rabbitPng "res//living beings sprites//rabbit.png"
 
 /* sprites */
-#define SwordsPng "res//sprites//swords.png"
 #define PortalPng "res//sprites//portal.png"
 #define SwitchPng "res//sprites//switch.png"
+
+/* weapon sprites */
+#define SwordsPng "res//weapon sprites//swords.png"
+
+/* weapon thumbnails */
+#define NoWeaponThumb "res//weapon thumbnails//NoWeapon.png"
+#define KnifeThumb "res//weapon thumbnails//Knife.png"
+#define SwordThumb "res//weapon thumbnails//Sword.png"
 
 /* world maps */
 #define TutorialWorldMapPath "res//maps//tutorial.txt"

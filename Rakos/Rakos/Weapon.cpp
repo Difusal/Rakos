@@ -23,16 +23,16 @@ Weapon::Weapon(WeaponType Type, int minAttack, int maxAttack) {
 
 	switch (type) {
 	case _NoWeapon:
-		bitmap = al_load_bitmap(SwordsPng);
+		thumbnail = al_load_bitmap(NoWeaponThumb);
 		break;
 	case _Knife:
-		bitmap = al_load_bitmap(SwordsPng);
+		thumbnail = al_load_bitmap(KnifeThumb);
 		break;
 	case _Sword:
-		bitmap = al_load_bitmap(SwordsPng);
+		thumbnail = al_load_bitmap(SwordThumb);
 		break;
 	}
-	if (!bitmap) {
+	if (!thumbnail) {
 		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load weapon bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
 	}
@@ -333,8 +333,8 @@ int Weapon::getDamage() {
 
 
 Weapon::~Weapon(void) {
-	if (bitmap)
-		al_destroy_bitmap(bitmap);
+	if (thumbnail)
+		al_destroy_bitmap(thumbnail);
 
 	if (type != _NoWeapon)
 		al_destroy_bitmap(sprite);

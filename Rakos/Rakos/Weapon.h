@@ -15,6 +15,7 @@ public:
 
 	string getName() { return name; }
 	int getDamage();
+	ALLEGRO_BITMAP *getThumbnail() { return thumbnail; }
 	bool animationIsPlaying() { return playingAnimation; };
 
 	~Weapon(void);
@@ -30,7 +31,7 @@ private:
 	int xCorrection, yCorrection;
 	Direction direction;
 
-	ALLEGRO_BITMAP *bitmap;
+	ALLEGRO_BITMAP *thumbnail;
 	ALLEGRO_BITMAP *sprite;
 	int spriteX1, spriteY1, width, height;
 	bool startPlayingAnimation;

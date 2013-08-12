@@ -14,4 +14,8 @@ public:
 private:
 	unsigned int weaponLabelX, shieldLabelX;
 	unsigned int labelsY;
+
+	unsigned int thumbnailSize;
+	unsigned int weaponThumbnailX, shieldThumbnailX;
+	unsigned int thumbnailsY;
 };
