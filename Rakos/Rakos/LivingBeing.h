@@ -3,6 +3,7 @@
 #include "stdIncludes.h"
 #include "globalEnums.h"
 #include "Weapon.h"
+#include "Shield.h"
 #include "SpeechBubble.h"
 
 class LivingBeing {
@@ -19,7 +20,8 @@ public:
 	TimerType getTimerType() { return timer; }
 	string getName() { return name; }
 	void setName(string Name) { name = Name; }
-	Weapon *getWeapon() { return weapon; }
+	Weapon *GetWeapon() { return weapon; }
+	Shield *GetShield() { return shield; }
 	
 	bool isDead() { return dead; }
 	void setDeadState(bool Dead) { dead = Dead; }
@@ -77,6 +79,7 @@ private:
 	TimerType timer;
 	string name;
 	Weapon *weapon;
+	Shield *shield;
 
 	bool dead;
 	bool active;

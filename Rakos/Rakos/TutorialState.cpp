@@ -492,7 +492,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 		RPG::GetInstance()->UpdateCamera(worldMap, livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(portals);
-		RPG::GetInstance()->UpdateWeaponPositions(livingBeings);
+		RPG::GetInstance()->UpdateWeaponAndShieldPositions(livingBeings);
 		RPG::GetInstance()->UpdateWeaponAttackAnimations(livingBeings);
 
 		sideBar->Update();

@@ -24,6 +24,7 @@ public:
 	void StartTimers();
 
 	void LoadWeapons();
+	void LoadShields();
 
 	void CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
 	void CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
@@ -34,7 +35,7 @@ public:
 
 	void UpdateAnimationsFrame(vector<LivingBeing*> &livingBeings);
 	void UpdateAnimationsFrame(vector<Portal*> &portals);
-	void UpdateWeaponPositions(vector<LivingBeing*> &livingBeings);
+	void UpdateWeaponAndShieldPositions(vector<LivingBeing*> &livingBeings);
 	void UpdateWeaponAttackAnimations(vector<LivingBeing*> &livingBeings);
 	void UpdateCamera(vector<vector<int> > &worldMap, vector<LivingBeing*> &livingBeings);
 
@@ -53,6 +54,7 @@ public:
 
 	Player *GetPlayer() { return player; }
 	Weapon *GetWeapon(WeaponType Weapon);
+	Shield *GetShield(ShieldType Shield);
 
 
 	// Public Variables
@@ -96,6 +98,10 @@ private:
 	Weapon *no_weapon;
 	Weapon *knife;
 	Weapon *sword;
+
+	vector<Shield*> shields;
+	Shield *no_shield;
+	Shield *woodenShield;
 
 	Language DefaultLanguage;
 	bool done, draw;

@@ -1,12 +1,11 @@
 #include "Player.h"
 #include "RPG.h"
 
-Player::Player(string Name, Weapon *weapon, double X, double Y) {
+Player::Player(string Name, Weapon *weapon, Shield *shield, double X, double Y) {
 	type = _Player;
 	vocation = _NoVocation;
 	timer = _PlayerMoveTimer;
 	name = Name;
-	weapon = RPG::GetInstance()->GetWeapon(_NoWeapon);
 
 	dead = false;
 	active = false;
@@ -19,6 +18,8 @@ Player::Player(string Name, Weapon *weapon, double X, double Y) {
 	this->weapon = weapon;
 	attackCooldown = 0;
 	playerCanAttack = true;
+
+	this->shield = shield;
 
 	running = false;
 

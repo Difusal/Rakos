@@ -25,6 +25,7 @@
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Rabbit.cpp" />
     <ClCompile Include="RPG.cpp" />
+    <ClCompile Include="Shield.cpp" />
     <ClCompile Include="SideBar.cpp" />
     <ClCompile Include="SideBarWindow.cpp" />
     <ClCompile Include="SpeechBubble.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Rabbit.h" />
     <ClInclude Include="RPG.h" />
+    <ClInclude Include="Shield.h" />
     <ClInclude Include="SideBar.h" />
     <ClInclude Include="SideBarWindow.h" />
     <ClInclude Include="SpeechBubble.h" />

@@ -25,10 +25,30 @@ void SideBar::InitializeWindows() {
 	infoWindow = new InfoWindow("Info");
 	windows.push_back(infoWindow);
 
-	equipmentWindow = new EquipmentWindow("Equipment");
+
+	string equipmentLabel;
+	switch (RPG::GetInstance()->LanguageBeingUsed) {
+	case _English:
+		equipmentLabel = "Equipment";
+		break;
+	case _Portuguese:
+		equipmentLabel = "Equipamento";
+		break;
+	}
+	equipmentWindow = new EquipmentWindow(equipmentLabel);
 	windows.push_back(equipmentWindow);
-	
-	creaturesWindow = new CreaturesWindow("Creatures");
+
+
+	string creaturesLabel;
+	switch (RPG::GetInstance()->LanguageBeingUsed) {
+	case _English:
+		creaturesLabel = "Creatures";
+		break;
+	case _Portuguese:
+		creaturesLabel = "Criaturas";
+		break;
+	}
+	creaturesWindow = new CreaturesWindow(creaturesLabel);
 	windows.push_back(creaturesWindow);
 }
 

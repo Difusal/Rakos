@@ -57,7 +57,15 @@ void LivingBeing::UpdateAnimationFrame() {
 void LivingBeing::Draw() {
 	switch (direction) {
 	case DOWN:
+		DrawBeing();
+		shield->Draw();
+		if (this->weapon->animationIsPlaying())
+			weapon->DrawAttackAnim();
+		else
+			weapon->Draw();
+		break;
 	case RIGHT:
+		shield->Draw();
 		DrawBeing();
 		if (this->weapon->animationIsPlaying())
 			weapon->DrawAttackAnim();
@@ -71,6 +79,7 @@ void LivingBeing::Draw() {
 		else
 			weapon->Draw();
 		DrawBeing();
+		shield->Draw();
 		break;
 	}
 

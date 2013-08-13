@@ -194,8 +194,21 @@ void RPG::LoadWeapons() {
 	weapons.push_back(sword);
 }
 
-Weapon * RPG::GetWeapon(WeaponType Weapon) {
+Weapon *RPG::GetWeapon(WeaponType Weapon) {
 	return weapons[Weapon];
+}
+
+void RPG::LoadShields() {
+	cout << "Loading shields..." << endl;
+	no_shield = new Shield(_NoShield, 0);
+	shields.push_back(no_shield);
+
+	woodenShield = new Shield(_WoodenShield, 2);
+	shields.push_back(woodenShield);
+}
+
+Shield *RPG::GetShield(ShieldType Shield) {
+	return shields[Shield];
 }
 
 
@@ -508,15 +521,17 @@ void RPG::UpdateAnimationsFrame(vector<Portal*> &portals) {
 			obj->UpdateAnimationFrame();
 }
 
-void RPG::UpdateWeaponPositions(vector<LivingBeing*> &livingBeings) {
-	for (LivingBeing *being : livingBeings)
-		being->getWeapon()->UpdatePosition(being->getDir(), being->getCurrentFrame(), being->getX(), being->getY());
+void RPG::UpdateWeaponAndShieldPositions(vector<LivingBeing*> &livingBeings) {
+	for (LivingBeing *being : livingBeings) {
+		being->GetWeapon()->UpdatePosition(being->getDir(), being->getCurrentFrame(), being->getX(), being->getY());
+		being->GetShield()->UpdatePosition(being->getDir(), being->getCurrentFrame(), being->getX(), being->getY());
+	}
 }
 
 void RPG::UpdateWeaponAttackAnimations(vector<LivingBeing*> &livingBeings) {
 	if (ev.timer.source == RPG::GetInstance()->GetTimer(_WeaponAnimTimer))
 		for (unsigned int i = 0; i < livingBeings.size(); i++)
-			livingBeings[i]->getWeapon()->UpdateAttackAnimation();
+			livingBeings[i]->GetWeapon()->UpdateAttackAnimation();
 }
 
 void RPG::UpdateCamera(vector<vector<int> > &worldMap, vector<LivingBeing*> &livingBeings) {
@@ -552,6 +567,7 @@ void RPG::Initialize() {
 	LoadSoundSamples();
 
 	LoadWeapons();
+	LoadShields();
 
 	InitializeVariables();
 	StartTimers();
@@ -601,7 +617,7 @@ void RPG::StartGameControlCycle() {
 	Initialize();
 
 	// EDIT THIS
-	player = new Player("Difusal", no_weapon, 480, 580);
+	player = new Player("Difusal", no_weapon, no_shield, 480, 580);
 
 	states.push_back(new TutorialState());
 	state = -1;
@@ -633,6 +649,11 @@ void RPG::Terminate() {
 	for (Weapon *obj : weapons)
 		delete obj;
 	weapons.clear();
+
+	// shields
+	for (Shield *obj : shields)
+		delete obj;
+	shields.clear();
 
 	// living beings
 	delete player;

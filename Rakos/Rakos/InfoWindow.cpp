@@ -46,7 +46,15 @@ void InfoWindow::Update() {
 	levelBarFillColor = Red;
 
 	ss.str(string());
-	ss << "Gold:  " << 39256;
+	switch (RPG::GetInstance()->LanguageBeingUsed) {
+	case _English:
+		ss << "Gold:  ";
+		break;
+	case _Portuguese:
+		ss << "Dinheiro:  ";
+		break;
+	}
+	ss << 39256;
 	goldLabel = ss.str();
 	goldLabelY = levelBarY+barHeight + font->height/2.0;
 
@@ -67,7 +75,16 @@ void InfoWindow::Draw() {
 	DrawBar(mpBarY, 10, RPG::GetInstance()->GetPlayer()->getMaxHP(), mpBarFillColor);
 
 	// Printing Level data
-	al_draw_text(font, White, labelsX, levelLabelY, ALLEGRO_ALIGN_LEFT, "Level:");
+	string str;
+	switch (RPG::GetInstance()->LanguageBeingUsed) {
+	case _English:
+		str = "Level:";
+		break;
+	case _Portuguese:
+		str = "Nivel:";
+		break;
+	}
+	al_draw_text(font, White, labelsX, levelLabelY, ALLEGRO_ALIGN_LEFT, str.c_str());
 	al_draw_text(font, White, windowCenterX, levelLabelY, ALLEGRO_ALIGN_CENTER, levelLabel.c_str());
 	DrawBar(levelBarY, 25, 100, levelBarFillColor);
 

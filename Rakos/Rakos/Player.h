@@ -5,7 +5,7 @@
 
 class Player: public LivingBeing {
 public:
-	Player(string Name, Weapon *weapon, double X, double Y);
+	Player(string Name, Weapon *weapon, Shield *shield, double X, double Y);
 
 	void CheckIfRunning(ALLEGRO_KEYBOARD_STATE keyState);
 	void UpdatePosition(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMap);
@@ -22,6 +22,9 @@ public:
 
 	Weapon *getWeapon() { return weapon; }
 	void setWeapon(Weapon *newWeapon);
+
+	Shield *getShield() { return shield; }
+	void setShield(Shield *newShield);
 
 	bool getRunningState() { return running; }
 	void setRunningState(bool newState) { running = newState; }

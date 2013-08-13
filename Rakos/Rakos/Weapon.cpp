@@ -6,7 +6,7 @@ Weapon::Weapon(WeaponType Type, int minAttack, int maxAttack) {
 	type = Type;
 	switch (type) {
 	case _NoWeapon:
-		name = "none";
+		name = "None";
 		break;
 	case _Knife:
 		name = "Knife";

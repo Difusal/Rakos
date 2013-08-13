@@ -12,6 +12,7 @@ Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 		break;
 	}
 	weapon = RPG::GetInstance()->GetWeapon(_NoWeapon);
+	shield = RPG::GetInstance()->GetShield(_NoShield);
 	
 	dead = false;
 	active = true;

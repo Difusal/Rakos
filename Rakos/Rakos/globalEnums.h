@@ -55,3 +55,8 @@ enum WeaponType {
 	_Knife,
 	_Sword
 };
+
+enum ShieldType {
+	_NoShield,
+	_WoodenShield
+};

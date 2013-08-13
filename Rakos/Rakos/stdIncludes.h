@@ -74,6 +74,13 @@ const float SlowCreaturesSpeed = FPS/2.5;
 #define PortalPng "res//sprites//portal.png"
 #define SwitchPng "res//sprites//switch.png"
 
+/* shield sprites */
+#define WoodenShieldPng "res//shield sprites//woodenShield.png"
+
+/* shield thumbnails */
+#define NoShieldThumb "res//shield thumbnails//NoShield.png"
+#define WoodenShieldThumb "res//shield thumbnails//WoodenShield.png"
+
 /* weapon sprites */
 #define SwordsPng "res//weapon sprites//swords.png"
 

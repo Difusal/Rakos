@@ -6,6 +6,7 @@ NPC::NPC(string Name, double P1_X, double P1_Y, double P2_X, double P2_Y, const 
 	timer = _NPCMoveTimer;
 	name = Name;
 	weapon = RPG::GetInstance()->GetWeapon(_NoWeapon);
+	shield = RPG::GetInstance()->GetShield(_NoShield);
 
 	dead = false;
 	active = true;
@@ -35,6 +36,7 @@ NPC::NPC(string Name, double X, double Y, const char* Bitmap) {
 	timer = _NPCMoveTimer;
 	name = Name;
 	weapon = RPG::GetInstance()->GetWeapon(_NoWeapon);
+	shield = RPG::GetInstance()->GetShield(_NoShield);
 
 	dead = false;
 	active = false;
