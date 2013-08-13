@@ -2,9 +2,10 @@
 
 #include "stdIncludes.h"
 #include "globalEnums.h"
+#include "SpeechBubble.h"
 #include "Weapon.h"
 #include "Shield.h"
-#include "SpeechBubble.h"
+#include "Gold.h"
 
 class LivingBeing {
 public:
@@ -22,7 +23,8 @@ public:
 	void setName(string Name) { name = Name; }
 	Weapon *GetWeapon() { return weapon; }
 	Shield *GetShield() { return shield; }
-	
+	Gold *GetGold() { return gold; }
+
 	bool isDead() { return dead; }
 	void setDeadState(bool Dead) { dead = Dead; }
 	bool isActive() { return active; }
@@ -80,6 +82,7 @@ private:
 	string name;
 	Weapon *weapon;
 	Shield *shield;
+	Gold *gold;
 
 	bool dead;
 	bool active;

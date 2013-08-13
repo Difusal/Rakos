@@ -30,16 +30,15 @@ void InfoWindow::Update() {
 	else
 		hpBarFillColor = Red;
 
-	// EDIT THIS ////////////////////////////////////////
 	ss.str(string());
-	ss << 10 << "/" << RPG::GetInstance()->GetPlayer()->getMaxHP();
+	ss << RPG::GetInstance()->GetPlayer()->getMP() << "/" << RPG::GetInstance()->GetPlayer()->getMaxMP();
 	mpLabel = ss.str();
 	mpLabelY = hpBarY+barHeight + font->height/2.0;
 	mpBarY = mpLabelY + font->height;
 	mpBarFillColor = Blue;
 
 	ss.str(string());
-	ss << "7" << " (" << "25" << "%)";
+	ss << RPG::GetInstance()->GetPlayer()->getLevel() << " (" << "???" << "%)";
 	levelLabel = ss.str();
 	levelLabelY = mpBarY+barHeight + font->height/2.0;
 	levelBarY = levelLabelY + font->height;
@@ -54,7 +53,7 @@ void InfoWindow::Update() {
 		ss << "Dinheiro:  ";
 		break;
 	}
-	ss << 39256;
+	ss << RPG::GetInstance()->GetPlayer()->GetGold()->getAmountOfGoldCoins();
 	goldLabel = ss.str();
 	goldLabelY = levelBarY+barHeight + font->height/2.0;
 
@@ -72,7 +71,7 @@ void InfoWindow::Draw() {
 	// Printing MP data
 	al_draw_text(font, White, labelsX, mpLabelY, ALLEGRO_ALIGN_LEFT, "MP:");
 	al_draw_text(font, White, windowCenterX, mpLabelY, ALLEGRO_ALIGN_CENTER, mpLabel.c_str());
-	DrawBar(mpBarY, 10, RPG::GetInstance()->GetPlayer()->getMaxHP(), mpBarFillColor);
+	DrawBar(mpBarY, RPG::GetInstance()->GetPlayer()->getMP(), RPG::GetInstance()->GetPlayer()->getMaxMP(), mpBarFillColor);
 
 	// Printing Level data
 	string str;

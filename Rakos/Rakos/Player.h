@@ -26,6 +26,14 @@ public:
 	Shield *getShield() { return shield; }
 	void setShield(Shield *newShield);
 
+
+	unsigned int getMP() { return mp; }
+	unsigned int getMaxMP() { return maxMp; }
+
+	unsigned int getLevel() { return level; }
+	unsigned int getExp() { return experience; }
+
+
 	bool getRunningState() { return running; }
 	void setRunningState(bool newState) { running = newState; }
 
@@ -36,6 +44,12 @@ public:
 
 private:
 	Vocation vocation;
+
+	unsigned int mp;
+	unsigned int maxMp;
+
+	unsigned int level;
+	unsigned int experience;
 
 	int attackCooldown;
 	bool playerCanAttack;
