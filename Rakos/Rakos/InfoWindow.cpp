@@ -95,7 +95,6 @@ void InfoWindow::DrawBar(unsigned int barY, unsigned int currentValue, unsigned 
 	double percentage = 100.0 * currentValue / maxValue;
 	unsigned int fillWidthInpixels = barWidth * percentage / 100.0;
 
-	//windowCenterX+barWidth/2.0 - 1
 	al_draw_filled_rectangle(windowCenterX-barWidth/2.0, barY, windowCenterX + barWidth/2.0, barY + barHeight, Black);
 	al_draw_rectangle(windowCenterX-barWidth/2.0, barY+1, windowCenterX+barWidth/2.0 - 1, barY + barHeight, DarkerGray, 1.0);
 	al_draw_filled_rectangle(windowCenterX-barWidth/2.0 + 1, barY+1, windowCenterX-barWidth/2.0 + fillWidthInpixels, barY+barHeight-1, fillColor);

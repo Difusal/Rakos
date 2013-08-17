@@ -8,7 +8,7 @@
 
 class SideBar {
 public:
-	SideBar();
+	SideBar(vector<LivingBeing*> *livingBeings);
 
 	void InitializeWindows();
 	void DistributeWindowsAlongSideBar();
@@ -21,8 +21,11 @@ public:
 private:
 	unsigned int x, y;
 
+	vector<LivingBeing*> *beings;
+
 	bool someWindowBeingMoved;
 	unsigned int movingWindowID;
+
 	vector<SideBarWindow*> windows;
 	InfoWindow *infoWindow;
 	EquipmentWindow *equipmentWindow;
@@ -30,5 +33,5 @@ private:
 
 	float *cameraX, *cameraY;
 	unsigned int width, height;
-	ALLEGRO_BITMAP *bacground;
+	ALLEGRO_BITMAP *background;
 };

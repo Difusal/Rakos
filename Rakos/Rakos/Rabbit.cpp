@@ -1,4 +1,5 @@
 #include "Rabbit.h"
+#include "globalFunctions.h"
 
 Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 	type = _Creature;
@@ -13,7 +14,8 @@ Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 	}
 	weapon = RPG::GetInstance()->GetWeapon(_NoWeapon);
 	shield = RPG::GetInstance()->GetShield(_NoShield);
-	
+	gold = new Gold(randomNumber(1, 3));
+
 	dead = false;
 	active = true;
 	alwaysInactive = !active;

@@ -617,7 +617,7 @@ void RPG::StartGameControlCycle() {
 	Initialize();
 
 	// EDIT THIS
-	player = new Player("Difusal", no_weapon, no_shield, 480, 580);
+	player = new Player("Difusal", sword, no_shield, 480, 580);
 
 	states.push_back(new TutorialState());
 	state = -1;

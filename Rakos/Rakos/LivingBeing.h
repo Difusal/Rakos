@@ -106,4 +106,5 @@ private:
 	friend class NPC;
 	friend class Rabbit;
 	friend class Weapon;
+	friend class CreatureWindowObject;
 };

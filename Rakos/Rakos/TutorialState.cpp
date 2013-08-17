@@ -456,7 +456,7 @@ void TutorialState::Initialize() {
 	LoadMap(TutorialWorldMapPath, worldMap);
 	unaccessibleTiles.push_back(0);
 
-	sideBar = new SideBar();
+	sideBar = new SideBar(&livingBeings);
 
 	InitializeLivingBeings();
 

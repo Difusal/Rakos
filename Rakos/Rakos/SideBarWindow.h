@@ -43,4 +43,5 @@ private:
 	friend class InfoWindow;
 	friend class EquipmentWindow;
 	friend class CreaturesWindow;
+	friend class CreatureWindowObject;
 };

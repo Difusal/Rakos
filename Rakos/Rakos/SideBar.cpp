@@ -1,15 +1,17 @@
 #include "SideBar.h"
 #include "RPG.h"
 
-SideBar::SideBar() {
+SideBar::SideBar(vector<LivingBeing*> *livingBeings) {
+	beings = livingBeings;
+
 	cameraX = &RPG::GetInstance()->cameraPosition[0];
 	cameraY = &RPG::GetInstance()->cameraPosition[1];
 
 	width = 200;
 	height = ScreenHeight;
 
-	bacground = al_load_bitmap(SideBarPath);
-	if (!bacground) {
+	background = al_load_bitmap(SideBarPath);
+	if (!background) {
 		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load side bar bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
 	}
@@ -48,7 +50,7 @@ void SideBar::InitializeWindows() {
 		creaturesLabel = "Criaturas";
 		break;
 	}
-	creaturesWindow = new CreaturesWindow(creaturesLabel);
+	creaturesWindow = new CreaturesWindow(creaturesLabel, beings);
 	windows.push_back(creaturesWindow);
 }
 
@@ -99,7 +101,7 @@ void SideBar::Update() {
 
 void SideBar::Draw() {
 	// drawing side bar background
-	al_draw_bitmap(bacground, x, y, NULL);
+	al_draw_bitmap(background, x, y, NULL);
 
 	// drawing side bar windows
 	for (SideBarWindow *obj: windows)
@@ -113,5 +115,5 @@ SideBar::~SideBar() {
 
 	delete cameraX;
 	delete cameraY;
-	al_destroy_bitmap(bacground);
+	al_destroy_bitmap(background);
 }

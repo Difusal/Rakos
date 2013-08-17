@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="ConfirmationDialog.cpp" />
     <ClCompile Include="CreaturesWindow.cpp" />
+    <ClCompile Include="CreatureWindowObject.cpp" />
     <ClCompile Include="EquipmentWindow.cpp" />
     <ClCompile Include="globalFunctions.cpp" />
     <ClCompile Include="Gold.cpp" />
@@ -37,6 +38,7 @@
   <ItemGroup>
     <ClInclude Include="ConfirmationDialog.h" />
     <ClInclude Include="CreaturesWindow.h" />
+    <ClInclude Include="CreatureWindowObject.h" />
     <ClInclude Include="EquipmentWindow.h" />
     <ClInclude Include="globalFunctions.h" />
     <ClInclude Include="Gold.h" />
