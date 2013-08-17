@@ -95,6 +95,7 @@ void RPG::LoadFonts() {
 
 void RPG::CreateTimers() {
 	cout << "Creating timers..." << endl;
+
 	timer = al_create_timer(1.0 / FPS);
 	timers.push_back(timer);
 

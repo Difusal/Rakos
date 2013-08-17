@@ -8,7 +8,6 @@
 
 class RPG {
 public:
-	// Public Methods
 	static RPG *GetInstance();
 	void ChangeState(int newState);
 
