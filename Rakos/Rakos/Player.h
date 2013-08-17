@@ -2,6 +2,7 @@
 
 #include "LivingBeing.h"
 #include "globalEnums.h"
+#include "globalFunctions.h"
 
 class Player: public LivingBeing {
 public:
@@ -30,8 +31,10 @@ public:
 	unsigned int getMP() { return mp; }
 	unsigned int getMaxMP() { return maxMp; }
 
+	void addExperience(unsigned int Experience) { experience += Experience; }
+	void addGold(unsigned int Gold) { gold->addGoldCoins(Gold); }
 	unsigned int getLevel() { return level; }
-	unsigned int getExp() { return experience; }
+	void updateLevel() { level = computeLevel(experience); }
 
 
 	bool getRunningState() { return running; }
@@ -49,7 +52,6 @@ private:
 	unsigned int maxMp;
 
 	unsigned int level;
-	unsigned int experience;
 
 	int attackCooldown;
 	bool playerCanAttack;

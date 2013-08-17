@@ -29,6 +29,7 @@ public:
 
 private:
 	vector<vector<int> > worldMap;
+	unsigned int seaAnimationFrame;
 	vector<int> unaccessibleTiles;
 
 	SideBar *sideBar;

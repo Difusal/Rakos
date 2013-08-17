@@ -11,6 +11,9 @@ Weapon::Weapon(WeaponType Type, int minAttack, int maxAttack) {
 	case _Knife:
 		name = "Knife";
 		break;
+	case _Wand:
+		name = "Wand";
+		break;
 	case _Sword:
 		name = "Sword";
 	}
@@ -28,6 +31,9 @@ Weapon::Weapon(WeaponType Type, int minAttack, int maxAttack) {
 	case _Knife:
 		thumbnail = al_load_bitmap(KnifeThumb);
 		break;
+	case _Wand:
+		thumbnail = al_load_bitmap(WandThumb);
+		break;
 	case _Sword:
 		thumbnail = al_load_bitmap(SwordThumb);
 		break;
@@ -42,6 +48,9 @@ Weapon::Weapon(WeaponType Type, int minAttack, int maxAttack) {
 		case _Knife:
 		case _Sword:
 			sprite = al_load_bitmap(SwordsPng);
+			break;
+		case _Wand:
+			sprite = al_load_bitmap(WandsPng);
 			break;
 		}
 
@@ -155,6 +164,7 @@ void Weapon::UpdateAttackAnimation() {
 		break;
 	case _Knife:
 	case _Sword:
+	case _Wand:
 		switch (direction) {
 		case DOWN:
 			switch (frame) {
@@ -304,6 +314,7 @@ void Weapon::Draw() {
 		break;
 	case _Knife:
 	case _Sword:
+	case _Wand:
 		switch (direction) {
 		case DOWN:
 			al_draw_bitmap_region(sprite, 16, 0, 7, 14, x-4, y-14, NULL);

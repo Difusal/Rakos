@@ -157,9 +157,11 @@ void RPG::InitializeVariables() {
 
 	previousNPCWhoTalkedToPlayer = NULL;
 
+	seaAnimation = al_load_bitmap(SeaPng);
+
 	LanguageBeingUsed = DefaultLanguage = _English;
 	// EDIT THIS
-	//LanguageBeingUsed = _Portuguese;
+	LanguageBeingUsed = _Portuguese;
 	cout << "Language being used: ";
 	switch (LanguageBeingUsed) {
 	case _English:
@@ -190,6 +192,9 @@ void RPG::LoadWeapons() {
 	knife = new Weapon(_Knife, 1, 2);
 	weapons.push_back(knife);
 
+	wand = new Weapon(_Wand, 4, 6);
+	weapons.push_back(wand);
+
 	sword = new Weapon(_Sword, 2, 5);
 	weapons.push_back(sword);
 }
@@ -215,6 +220,18 @@ Shield *RPG::GetShield(ShieldType Shield) {
 void RPG::CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState) {
 	bool playerAttackedSomething = false;
 
+	unsigned int maximumAttackDistance;
+	switch (player->GetWeapon()->getType()) {
+	case _NoWeapon:
+	case _Knife:
+	case _Sword:
+		maximumAttackDistance = 40;
+		break;
+	case _Wand:
+		maximumAttackDistance = 175;
+		break;
+	}
+	
 	if (al_key_down(&keyState, ALLEGRO_KEY_K) && player->CanAttack()) {
 		playerAttackedSomething = true;
 
@@ -223,7 +240,7 @@ void RPG::CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALL
 			if (livingBeings[i]->getType() != _Creature)
 				continue;
 
-			if (calculateDistance(player->getX(), player->getY(), livingBeings[i]->getX(), livingBeings[i]->getY()) < 40) {
+			if (calculateDistance(player->getX(), player->getY(), livingBeings[i]->getX(), livingBeings[i]->getY()) < maximumAttackDistance) {
 				if (!(livingBeings[i]->getY() > player->getY() && player->getDir() == UP) &&
 					!(livingBeings[i]->getY() < player->getY() && player->getDir() == DOWN) &&
 					!(livingBeings[i]->getX() > player->getX() && player->getDir() == LEFT) &&
@@ -280,8 +297,19 @@ bool RPG::RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings) {
 
 	for (unsigned int i = 1; i < livingBeings.size(); i++)
 		if (livingBeings[i]->isDead()) {
-			livingBeings.erase(livingBeings.begin() + i);
-			changedSomething = true;
+			switch (livingBeings[i]->getType()) {
+			case _NPC:
+			case _Creature:
+				player->addExperience(livingBeings[i]->GetExperience());
+				player->addGold(livingBeings[i]->GetAmountOfGold());
+				livingBeings.erase(livingBeings.begin() + i);
+				changedSomething = true;
+				break;
+			case _Player:
+				// EDIT THIS
+				al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Rakos", "You are dead!", "You just died, sorry...", NULL, NULL);
+				break;
+			}
 		}
 
 	return changedSomething;
@@ -617,7 +645,7 @@ void RPG::StartGameControlCycle() {
 	Initialize();
 
 	// EDIT THIS
-	player = new Player("Difusal", sword, no_shield, 480, 580);
+	player = new Player("Difusal", no_weapon, no_shield, 480, 580);
 
 	states.push_back(new TutorialState());
 	state = -1;

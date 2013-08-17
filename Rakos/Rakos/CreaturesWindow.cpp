@@ -18,6 +18,7 @@ CreaturesWindow::CreaturesWindow(string Title, vector<LivingBeing*> *beings) {
 void CreaturesWindow::ChooseCreaturesToDisplay(vector<LivingBeing*> *beings) {
 	creaturesToDisplay.clear();
 
+	// STILL NEED TO DEVELOP THIS ALGORITHM
 	for (unsigned int i = 0; i < beings->size(); i++) {
 		if ((*beings)[i]->getType() == _Creature)
 			creaturesToDisplay.push_back((*beings)[i]);
@@ -27,18 +28,14 @@ void CreaturesWindow::ChooseCreaturesToDisplay(vector<LivingBeing*> *beings) {
 void CreaturesWindow::Update() {
 	UpdateBase();
 
-	// EDIT THIS ////////////////////////
 	for (unsigned int i = 0; i < creatureInfo.size(); i++)
 		creatureInfo[i]->Deactivate();
 
-	for (unsigned int i = 0; i < beings->size(); i++) {
-		if ((*beings)[i]->getType() == _Creature) {
-			creatureInfo[0]->Activate((*beings)[i]);
-		}
-	}
-
 	ChooseCreaturesToDisplay(beings);
 
+	for (unsigned int i = 0; i < creaturesToDisplay.size(); i++)
+		creatureInfo[i]->Activate(creaturesToDisplay[i]);
+	
 	for (unsigned int i = 0; i < creatureInfo.size(); i++)
 		creatureInfo[i]->Update(x, y+40*i);
 }

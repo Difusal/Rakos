@@ -7,9 +7,13 @@ int randomNumber (int min, int max);
 
 bool fileExists(const string &filename);
 void LoadMap(const char *filename, vector<vector<int> > &map);
-void DrawMap(const vector<vector<int> > &worldMap);
+void DrawMap(const vector<vector<int> > &WorldMap, unsigned int SeaAnimationFrame);
 
 void CameraUpdate(vector<vector<int> > &worldMap, float *cameraPosition, float x, float y, int width, int height);
 bool boxCollision(float x, float y, float ex, float ey, int width, int height);
 float calculateDistance(float p1_x, float p1_y, float p2_x, float p2_y);
+
 int getLengthOfBiggestSentenceOnVector(vector<string> &vec);
+
+unsigned int computeLevel(unsigned int Experience);
+unsigned int calculateMaximumExperienceOfLevel(unsigned int Level);

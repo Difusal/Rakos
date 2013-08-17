@@ -24,6 +24,8 @@ public:
 	Weapon *GetWeapon() { return weapon; }
 	Shield *GetShield() { return shield; }
 	Gold *GetGold() { return gold; }
+	unsigned int GetAmountOfGold() { return gold->getAmountOfGoldCoins(); }
+	unsigned int GetExperience() { return experience; }
 
 	bool isDead() { return dead; }
 	void setDeadState(bool Dead) { dead = Dead; }
@@ -83,6 +85,7 @@ private:
 	Weapon *weapon;
 	Shield *shield;
 	Gold *gold;
+	unsigned int experience;
 
 	bool dead;
 	bool active;

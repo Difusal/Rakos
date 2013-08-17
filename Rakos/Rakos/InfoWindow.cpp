@@ -38,7 +38,9 @@ void InfoWindow::Update() {
 	mpBarFillColor = Blue;
 
 	ss.str(string());
-	ss << RPG::GetInstance()->GetPlayer()->getLevel() << " (" << "???" << "%)";
+	ss << RPG::GetInstance()->GetPlayer()->getLevel() << " (";
+	ss << 100.0 * (RPG::GetInstance()->GetPlayer()->GetExperience() - calculateMaximumExperienceOfLevel(RPG::GetInstance()->GetPlayer()->getLevel() - 1)) / (RPG::GetInstance()->GetPlayer()->GetExperience() - calculateMaximumExperienceOfLevel(RPG::GetInstance()->GetPlayer()->getLevel()));
+	ss << "%)";
 	levelLabel = ss.str();
 	levelLabelY = mpBarY+barHeight + font->height/2.0;
 	levelBarY = levelLabelY + font->height;
@@ -53,7 +55,7 @@ void InfoWindow::Update() {
 		ss << "Dinheiro:  ";
 		break;
 	}
-	ss << RPG::GetInstance()->GetPlayer()->GetGold()->getAmountOfGoldCoins();
+	ss << RPG::GetInstance()->GetPlayer()->GetAmountOfGold();
 	goldLabel = ss.str();
 	goldLabelY = levelBarY+barHeight + font->height/2.0;
 
@@ -85,7 +87,7 @@ void InfoWindow::Draw() {
 	}
 	al_draw_text(font, White, labelsX, levelLabelY, ALLEGRO_ALIGN_LEFT, str.c_str());
 	al_draw_text(font, White, windowCenterX, levelLabelY, ALLEGRO_ALIGN_CENTER, levelLabel.c_str());
-	DrawBar(levelBarY, 25, 100, levelBarFillColor);
+	DrawBar(levelBarY, RPG::GetInstance()->GetPlayer()->GetExperience() - calculateMaximumExperienceOfLevel(RPG::GetInstance()->GetPlayer()->getLevel() - 1), calculateMaximumExperienceOfLevel(RPG::GetInstance()->GetPlayer()->getLevel()), levelBarFillColor);
 
 	// Printing gold coins data
 	al_draw_text(font, White, labelsX, goldLabelY, ALLEGRO_ALIGN_LEFT, goldLabel.c_str());
@@ -94,10 +96,10 @@ void InfoWindow::Draw() {
 void InfoWindow::DrawBar(unsigned int barY, unsigned int currentValue, unsigned int maxValue, ALLEGRO_COLOR fillColor) {
 	double percentage = 100.0 * currentValue / maxValue;
 	unsigned int fillWidthInpixels = barWidth * percentage / 100.0;
-
+	
 	al_draw_filled_rectangle(windowCenterX-barWidth/2.0, barY, windowCenterX + barWidth/2.0, barY + barHeight, Black);
-	al_draw_rectangle(windowCenterX-barWidth/2.0, barY+1, windowCenterX+barWidth/2.0 - 1, barY + barHeight, DarkerGray, 1.0);
-	al_draw_filled_rectangle(windowCenterX-barWidth/2.0 + 1, barY+1, windowCenterX-barWidth/2.0 + fillWidthInpixels, barY+barHeight-1, fillColor);
+	al_draw_filled_rectangle(windowCenterX-barWidth/2.0, barY+1, windowCenterX-barWidth/2.0 + fillWidthInpixels, barY+barHeight-1, fillColor);
+	al_draw_rectangle(windowCenterX-barWidth/2.0, barY+1, windowCenterX+barWidth/2.0, barY + barHeight, DarkerGray, 1.0);
 }
 
 

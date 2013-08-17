@@ -73,6 +73,7 @@ const float SlowCreaturesSpeed = FPS/2.5;
 /* sprites */
 #define PortalPng "res//sprites//portal.png"
 #define SwitchPng "res//sprites//switch.png"
+#define SeaPng "res//sprites//sea.png"
 
 /* shield sprites */
 #define WoodenShieldPng "res//shield sprites//woodenShield.png"
@@ -83,10 +84,12 @@ const float SlowCreaturesSpeed = FPS/2.5;
 
 /* weapon sprites */
 #define SwordsPng "res//weapon sprites//swords.png"
+#define WandsPng "res//weapon sprites//wands.png"
 
 /* weapon thumbnails */
 #define NoWeaponThumb "res//weapon thumbnails//NoWeapon.png"
 #define KnifeThumb "res//weapon thumbnails//Knife.png"
+#define WandThumb "res//weapon thumbnails//Wand.png"
 #define SwordThumb "res//weapon thumbnails//Sword.png"
 
 /* world maps */

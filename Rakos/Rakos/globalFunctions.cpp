@@ -69,10 +69,14 @@ void LoadMap(const char *filename, vector<vector<int> > &map) {
 }
 
 // draws world map to display
-void DrawMap(const vector<vector<int> > &worldMap) {
-	for(unsigned int i = 0; i < worldMap.size(); i++) {
-		for(unsigned int j = 0; j < worldMap[i].size(); j++) {
-			al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), worldMap[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
+void DrawMap(const vector<vector<int> > &WorldMap, unsigned int SeaAnimationFrame) {
+	for(unsigned int i = 0; i < WorldMap.size(); i++) {
+		for(unsigned int j = 0; j < WorldMap[i].size(); j++) {
+			// drawing sea animation
+			if (WorldMap[i][j] == 0)
+				al_draw_bitmap_region(RPG::GetInstance()->GetSeaBitmap(), SeaAnimationFrame, SeaAnimationFrame, WorldBlockSize, WorldBlockSize, j*WorldBlockSize, i*WorldBlockSize, NULL);
+			else
+				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), WorldMap[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
 		}
 	}
 }
@@ -116,4 +120,70 @@ int getLengthOfBiggestSentenceOnVector(vector<string> &vec) {
 			max = vec[i].length();
 
 	return max;
+}
+
+unsigned int computeLevel(unsigned int Experience) {
+	unsigned int level;
+
+	if (Experience < 5)
+		level = 1;
+	else if (Experience < 10)
+		level = 2;
+	else if (Experience < 20)
+		level = 3;
+	else if (Experience < 40)
+		level = 4;
+	else if (Experience < 60)
+		level = 5;
+	else if (Experience < 80)
+		level = 6;
+	else if (Experience < 110)
+		level = 7;
+	else if (Experience < 140)
+		level = 8;
+	else if (Experience < 170)
+		level = 9;
+	else if (Experience < 200)
+		level = 10;
+	else if (Experience < 240)
+		level = 11;
+	else if (Experience < 280)
+		level = 12;
+	else if (Experience < 320)
+		level = 13;
+	else if (Experience < 360)
+		level = 14;
+	else if (Experience < 400)
+		level = 15;
+	else if (Experience < 450)
+		level = 16;
+	else if (Experience < 500)
+		level = 17;
+	else
+		level = 999;
+
+	return level;
+}
+
+unsigned int calculateMaximumExperienceOfLevel(unsigned int Level) {
+	switch (Level) {
+	default: return 0;
+	case 1: return 5;
+	case 2: return 10;
+	case 3: return 20;
+	case 4: return 40;
+	case 5: return 60;
+	case 6: return 80;
+	case 7: return 110;
+	case 8: return 140;
+	case 9: return 170;
+	case 10: return 200;
+	case 11: return 240;
+	case 12: return 280;
+	case 13: return 320;
+	case 14: return 360;
+	case 15: return 400;
+	case 16: return 450;
+	case 17: return 500;
+	}
 }

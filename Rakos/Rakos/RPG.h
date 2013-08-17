@@ -51,6 +51,7 @@ public:
 
 	ALLEGRO_BITMAP *GetTileSet() { return tileSet; }
 	void SetTileSet (ALLEGRO_BITMAP *png) { tileSet = png; }
+	ALLEGRO_BITMAP *GetSeaBitmap() { return seaAnimation; }
 
 	Player *GetPlayer() { return player; }
 	Weapon *GetWeapon(WeaponType Weapon);
@@ -90,6 +91,7 @@ private:
 
 	ALLEGRO_BITMAP *loading_background;
 	ALLEGRO_BITMAP *tileSet;
+	ALLEGRO_BITMAP *seaAnimation;
 
 	Player *player;
 	LivingBeing *previousNPCWhoTalkedToPlayer;
@@ -97,6 +99,7 @@ private:
 	vector<Weapon*> weapons;
 	Weapon *no_weapon;
 	Weapon *knife;
+	Weapon *wand;
 	Weapon *sword;
 
 	vector<Shield*> shields;

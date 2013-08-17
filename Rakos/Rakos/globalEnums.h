@@ -53,6 +53,7 @@ enum TimerType {
 enum WeaponType {
 	_NoWeapon,
 	_Knife,
+	_Wand,
 	_Sword
 };
 

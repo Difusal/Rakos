@@ -412,6 +412,7 @@ bool TutorialState::CheckIfPlayerChoseAVocation(ALLEGRO_EVENT *ev) {
 				case 1:
 					cout << "YES button pressed." << endl;
 					player->setVocation(_Mage);
+					player->setWeapon(RPG::GetInstance()->GetWeapon(_Wand));
 					break;
 				}
 			}
@@ -454,6 +455,7 @@ void TutorialState::DrawDialogs() {
 void TutorialState::Initialize() {
 	// loading map
 	LoadMap(TutorialWorldMapPath, worldMap);
+	seaAnimationFrame = 0;
 	unaccessibleTiles.push_back(0);
 
 	sideBar = new SideBar(&livingBeings);
@@ -489,12 +491,19 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 			UpdateDialogs();
 		}
 
+		if (ev->timer.source == RPG::GetInstance()->GetTimer(_DrawTimer)) {
+			seaAnimationFrame++;
+			if (seaAnimationFrame > WorldBlockSize-1)
+				seaAnimationFrame = 0;
+		}
+
 		RPG::GetInstance()->UpdateCamera(worldMap, livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(portals);
 		RPG::GetInstance()->UpdateWeaponAndShieldPositions(livingBeings);
 		RPG::GetInstance()->UpdateWeaponAttackAnimations(livingBeings);
 
+		player->updateLevel();
 		sideBar->Update();
 
 		// if left mouse pressed and any being is speaking, stop speaking
@@ -515,7 +524,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 
 void TutorialState::Draw() {
 	// drawing world map
-	DrawMap(worldMap);
+	DrawMap(worldMap, seaAnimationFrame);
 
 	// drawing switches
 	for (Switch *obj : switches)

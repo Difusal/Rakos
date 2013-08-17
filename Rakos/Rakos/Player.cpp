@@ -6,6 +6,7 @@ Player::Player(string Name, Weapon *weapon, Shield *shield, double X, double Y) 
 	vocation = _NoVocation;
 	timer = _PlayerMoveTimer;
 	name = Name;
+	experience = 0;
 
 	dead = false;
 	active = false;

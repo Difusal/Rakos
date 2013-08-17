@@ -13,6 +13,7 @@ public:
 	void Draw();
 	void DrawAttackAnim();
 
+	WeaponType getType() { return type; }
 	string getName() { return name; }
 	int getDamage();
 	ALLEGRO_BITMAP *getThumbnail() { return thumbnail; }

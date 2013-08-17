@@ -15,6 +15,7 @@ Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 	weapon = RPG::GetInstance()->GetWeapon(_NoWeapon);
 	shield = RPG::GetInstance()->GetShield(_NoShield);
 	gold = new Gold(randomNumber(1, 3));
+	experience = 5;
 
 	dead = false;
 	active = true;
