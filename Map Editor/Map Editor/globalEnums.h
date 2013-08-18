@@ -1,7 +1,8 @@
 #pragma once
 
 enum EditorState {
-	_Menu
+	_Menu,
+	_Editing
 };
 
 enum TimerType {

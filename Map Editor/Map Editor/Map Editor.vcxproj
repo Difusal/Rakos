@@ -11,14 +11,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EditingState.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="stdIncludes.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EditingState.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="globalEnums.h" />
+    <ClInclude Include="globalFunctions.h" />
+    <ClInclude Include="MenuState.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="state.h" />
   </ItemGroup>

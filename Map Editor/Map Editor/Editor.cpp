@@ -1,5 +1,8 @@
 #include "Editor.h"
 
+#include "MenuState.h"
+#include "EditingState.h"
+
 Editor *Editor::instance = NULL;
 
 Editor *Editor::GetInstance() {
@@ -53,19 +56,6 @@ void Editor::CreateAllegroDisplay() {
 
 }
 
-void Editor::DisplayLoadingSplashScreen() {
-	cout << "Displaying loading game background..." << endl;
-
-
-
-	al_flip_display();
-}
-
-void Editor::StartMouseCursor() {
-	cout << "Starting mouse cursor..." << endl;
-	Mouse = new MouseCursor();
-}
-
 void Editor::LoadFonts() {
 	cout << "Loading fonts..." << endl;
 
@@ -74,15 +64,34 @@ void Editor::LoadFonts() {
 
 	mediumFont = al_load_font(CalibriTTF, 20, ALLEGRO_ALIGN_CENTER);
 	fonts.push_back(mediumFont);
-	
 
-	// checking every font was loaded correctly
+
+	// checking if every font was loaded correctly
 	for (unsigned int i = 0; i < fonts.size(); i++) {
 		if (!fonts[i]) {
 			al_show_native_message_box(display, "Error", "Could not load font file.", "Have you included the resources in the same directory of the program?", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 			exit(-1);
 		}
 	}
+}
+
+void Editor::DisplayLoadingSplashScreen() {
+	cout << "Displaying loading game background..." << endl;
+	
+	// setting background color
+	al_clear_to_color(DarkGray);
+
+	// printing text
+	al_draw_text(largeFont, Black, ScreenWidth/2.0 + 1, ScreenHeight/2.0 + 2, ALLEGRO_ALIGN_CENTER, "Loading...");
+	al_draw_text(largeFont, White, ScreenWidth/2.0, ScreenHeight/2.0, ALLEGRO_ALIGN_CENTER, "Loading...");
+
+	// flipping display
+	al_flip_display();
+}
+
+void Editor::StartMouseCursor() {
+	cout << "Starting mouse cursor..." << endl;
+	Mouse = new MouseCursor();
 }
 
 void Editor::CreateTimers() {
@@ -138,9 +147,10 @@ void Editor::StartTimers() {
 void Editor::StartControlCycle() {
 	Initialize();
 
-	//states.push_back(new TutorialState());
+	states.push_back(new MenuState());
+	states.push_back(new EditingState());
 	state = -1;
-	ChangeState(_Menu);
+	ChangeState(_Editing);
 
 	cout << "Starting game control cycle..." << endl;
 	while (!done) {
@@ -171,9 +181,9 @@ void Editor::Initialize() {
 
 	StartAllegro5();
 	CreateAllegroDisplay();
+	LoadFonts();
 	DisplayLoadingSplashScreen();
 	StartMouseCursor();
-	LoadFonts();
 	CreateTimers();
 	CreateEventQueue();
 	LoadSoundSamples();
@@ -207,21 +217,21 @@ void Editor::Update() {
 
 void Editor::Draw() {
 	if (draw && al_event_queue_is_empty(eventQueue)) {
+		// drawing current state
+		states[state]->Draw();
+
 		// ---------------
 		// Debugging code:
 		// Uncomment this block of code to display mouse coords.
 		// -----------------------------------------------------
-// 		stringstream ss;
-// 		ss << Mouse->x << " " << Mouse->y;
-// 		al_draw_text(mediumFont, Yellow, 0, 0, NULL, ss.str().c_str());
-// 		cout << ss.str() << endl;
-
-		// drawing current state
-		states[state]->Draw();
+		stringstream ss;
+		ss << "x:" << Mouse->x << " y:" << Mouse->y;
+		al_draw_text(mediumFont, Yellow, 0, 0, NULL, ss.str().c_str());
+		cout << ss.str() << endl;
 
 		// flipping display and preparing buffer for next cycle
 		al_flip_display();
-		al_clear_to_color(Black);
+		al_clear_to_color(DarkGray);
 		draw = false;
 	}
 }
