@@ -12,7 +12,7 @@ Editor *Editor::GetInstance() {
 	return instance;
 }
 
-void Editor::ChangeState(int newState) {
+void Editor::ChangeState(EditorState newState) {
 	// if there was no state before, do not terminate a state which was not even initialized
 	if (state != -1)
 		states[state]->Terminate();

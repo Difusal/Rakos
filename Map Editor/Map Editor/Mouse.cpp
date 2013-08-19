@@ -51,7 +51,7 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 	// tracking button presses
 	if (ev->type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 		if (ev->mouse.button &1) {
-			cout << "* Left mouse button pressed *" << endl;
+			//cout << "* Left mouse button pressed *" << endl;
 			leftMouseButtonPressed = true;
 			leftMouseButtonHasJustBeenPressed = true;
 			leftMouseButtonReleased = false;

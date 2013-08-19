@@ -8,7 +8,7 @@
 class Editor {
 public:
 	static Editor *GetInstance();
-	void ChangeState(int newState);
+	void ChangeState(EditorState newState);
 
 	void StartAllegro5();
 	void CreateAllegroDisplay();

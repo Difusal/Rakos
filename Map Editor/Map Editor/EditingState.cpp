@@ -5,6 +5,7 @@ void EditingState::Initialize() {
 	// loading tile set and map
 	LoadMapAndTileSet(MapBeingEdited, worldMap, &tileSet);
 	
+	// creating side bar
 	sideBar = new SideBar();
 
 	// setting camera start position
@@ -13,15 +14,25 @@ void EditingState::Initialize() {
 }
 
 bool EditingState::Update(ALLEGRO_EVENT *ev) {
-	cameraCenterX -= Editor::GetInstance()->Mouse->xDraggingDisplacement;
-	cameraCenterY -= Editor::GetInstance()->Mouse->yDraggingDisplacement;
-	
-	CameraUpdate(worldMap, Editor::GetInstance()->cameraPosition, &cameraCenterX, &cameraCenterY, sideBar->Width());
-	al_identity_transform(&Editor::GetInstance()->camera);
-	al_translate_transform(&Editor::GetInstance()->camera, -Editor::GetInstance()->cameraPosition[0], -Editor::GetInstance()->cameraPosition[1]);
-	al_use_transform(&Editor::GetInstance()->camera);
+	if (ev->timer.source == Editor::GetInstance()->GetTimer(_RegularTimer)) {
+		// dragging map if dragging is enabled and user actually dragged it
+		if (sideBar->DraggingIsEnabled()) {
+			// updating new camera center coords
+			cameraCenterX -= Editor::GetInstance()->Mouse->xDraggingDisplacement;
+			cameraCenterY -= Editor::GetInstance()->Mouse->yDraggingDisplacement;
 
-	sideBar->Update();
+			// updating camera
+			CameraUpdate(worldMap, Editor::GetInstance()->cameraPosition, &cameraCenterX, &cameraCenterY, sideBar->Width());
+			al_identity_transform(&Editor::GetInstance()->camera);
+			al_translate_transform(&Editor::GetInstance()->camera, -Editor::GetInstance()->cameraPosition[0], -Editor::GetInstance()->cameraPosition[1]);
+			al_use_transform(&Editor::GetInstance()->camera);
+		}		
+
+		// updating side bar
+		sideBar->Update();
+
+		return true;
+	}	
 
 	return false;
 }
@@ -30,6 +41,7 @@ void EditingState::Draw() {
 	// drawing world map
 	DrawMap(worldMap, &tileSet);
 
+	// drawing side bar
 	sideBar->Draw();
 }
 

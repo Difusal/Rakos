@@ -9,6 +9,10 @@ public:
 
 	void Update(unsigned int sideBarX, unsigned int sideBarY);
 	void Draw();
+	void DrawLockedButton();
+
+	unsigned int Height() { return height; }
+	bool wasPressed() { return released; }
 
 	~Button(void);
 
