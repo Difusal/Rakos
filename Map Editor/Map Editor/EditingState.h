@@ -3,6 +3,8 @@
 #include "stdIncludes.h"
 #include "state.h"
 
+#include "SideBar.h"
+
 class EditingState: public State {
 public:
 	virtual void Initialize();
@@ -17,5 +19,5 @@ private:
 	double cameraCenterX;
 	double cameraCenterY;
 
-	unsigned int sideBarWidth;
+	SideBar *sideBar;
 };

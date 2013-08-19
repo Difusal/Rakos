@@ -4,11 +4,11 @@
 void EditingState::Initialize() {
 	// loading tile set and map
 	LoadMapAndTileSet(MapBeingEdited, worldMap, &tileSet);
-
-	sideBarWidth = 200;
+	
+	sideBar = new SideBar();
 
 	// setting camera start position
-	cameraCenterX = (ScreenWidth-sideBarWidth)/2.0;
+	cameraCenterX = (ScreenWidth - sideBar->Width())/2.0;
 	cameraCenterY = ScreenHeight/2.0;
 }
 
@@ -16,12 +16,12 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 	cameraCenterX -= Editor::GetInstance()->Mouse->xDraggingDisplacement;
 	cameraCenterY -= Editor::GetInstance()->Mouse->yDraggingDisplacement;
 	
-	cout << Editor::GetInstance()->Mouse->xDraggingDisplacement << " "<< Editor::GetInstance()->Mouse->yDraggingDisplacement << endl;
-
-	CameraUpdate(worldMap, Editor::GetInstance()->cameraPosition, &cameraCenterX, &cameraCenterY, 200);
+	CameraUpdate(worldMap, Editor::GetInstance()->cameraPosition, &cameraCenterX, &cameraCenterY, sideBar->Width());
 	al_identity_transform(&Editor::GetInstance()->camera);
 	al_translate_transform(&Editor::GetInstance()->camera, -Editor::GetInstance()->cameraPosition[0], -Editor::GetInstance()->cameraPosition[1]);
 	al_use_transform(&Editor::GetInstance()->camera);
+
+	sideBar->Update();
 
 	return false;
 }
@@ -29,6 +29,8 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 void EditingState::Draw() {
 	// drawing world map
 	DrawMap(worldMap, &tileSet);
+
+	sideBar->Draw();
 }
 
 void EditingState::Terminate() {

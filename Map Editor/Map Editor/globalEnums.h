@@ -8,3 +8,9 @@ enum EditorState {
 enum TimerType {
 	_RegularTimer
 };
+
+enum ButtonPosition {
+	_Left,
+	_Center,
+	_Right
+};

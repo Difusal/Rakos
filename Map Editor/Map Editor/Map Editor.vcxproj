@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="EditingState.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="main.cpp" />
@@ -20,6 +21,7 @@
     <ClCompile Include="stdIncludes.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="EditingState.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="globalEnums.h" />
