@@ -33,6 +33,8 @@ public:
 
 	// Public Variables
 	MouseCursor *Mouse;
+
+	ALLEGRO_TRANSFORM camera;
 	float cameraPosition[2];
 
 	vector<ALLEGRO_FONT*> fonts;

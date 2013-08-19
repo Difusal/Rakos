@@ -16,9 +16,10 @@ public:
 	// Public Variables
 	unsigned int x, y;
 
-	bool leftMouseButtonHasJustBeenPressed;
-	bool leftMouseButtonWasBeingPressedBefore;
+	int xDraggingDisplacement, yDraggingDisplacement;
+
 	bool leftMouseButtonPressed;
+	bool leftMouseButtonHasJustBeenPressed;
 	bool leftMouseButtonReleased;
 	bool leftMouseButtonPressedTwice;
 
@@ -28,6 +29,8 @@ public:
 private:
 	float prevMouseRawX;
 	float prevMouseRawY;
+
+	unsigned int clickSourceX, clickSourceY;
 
 	bool possible_double_press;
 	unsigned int double_press_counter;

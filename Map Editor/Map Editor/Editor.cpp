@@ -226,8 +226,8 @@ void Editor::Draw() {
 		// -----------------------------------------------------
 		stringstream ss;
 		ss << "x:" << Mouse->x << " y:" << Mouse->y;
-		al_draw_text(mediumFont, Yellow, 0, 0, NULL, ss.str().c_str());
-		cout << ss.str() << endl;
+		al_draw_text(mediumFont, Yellow, cameraPosition[0], cameraPosition[1], NULL, ss.str().c_str());
+		// cout << ss.str() << endl;
 
 		// flipping display and preparing buffer for next cycle
 		al_flip_display();

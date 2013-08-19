@@ -16,6 +16,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="SideBar.cpp" />
     <ClCompile Include="stdIncludes.h" />
   </ItemGroup>
   <ItemGroup>
@@ -25,6 +26,7 @@
     <ClInclude Include="globalFunctions.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="SideBar.h" />
     <ClInclude Include="state.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

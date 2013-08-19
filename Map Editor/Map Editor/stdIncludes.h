@@ -53,4 +53,4 @@ const float FPS = 60.0;
 #define LoadingGameBackgroundPath "res//images//loading_game_bg.png"
 
 /* world maps */
-#define TutorialWorldMapPath "res//maps//tutorial.txt"
+#define MapBeingEdited "res//maps//tutorial.txt"

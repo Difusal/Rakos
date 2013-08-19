@@ -6,9 +6,11 @@ MouseCursor::MouseCursor(void) {
 
 	x = ScreenWidth;
 	y = ScreenHeight;
+	
+	xDraggingDisplacement = 0;
+	yDraggingDisplacement = 0;
 
 	leftMouseButtonHasJustBeenPressed = false;
-	leftMouseButtonWasBeingPressedBefore = false;
 	leftMouseButtonPressed = false;
 	leftMouseButtonReleased = false;
 
@@ -42,11 +44,16 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 		draw = true;
 	}
 
+	// checking if left mouse button was being pressed before
+	if (leftMouseButtonHasJustBeenPressed)
+		leftMouseButtonHasJustBeenPressed = false;
+
 	// tracking button presses
 	if (ev->type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 		if (ev->mouse.button &1) {
-			//cout << "* Left mouse button pressed *" << endl;
+			cout << "* Left mouse button pressed *" << endl;
 			leftMouseButtonPressed = true;
+			leftMouseButtonHasJustBeenPressed = true;
 			leftMouseButtonReleased = false;
 			draw = true;
 		}
@@ -83,12 +90,20 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 		}
 	}
 
-	// checking if left mouse button has just been pressed
-	if (leftMouseButtonPressed && !leftMouseButtonWasBeingPressedBefore)
-		leftMouseButtonHasJustBeenPressed = true;
-	else
-		leftMouseButtonHasJustBeenPressed = false;
-	
+	// registering mouse dragging distances
+	if (leftMouseButtonHasJustBeenPressed) {
+		clickSourceX = x;
+		clickSourceY = y;
+	}
+	if (leftMouseButtonPressed) {
+		xDraggingDisplacement = x - clickSourceX;
+		yDraggingDisplacement = y - clickSourceY;
+	}
+	else {
+		xDraggingDisplacement = 0;
+		yDraggingDisplacement = 0;
+	}
+
 	return draw;
 }
 
@@ -100,7 +115,6 @@ bool MouseCursor::CorrectMousePosition() {
 }
 
 void MouseCursor::SetAllReleaseValuesToFalse() {
-	leftMouseButtonWasBeingPressedBefore = leftMouseButtonPressed;
 	leftMouseButtonReleased = false;
 	leftMouseButtonPressedTwice = false;
 	rightMouseButtonReleased = false;
