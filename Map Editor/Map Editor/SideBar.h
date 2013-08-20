@@ -10,7 +10,7 @@ public:
 
 	void InitializeButtons();
 
-	void Update();
+	void Update(string &tileSetPath, vector<vector<int> > &worldMap);
 	void Draw();
 
 	unsigned int X() { return x; }

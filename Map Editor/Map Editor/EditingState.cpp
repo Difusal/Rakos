@@ -3,7 +3,7 @@
 
 void EditingState::Initialize() {
 	// loading map, tile set and tiles
-	LoadMapAndTileSet(MapBeingEdited, worldMap, &tileSet, numberOfTiles);
+	LoadMapAndTileSet(MapBeingEdited, worldMap, tileSetPath, &tileSet, numberOfTiles);
 
 	// creating side bar
 	sideBar = new SideBar(&tileSet, numberOfTiles);
@@ -32,7 +32,7 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 		}		
 
 		// updating side bar
-		sideBar->Update();
+		sideBar->Update(tileSetPath, worldMap);
 
 		// checking if new tile was placed on map
 		if (Editor::GetInstance()->cameraPosition[0] < Editor::GetInstance()->Mouse->x && Editor::GetInstance()->Mouse->x < sideBar->X() &&

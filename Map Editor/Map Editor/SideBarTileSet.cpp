@@ -1,9 +1,94 @@
 #include "SideBarTileSet.h"
 #include "Editor.h"
 
+// SideBarTileSet Class Method Implementations
+SideBarTileSet::SideBarTileSet(ALLEGRO_BITMAP **tileSet, unsigned int numberOfTiles, unsigned int *sideBarX, unsigned int *sideBarY) {
+	this->tileSet = tileSet;
+
+	// tile selected = no tile selected (-1)
+	selectedTile = -1;
+
+	// creating vector of available tiles
+	for (unsigned int i = 0; i < numberOfTiles; i++)
+		tiles.push_back(new TileSetButton(i));
+
+	// saving pointers to sideBar coords
+	this->sideBarX = sideBarX;
+	this->sideBarY = sideBarY;
+
+	// setting default display page
+	pageToDisplay = 1;
+	totalPages = numberOfTiles/16;
+	if (numberOfTiles%16 != 0)
+		totalPages++;
+}
+
+void SideBarTileSet::Update(unsigned int sideBarWidth, unsigned int tileSetY, bool &dragging) {
+	unsigned int buttonX;
+	for (unsigned int i = 16*(pageToDisplay-1), j = 0; i < tiles.size() && j < 16; i++, j++) {
+		// simple math to align button on x axis
+		buttonX = sideBarWidth/2.0 + pow(-1, j%2+1)*(sideBarWidth/2.0 - 5)/2.0;
+
+		// setting button new coords
+		tiles[i]->SetCoords(buttonX, tileSetY + (j/2)*(tiles[i]->Width()+10));
+	}
+
+	// updating tiles real coords based on side bar current position
+	for (unsigned int i = 16*(pageToDisplay-1); i < tiles.size(); i++) {
+		tiles[i]->Update(this, *sideBarX, *sideBarY, dragging);
+	}
+
+	// checking if there is any tile selected
+	if (!dragging)
+		CheckIfAnyTileIsSelected();
+}
+
+void SideBarTileSet::Draw() {
+	for (unsigned int i = 16*(pageToDisplay-1); i < tiles.size() || i < 6*pageToDisplay; i++) {
+		tiles[i]->Draw(tileSet);
+	}
+}
+
+void SideBarTileSet::CheckIfAnyTileIsSelected() {
+	for (unsigned int i = 0; i < tiles.size(); i++)
+		if (tiles[i]->isLocked())
+			SetSelectedTile(i);
+}
+
+void SideBarTileSet::UnlockAnySelectedTile() {
+	SetSelectedTile(-1);
+
+	for (TileSetButton *obj: tiles)
+		obj->Unlock();
+}
+
+void SideBarTileSet::GoToNextPage() {
+	pageToDisplay++;
+	if (pageToDisplay > totalPages)
+		pageToDisplay = 1;
+}
+
+void SideBarTileSet::GoToPrevPage() {
+	pageToDisplay--;
+	if (pageToDisplay < 1)
+		pageToDisplay = totalPages;
+}
+
+SideBarTileSet::~SideBarTileSet() {
+	al_destroy_bitmap(*tileSet);
+
+	for (TileSetButton *obj: tiles)
+		delete obj;
+	tiles.clear();
+
+	delete sideBarX, sideBarY;
+}
+
+
 // TileSetButton Class Method Implementations
 TileSetButton::TileSetButton(unsigned int TileID) {
-	// note: x and y should be updated automatically
+	// Note: x and y should be updated automatically.
+	//		 Do not initialize them here!
 
 	width = 40;
 	height = 40;
@@ -15,7 +100,6 @@ TileSetButton::TileSetButton(unsigned int TileID) {
 	released = false;
 	locked = false;
 }
-
 
 void TileSetButton::Update(SideBarTileSet *ThisThis, unsigned int sideBarX, unsigned int sideBarY, bool &dragging) {
 	realX = x + sideBarX;
@@ -40,8 +124,10 @@ void TileSetButton::Update(SideBarTileSet *ThisThis, unsigned int sideBarX, unsi
 					ThisThis->UnlockAnySelectedTile();
 					locked = true;
 				}
-				else
+				else {
+					ThisThis->UnlockAnySelectedTile();
 					locked = false;
+				}
 
 				// enabling edit mode if dragging mode was being used
 				dragging = false;
@@ -82,76 +168,4 @@ void TileSetButton::DrawLockedTile() {
 
 TileSetButton::~TileSetButton() {
 	// nothing to do here
-}
-
-
-// SideBarTileSet Class Method Implementations
-SideBarTileSet::SideBarTileSet(ALLEGRO_BITMAP **tileSet, unsigned int numberOfTiles, unsigned int *sideBarX, unsigned int *sideBarY) {
-	this->tileSet = tileSet;
-
-	// tile selected = no tile selected (-1)
-	selectedTile = -1;
-
-	// creating vector of available tiles
-	for (unsigned int i = 0; i < numberOfTiles; i++)
-		tiles.push_back(new TileSetButton(i));
-
-	// saving pointers to sideBar coords
-	this->sideBarX = sideBarX;
-	this->sideBarY = sideBarY;
-
-	// setting default display page
-	pageToDisplay = 1;
-}
-
-
-void SideBarTileSet::Update(unsigned int sideBarWidth, unsigned int tileSetY, bool &dragging) {
-	unsigned int buttonX;
-	for (unsigned int i = 0; i < tiles.size() && i < 16; i++) {
-		// simple math to align button on x axis
-		buttonX = sideBarWidth/2.0 + pow(-1, i%2+1)*(sideBarWidth/2.0 - 5)/2.0;
-
-		// setting button new coords
-		tiles[i]->SetCoords(buttonX, tileSetY + (i/2)*(tiles[i]->Width()+10));
-	}
-
-	// updating tiles real coords based on side bar current position
-	for (unsigned int i = 0; i < tiles.size(); i++) {
-		tiles[i]->Update(this, *sideBarX, *sideBarY, dragging);
-	}
-
-	// checking if there is any tile selected
-	if (!dragging)
-		CheckIfAnyTileIsSelected();
-}
-
-void SideBarTileSet::Draw() {
-	for (unsigned int i = 0; i < tiles.size() || i < 6; i++) {
-		tiles[i]->Draw(tileSet);
-	}
-}
-
-
-void SideBarTileSet::CheckIfAnyTileIsSelected() {
-	for (unsigned int i = 0; i < tiles.size(); i++)
-		if (tiles[i]->isLocked())
-			SetSelectedTile(i);
-}
-
-void SideBarTileSet::UnlockAnySelectedTile() {
-	SetSelectedTile(-1);
-
-	for (TileSetButton *obj: tiles)
-		obj->Unlock();
-}
-
-
-SideBarTileSet::~SideBarTileSet() {
-	al_destroy_bitmap(*tileSet);
-
-	for (TileSetButton *obj: tiles)
-		delete obj;
-	tiles.clear();
-
-	delete sideBarX, sideBarY;
 }

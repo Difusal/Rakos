@@ -27,6 +27,8 @@ public:
 	void Draw();
 	void Terminate();
 
+	void SaveMap(const char *filename, vector<vector<int> > &map, string &tileSetPath);
+
 	ALLEGRO_DISPLAY *GetDisplay() { return display; }
 	ALLEGRO_TIMER *GetTimer(TimerType Timer);
 

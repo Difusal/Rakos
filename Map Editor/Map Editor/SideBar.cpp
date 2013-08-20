@@ -70,7 +70,7 @@ void SideBar::InitializeButtons() {
 	buttons.push_back(Quit);
 }
 
-void SideBar::Update() {
+void SideBar::Update(string &tileSetPath, vector<vector<int> > &worldMap) {
 	// updating side bar coords
 	x = Editor::GetInstance()->cameraPosition[0] + ScreenWidth - width;
 	y = Editor::GetInstance()->cameraPosition[1] + ScreenHeight - height;
@@ -95,6 +95,18 @@ void SideBar::Update() {
 		tileSet->UnlockAnySelectedTile();
 	}
 
+	if (NextPage->wasPressed()) {
+		tileSet->GoToNextPage();
+		tileSet->UnlockAnySelectedTile();
+	}
+	else if (PreviousPage->wasPressed()) {
+		tileSet->GoToPrevPage();
+		tileSet->UnlockAnySelectedTile();
+	}
+
+	if (Save->wasPressed())
+		Editor::GetInstance()->SaveMap(MapBeingEdited, worldMap, tileSetPath);
+
 	if (Quit->wasPressed())
 		Editor::GetInstance()->ChangeState(_Menu);
 }
@@ -106,6 +118,11 @@ void SideBar::Draw() {
 
 	// drawing tile set
 	tileSet->Draw();
+
+	// drawing current page indication
+	stringstream ss;
+	ss << "Page: " << tileSet->GetCurrentPage() << "/" << tileSet->GetTotalPages();
+	al_draw_text(Editor::GetInstance()->mediumFont, Black, x + width/2.0, y + 3.6*spaceBetweenButtons + 8*(WorldBlockSize+10), ALLEGRO_ALIGN_CENTER, ss.str().c_str());
 
 	// drawing buttons
 	for (Button *button: buttons)

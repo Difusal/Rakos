@@ -31,10 +31,9 @@ bool fileExists(const string &filename) {
 // Parameter: ALLEGRO_BITMAP **tileSet
 // Summary:   reads map from text file and stores it on a vector passed by reference
 //************************************
-void LoadMapAndTileSet(const char *filename, vector<vector<int> > &map, ALLEGRO_BITMAP **tileSet, unsigned int &numberOfTiles) {
-	int state = NULL;
-
+void LoadMapAndTileSet(const char *filename, vector<vector<int> > &map, string &tileSetPath, ALLEGRO_BITMAP **tileSet, unsigned int &numberOfTiles) {
 	// loading state phases
+	int state = NULL;
 	enum LoadState {
 		TileSet,
 		Map
@@ -68,6 +67,7 @@ void LoadMapAndTileSet(const char *filename, vector<vector<int> > &map, ALLEGRO_
 			case TileSet:
 				// if loading tile set, assign tile set to the corresponding .png
 				if (line.length() > 0) {
+					tileSetPath = line;
 					*tileSet = al_load_bitmap(line.c_str());
 					if (!*tileSet) {
 						al_show_native_message_box(Editor::GetInstance()->GetDisplay(), "Error", "Could not load tile set.", "Make sure you include the world tile set on the same folder as the map file and that the map file contains the correct path to the tile set png.\n\nThe program will now quit.", NULL, ALLEGRO_MESSAGEBOX_ERROR);

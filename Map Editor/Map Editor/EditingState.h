@@ -13,6 +13,7 @@ public:
 	virtual void Terminate();
 
 private:
+	string tileSetPath;
 	ALLEGRO_BITMAP *tileSet;
 	vector<vector<int> > worldMap;
 	unsigned int numberOfTiles;

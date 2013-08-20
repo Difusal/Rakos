@@ -2,7 +2,38 @@
 
 #include "stdIncludes.h"
 
-class SideBarTileSet;
+class TileSetButton;
+
+class SideBarTileSet {
+public:
+	SideBarTileSet(ALLEGRO_BITMAP **tileSet, unsigned int numberOfTiles, unsigned int *sideBarX, unsigned int *sideBarY);
+
+	void Update(unsigned int sideBarWidth, unsigned int tileSetY, bool &dragging);
+	void Draw();
+
+	void CheckIfAnyTileIsSelected();
+	void SetSelectedTile(int Tile) { selectedTile = Tile; }
+	void UnlockAnySelectedTile();
+	
+	void GoToNextPage();
+	void GoToPrevPage();
+
+	int GetSelectedTile() { return selectedTile; }
+	unsigned int GetCurrentPage() { return pageToDisplay; }
+	unsigned int GetTotalPages() { return totalPages; }
+
+	~SideBarTileSet();
+
+private:
+	int selectedTile;
+	ALLEGRO_BITMAP **tileSet;
+	vector<TileSetButton*> tiles;
+
+	unsigned int *sideBarX, *sideBarY;
+
+	unsigned int pageToDisplay;
+	unsigned int totalPages;
+};
 
 class TileSetButton {
 public:
@@ -33,29 +64,4 @@ private:
 	bool beingHovered;
 	bool released;
 	bool locked;
-};
-
-class SideBarTileSet {
-public:
-	SideBarTileSet(ALLEGRO_BITMAP **tileSet, unsigned int numberOfTiles, unsigned int *sideBarX, unsigned int *sideBarY);
-
-	void Update(unsigned int sideBarWidth, unsigned int tileSetY, bool &dragging);
-	void Draw();
-
-	void CheckIfAnyTileIsSelected();
-	void SetSelectedTile(int Tile) { selectedTile = Tile; }
-	void UnlockAnySelectedTile();
-
-	int GetSelectedTile() { return selectedTile; }
-
-	~SideBarTileSet();
-
-private:
-	int selectedTile;
-	ALLEGRO_BITMAP **tileSet;
-	vector<TileSetButton*> tiles;
-
-	unsigned int *sideBarX, *sideBarY;
-
-	unsigned int pageToDisplay;
 };

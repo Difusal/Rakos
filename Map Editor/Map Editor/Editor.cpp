@@ -62,7 +62,7 @@ void Editor::LoadFonts() {
 	largeFont = al_load_font(CalibriTTF, 30, ALLEGRO_ALIGN_CENTER);
 	fonts.push_back(largeFont);
 
-	mediumFont = al_load_font(CalibriTTF, 20, ALLEGRO_ALIGN_CENTER);
+	mediumFont = al_load_font(CalibriTTF, 15, ALLEGRO_ALIGN_CENTER);
 	fonts.push_back(mediumFont);
 
 
@@ -225,7 +225,7 @@ void Editor::Draw() {
 		// Uncomment this block of code to display mouse coords.
 		// -----------------------------------------------------
 		stringstream ss;
-		ss << "x:" << Mouse->x << " y:" << Mouse->y;
+		ss << " x:" << Mouse->x << "  y:" << Mouse->y;
 		al_draw_text(mediumFont, Yellow, cameraPosition[0], cameraPosition[1], NULL, ss.str().c_str());
 		// cout << ss.str() << endl;
 
@@ -263,6 +263,46 @@ void Editor::Terminate() {
 
 	// deleting instance
 	delete instance;
+}
+
+
+void Editor::SaveMap(const char *filename, vector<vector<int> > &map, string &tileSetPath) {
+	// opening input stream
+	ofstream openfile(filename);
+	if (openfile.is_open()) {
+		cout << "Saving updated map to text file";
+
+		// writing updated map to text file
+		openfile << "[TileSet]" << endl;
+		openfile << tileSetPath << endl;
+		openfile << endl;
+		openfile << "[Map]" << endl;
+		for (unsigned int i = 0; i  < map.size(); i++) {
+			cout << ". ";
+
+			for (unsigned int j = 0; j < map[i].size(); j++) {
+				// writing tile id
+				openfile << map[i][j];
+
+				// leaving a space
+				if (map[i][j] < 10)
+					openfile << "  ";
+				else if (map[i][j] < 100)
+					openfile << " ";
+
+				if (j == map[i].size()-1)
+					if (i < map.size()-1)
+						openfile << endl;
+			}
+		}
+
+		cout << "DONE!" << endl;
+	}
+	else {
+		// if output stream was not opened successfully
+		al_show_native_message_box(Editor::GetInstance()->GetDisplay(), "Error", "Could not save world map.", "Your game folder must be corrupt.\nQuitting editor.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		exit(-1);
+	}
 }
 
 
