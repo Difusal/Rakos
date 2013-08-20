@@ -11,6 +11,9 @@ void EditingState::Initialize() {
 	// setting camera start position
 	cameraCenterX = (ScreenWidth - sideBar->Width())/2.0;
 	cameraCenterY = ScreenHeight/2.0;
+
+	// initializing bool variables
+	drawSelectedTile = false;
 }
 
 bool EditingState::Update(ALLEGRO_EVENT *ev) {
@@ -31,6 +34,22 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 		// updating side bar
 		sideBar->Update();
 
+		// checking if new tile was placed on map
+		if (Editor::GetInstance()->Mouse->x < sideBar->X() && sideBar->GetTileSet()->GetSelectedTile() != -1) {
+			drawSelectedTile = true;
+
+			selectedTileX = (int)Editor::GetInstance()->Mouse->x/WorldBlockSize;
+			selectedTileY = (int)Editor::GetInstance()->Mouse->y/WorldBlockSize;
+
+			// if player presses mouse button, place tile on map
+			if (Editor::GetInstance()->Mouse->leftMouseButtonPressed) {
+				cout << "Tile set at:" << selectedTileX << " " << selectedTileY << endl;
+				worldMap[selectedTileY][selectedTileX] = sideBar->GetTileSet()->GetSelectedTile();
+			}
+		}
+		else
+			drawSelectedTile = false;
+
 		return true;
 	}	
 
@@ -40,6 +59,20 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 void EditingState::Draw() {
 	// drawing world map
 	DrawMap(worldMap, &tileSet);
+
+	// drawing tile to be placed on map
+	if (drawSelectedTile) {
+		unsigned int x1 = selectedTileX*WorldBlockSize;
+		unsigned int y1 = selectedTileY*WorldBlockSize;
+		unsigned int x2 = selectedTileX*WorldBlockSize + WorldBlockSize;
+		unsigned int y2 = selectedTileY*WorldBlockSize + WorldBlockSize;
+
+		al_draw_bitmap_region(tileSet, sideBar->GetTileSet()->GetSelectedTile()*WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, x1, y1, ALLEGRO_ALIGN_LEFT);
+		al_draw_line(x1, Editor::GetInstance()->cameraPosition[1], x1, Editor::GetInstance()->cameraPosition[1] + ScreenHeight, Yellow, 1.0);
+		al_draw_line(x2, Editor::GetInstance()->cameraPosition[1], x2, Editor::GetInstance()->cameraPosition[1] + ScreenHeight, Yellow, 1.0);
+		al_draw_line(Editor::GetInstance()->cameraPosition[0], y1, Editor::GetInstance()->cameraPosition[0] + ScreenWidth, y1, Yellow, 1.0);
+		al_draw_line(Editor::GetInstance()->cameraPosition[0], y2, Editor::GetInstance()->cameraPosition[0] + ScreenWidth, y2, Yellow, 1.0);
+	}
 
 	// drawing side bar
 	sideBar->Draw();

@@ -46,6 +46,8 @@ public:
 	void SetSelectedTile(int Tile) { selectedTile = Tile; }
 	void UnlockAnySelectedTile();
 
+	int GetSelectedTile() { return selectedTile; }
+
 	~SideBarTileSet();
 
 private:

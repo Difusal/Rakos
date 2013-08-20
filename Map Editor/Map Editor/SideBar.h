@@ -20,6 +20,8 @@ public:
 
 	bool DraggingIsEnabled() { return dragging; }
 
+	SideBarTileSet *GetTileSet() { return tileSet; }
+
 	~SideBar(void);
 
 private:

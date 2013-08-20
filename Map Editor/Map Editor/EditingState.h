@@ -17,6 +17,9 @@ private:
 	vector<vector<int> > worldMap;
 	unsigned int numberOfTiles;
 
+	bool drawSelectedTile;
+	unsigned int selectedTileX, selectedTileY;
+
 	double cameraCenterX;
 	double cameraCenterY;
 
