@@ -2,11 +2,11 @@
 #include "globalFunctions.h"
 
 void EditingState::Initialize() {
-	// loading tile set and map
-	LoadMapAndTileSet(MapBeingEdited, worldMap, &tileSet);
-	
+	// loading map, tile set and tiles
+	LoadMapAndTileSet(MapBeingEdited, worldMap, &tileSet, numberOfTiles);
+
 	// creating side bar
-	sideBar = new SideBar();
+	sideBar = new SideBar(&tileSet, numberOfTiles);
 
 	// setting camera start position
 	cameraCenterX = (ScreenWidth - sideBar->Width())/2.0;

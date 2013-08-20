@@ -15,6 +15,7 @@ public:
 private:
 	ALLEGRO_BITMAP *tileSet;
 	vector<vector<int> > worldMap;
+	unsigned int numberOfTiles;
 
 	double cameraCenterX;
 	double cameraCenterY;

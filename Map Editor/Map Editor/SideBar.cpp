@@ -1,9 +1,11 @@
 #include "SideBar.h"
 #include "Editor.h"
 
-SideBar::SideBar(void) {
+SideBar::SideBar(ALLEGRO_BITMAP **tileSet, unsigned int numberOfTiles) {
 	width = 110;
 	height = 600;
+
+	this->tileSet = new SideBarTileSet(tileSet, numberOfTiles, &x, &y);
 
 	dragging = false;
 
@@ -12,7 +14,7 @@ SideBar::SideBar(void) {
 
 
 void SideBar::InitializeButtons() {
-	unsigned int spaceBetweenButtons = 10;
+	spaceBetweenButtons = 10;
 
 	// tiles and creatures buttons
 	unsigned int y1 = spaceBetweenButtons;
@@ -20,8 +22,8 @@ void SideBar::InitializeButtons() {
 	Tiles = new Button("Tiles", y1, _Left, width);
 	buttons.push_back(Tiles);
 
-	Creatures = new Button("Mobs", y1, _Right, width);
-	buttons.push_back(Creatures);
+	Mobs = new Button("Mobs", y1, _Right, width);
+	buttons.push_back(Mobs);
 
 
 	// page navigation buttons
@@ -77,11 +79,22 @@ void SideBar::Update() {
 	for (Button *button: buttons)
 		button->Update(x, y);
 
+	// updating tile set
+	tileSet->Update(width, 2*spaceBetweenButtons + buttons[0]->Height(), dragging);
+
 	// checking if any button was pressed
+	if (Tiles->wasPressed())
+		displayingTilesNotMobs = true;
+	else if (Mobs->wasPressed())
+		displayingTilesNotMobs = false;
+
 	if (EditMap->wasPressed())
 		dragging = false;
-	if (DragMap->wasPressed())
+	else if (DragMap->wasPressed()) {
 		dragging = true;
+		tileSet->UnlockAnySelectedTile();
+	}
+
 	if (Quit->wasPressed())
 		Editor::GetInstance()->ChangeState(_Menu);
 }
@@ -91,9 +104,18 @@ void SideBar::Draw() {
 	al_draw_filled_rectangle(x, y, x + width, y + height, LightGray);
 	al_draw_line(x, y, x, y + height, Black, 1.0);
 
+	// drawing tile set
+	tileSet->Draw();
+
 	// drawing buttons
 	for (Button *button: buttons)
 		button->Draw();
+
+	// drawing locked buttons
+	if (displayingTilesNotMobs)
+		Tiles->DrawLockedButton();
+	else
+		Mobs->DrawLockedButton();
 
 	if (dragging)
 		DragMap->DrawLockedButton();

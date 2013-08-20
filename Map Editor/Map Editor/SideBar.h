@@ -2,10 +2,11 @@
 
 #include "stdIncludes.h"
 #include "Button.h"
+#include "SideBarTileSet.h"
 
 class SideBar {
 public:
-	SideBar(void);
+	SideBar(ALLEGRO_BITMAP **tileSet, unsigned int numberOfTiles);
 
 	void InitializeButtons();
 
@@ -25,11 +26,15 @@ private:
 	unsigned int x, y;
 	unsigned int width, height;
 
+	bool displayingTilesNotMobs;
 	bool dragging;
 
+	SideBarTileSet *tileSet;
+
+	unsigned int spaceBetweenButtons;
 	vector<Button*> buttons;
 	Button *Tiles;
-	Button *Creatures;
+	Button *Mobs;
 	Button *PreviousPage;
 	Button *NextPage;
 	Button *EditMap;

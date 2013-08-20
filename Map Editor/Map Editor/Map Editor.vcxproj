@@ -18,6 +18,7 @@
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="SideBar.cpp" />
+    <ClCompile Include="SideBarTileSet.cpp" />
     <ClCompile Include="stdIncludes.h" />
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +30,7 @@
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="SideBar.h" />
+    <ClInclude Include="SideBarTileSet.h" />
     <ClInclude Include="state.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
