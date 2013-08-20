@@ -140,11 +140,11 @@ void CameraUpdate(vector<vector<int> > &worldMap, float *cameraPosition, double 
 	cameraPosition[0] = *x - (ScreenWidth-sideBarWidth)/2.0; 
 	cameraPosition[1] = *y - ScreenHeight/2.0;
 
-	if(cameraPosition[0] < 0) {
+	if(cameraPosition[0] < 0 || worldMap[0].size() < 18) {
 		cameraPosition[0] = 0;
 		*x = (ScreenWidth-sideBarWidth)/2.0;
 	}
-	if(cameraPosition[1] < 0) {
+	if(cameraPosition[1] < 0 || worldMap.size() < 15) {
 		cameraPosition[1] = 0;
 		*y = ScreenHeight/2.0;
 	}

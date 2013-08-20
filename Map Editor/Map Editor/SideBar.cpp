@@ -88,13 +88,6 @@ void SideBar::Update(string &tileSetPath, vector<vector<int> > &worldMap) {
 	else if (Mobs->wasPressed())
 		displayingTilesNotMobs = false;
 
-	if (EditMap->wasPressed())
-		dragging = false;
-	else if (DragMap->wasPressed()) {
-		dragging = true;
-		tileSet->UnlockAnySelectedTile();
-	}
-
 	if (NextPage->wasPressed()) {
 		tileSet->GoToNextPage();
 		tileSet->UnlockAnySelectedTile();
@@ -104,10 +97,24 @@ void SideBar::Update(string &tileSetPath, vector<vector<int> > &worldMap) {
 		tileSet->UnlockAnySelectedTile();
 	}
 
+	if (EditMap->wasPressed())
+		dragging = false;
+	else if (DragMap->wasPressed()) {
+		dragging = true;
+		tileSet->UnlockAnySelectedTile();
+	}
+
+	if (IncreaseMapWidth->wasPressed()) {
+		for (unsigned int i = 0; i < worldMap.size(); i++)
+			worldMap[i].push_back(0);
+	}
+	else if (IncreaseMapHeight->wasPressed()) {
+		worldMap.push_back(vector<int> (worldMap[0].size(), 0));
+	}
+
 	if (Save->wasPressed())
 		Editor::GetInstance()->SaveMap(MapBeingEdited, worldMap, tileSetPath);
-
-	if (Quit->wasPressed())
+	else if (Quit->wasPressed())
 		Editor::GetInstance()->ChangeState(_Menu);
 }
 
