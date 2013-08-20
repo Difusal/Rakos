@@ -77,7 +77,7 @@ void TileSetButton::Draw(ALLEGRO_BITMAP **tileSet) {
 
 void TileSetButton::DrawLockedTile() {
 	// drawing different button contour
-	al_draw_rectangle(realX - width/2.0, realY, realX + width/2.0, realY + height, Green, 1.0);
+	al_draw_rectangle(realX - width/2.0, realY, realX + width/2.0, realY + height, Yellow, 1.0);
 }
 
 TileSetButton::~TileSetButton() {

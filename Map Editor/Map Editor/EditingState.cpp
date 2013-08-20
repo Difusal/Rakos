@@ -35,20 +35,23 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 		sideBar->Update();
 
 		// checking if new tile was placed on map
-		if (Editor::GetInstance()->Mouse->x < sideBar->X() && sideBar->GetTileSet()->GetSelectedTile() != -1) {
-			drawSelectedTile = true;
+		if (Editor::GetInstance()->cameraPosition[0] < Editor::GetInstance()->Mouse->x && Editor::GetInstance()->Mouse->x < sideBar->X() &&
+			Editor::GetInstance()->cameraPosition[1] < Editor::GetInstance()->Mouse->y && Editor::GetInstance()->Mouse->y < Editor::GetInstance()->cameraPosition[1] + ScreenHeight) {
+				if (sideBar->GetTileSet()->GetSelectedTile() != -1) {
+					drawSelectedTile = true;
 
-			selectedTileX = (int)Editor::GetInstance()->Mouse->x/WorldBlockSize;
-			selectedTileY = (int)Editor::GetInstance()->Mouse->y/WorldBlockSize;
+					selectedTileX = (int)Editor::GetInstance()->Mouse->x/WorldBlockSize;
+					selectedTileY = (int)Editor::GetInstance()->Mouse->y/WorldBlockSize;
 
-			// if player presses mouse button, place tile on map
-			if (Editor::GetInstance()->Mouse->leftMouseButtonPressed) {
-				cout << "Tile set at:" << selectedTileX << " " << selectedTileY << endl;
-				worldMap[selectedTileY][selectedTileX] = sideBar->GetTileSet()->GetSelectedTile();
-			}
+					// if player presses mouse button, place tile on map
+					if (Editor::GetInstance()->Mouse->leftMouseButtonPressed) {
+						cout << "Tile set at: " << selectedTileX << " " << selectedTileY << endl;
+						worldMap[selectedTileY][selectedTileX] = sideBar->GetTileSet()->GetSelectedTile();
+					}
+				}
+				else
+					drawSelectedTile = false;
 		}
-		else
-			drawSelectedTile = false;
 
 		return true;
 	}	
