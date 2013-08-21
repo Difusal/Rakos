@@ -9,6 +9,7 @@ class Editor {
 public:
 	static Editor *GetInstance();
 	void ChangeState(EditorState newState);
+	void RestartState(EditorState State);
 
 	void StartAllegro5();
 	void CreateAllegroDisplay();
@@ -25,8 +26,10 @@ public:
 	void Initialize();
 	void Update();
 	void Draw();
+	void FinishControlCycle() { done = true; }
 	void Terminate();
 
+	void CameraReset();
 	void SaveMap(const char *filename, vector<vector<int> > &map, string &tileSetPath);
 
 	ALLEGRO_DISPLAY *GetDisplay() { return display; }
@@ -34,12 +37,15 @@ public:
 
 
 	// Public Variables
+	bool creatingNewMap;
+
 	MouseCursor *Mouse;
 
 	ALLEGRO_TRANSFORM camera;
 	float cameraPosition[2];
 
 	vector<ALLEGRO_FONT*> fonts;
+	ALLEGRO_FONT *extraLargeFont;
 	ALLEGRO_FONT *largeFont;
 	ALLEGRO_FONT *mediumFont;
 

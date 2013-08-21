@@ -1,0 +1,11 @@
+-----------------
+RAKOS: Map Editor
+-----------------
+
+In order to edit map files, you need to move them first to this folder.
+If you don't, when you try to load them, the program will close.
+
+This folder should also contain Tiles.png which is the tile set available to build the map.
+
+Thank you,
+Henrique Ferrolho

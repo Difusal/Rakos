@@ -70,7 +70,7 @@ void SideBar::InitializeButtons() {
 	buttons.push_back(Quit);
 }
 
-void SideBar::Update(string &tileSetPath, vector<vector<int> > &worldMap) {
+void SideBar::Update(string &MapBeingEdited, string &tileSetPath, vector<vector<int> > &worldMap) {
 	// updating side bar coords
 	x = Editor::GetInstance()->cameraPosition[0] + ScreenWidth - width;
 	y = Editor::GetInstance()->cameraPosition[1] + ScreenHeight - height;
@@ -113,7 +113,7 @@ void SideBar::Update(string &tileSetPath, vector<vector<int> > &worldMap) {
 	}
 
 	if (Save->wasPressed())
-		Editor::GetInstance()->SaveMap(MapBeingEdited, worldMap, tileSetPath);
+		Editor::GetInstance()->SaveMap(MapBeingEdited.c_str(), worldMap, tileSetPath);
 	else if (Quit->wasPressed())
 		Editor::GetInstance()->ChangeState(_Menu);
 }
@@ -152,4 +152,5 @@ SideBar::~SideBar(void) {
 	// destroying buttons
 	for (Button *button: buttons)
 		delete button;
+	buttons.clear();
 }

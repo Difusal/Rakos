@@ -98,7 +98,7 @@ void LoadMapAndTileSet(const char *filename, vector<vector<int> > &map, string &
 	}
 	else {
 		// if input stream was not opened successfully
-		al_show_native_message_box(Editor::GetInstance()->GetDisplay(), "Error", "Could not load world map.", "Your game folder must be corrupt.\nQuitting game.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		al_show_native_message_box(Editor::GetInstance()->GetDisplay(), "Error", "Could not load world map.", "Make sure to include the file you want to edit in res/maps folder.\nIf the file is already on that folder you probably misspelled the text file name.\n\nPress OK to quit editor.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
 	}
 }
@@ -121,7 +121,6 @@ void DrawMap(const vector<vector<int> > &WorldMap, ALLEGRO_BITMAP **tileSet) {
 		}
 	}
 }
-
 
 //************************************
 // Method:    CameraUpdate

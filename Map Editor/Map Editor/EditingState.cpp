@@ -2,8 +2,60 @@
 #include "globalFunctions.h"
 
 void EditingState::Initialize() {
-	// loading map, tile set and tiles
-	LoadMapAndTileSet(MapBeingEdited, worldMap, tileSetPath, &tileSet, numberOfTiles);
+	if (Editor::GetInstance()->creatingNewMap) {
+		// displaying warning box
+		al_show_native_message_box(Editor::GetInstance()->GetDisplay(), "Rakos: Map Editor", "You chose to create a new map.", "Switch to the console to type the name of the new map and then press <Enter>. Example: \"city\".\n\nYou can now press OK to dismiss this warning and switch to the console.", NULL, ALLEGRO_MESSAGEBOX_WARN);
+
+		// waiting for user input
+		cout << "---------------------------------------------------------" << endl;
+		cout << "Please type the name of the text file you want to create:" << endl;
+		cout << "> ";
+		getline(cin, MapBeingEdited);
+		cout << endl;
+		cout << "Thank you!" << endl;
+		cout << "---------------------------------------------------------" << endl;
+
+		// completing file path
+		stringstream strstrm;
+		strstrm << "res//maps//" << MapBeingEdited << ".txt";
+		MapBeingEdited = strstrm.str();
+
+		// creating a new map
+		worldMap.clear();
+		for (unsigned int i = 0; i < 3; i++)
+			worldMap.push_back(vector<int> (3, 0));
+
+		// loading default tile set
+		tileSetPath = DefaultTileSetPath;
+		tileSet = al_load_bitmap(tileSetPath.c_str());
+
+		// registering number of tiles on tile set
+		numberOfTiles = al_get_bitmap_width(tileSet)/WorldBlockSize;
+
+		// saving map already
+		Editor::GetInstance()->SaveMap(MapBeingEdited.c_str(), worldMap, tileSetPath);
+	}
+	else {
+		// displaying warning box
+		al_show_native_message_box(Editor::GetInstance()->GetDisplay(), "Rakos: Map Editor", "You chose to edit an existing map.", "To load the map you want, switch to the console.\nType the name of the text file which contains your map and then press <Enter>. Example: \"city\".\n\nYou can now press OK to dismiss this warning and switch to the console.", NULL, ALLEGRO_MESSAGEBOX_WARN);
+
+		// waiting for user input
+		cout << "-------------------------------------------------------" << endl;
+		cout << "Please type the name of the text file you want to edit:" << endl;
+		cout << "> ";
+		getline(cin, MapBeingEdited);
+		cout << endl;
+		cout << "Thank you!" << endl;
+		cout << "-------------------------------------------------------" << endl;
+
+		// completing file path
+		stringstream strstrm;
+		strstrm << "res//maps//" << MapBeingEdited << ".txt";
+		MapBeingEdited = strstrm.str();
+
+		// loading map, tile set and tiles
+		LoadMapAndTileSet(strstrm.str().c_str(), worldMap, tileSetPath, &tileSet, numberOfTiles);
+	}
 
 	// creating side bar
 	sideBar = new SideBar(&tileSet, numberOfTiles);
@@ -31,9 +83,6 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 			al_use_transform(&Editor::GetInstance()->camera);
 		}		
 
-		// updating side bar
-		sideBar->Update(tileSetPath, worldMap);
-
 		// checking if new tile was placed on map
 		if (Editor::GetInstance()->cameraPosition[0] < Editor::GetInstance()->Mouse->x && Editor::GetInstance()->Mouse->x < sideBar->X() &&
 			Editor::GetInstance()->cameraPosition[1] < Editor::GetInstance()->Mouse->y && Editor::GetInstance()->Mouse->y < Editor::GetInstance()->cameraPosition[1] + ScreenHeight) {
@@ -52,6 +101,9 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 				else
 					drawSelectedTile = false;
 		}
+
+		// updating side bar
+		sideBar->Update(MapBeingEdited, tileSetPath, worldMap);
 
 		return true;
 	}	
@@ -87,4 +139,7 @@ void EditingState::Terminate() {
 
 	// destroying tile set bitmap
 	al_destroy_bitmap(tileSet);
+
+	// destroying side bar
+	delete sideBar;
 }

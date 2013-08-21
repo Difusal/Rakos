@@ -59,6 +59,9 @@ void Editor::CreateAllegroDisplay() {
 void Editor::LoadFonts() {
 	cout << "Loading fonts..." << endl;
 
+	extraLargeFont = al_load_font(CalibriTTF, 50, ALLEGRO_ALIGN_CENTER);
+	fonts.push_back(extraLargeFont);
+
 	largeFont = al_load_font(CalibriTTF, 30, ALLEGRO_ALIGN_CENTER);
 	fonts.push_back(largeFont);
 
@@ -135,6 +138,7 @@ void Editor::InitializeVariables() {
 
 	done = false;
 	draw = true;
+	creatingNewMap = false;
 }
 
 void Editor::StartTimers() {
@@ -150,7 +154,7 @@ void Editor::StartControlCycle() {
 	states.push_back(new MenuState());
 	states.push_back(new EditingState());
 	state = -1;
-	ChangeState(_Editing);
+	ChangeState(_Menu);
 
 	cout << "Starting game control cycle..." << endl;
 	while (!done) {
@@ -220,14 +224,12 @@ void Editor::Draw() {
 		// drawing current state
 		states[state]->Draw();
 
-		// ---------------
-		// Debugging code:
-		// Uncomment this block of code to display mouse coords.
-		// -----------------------------------------------------
-		stringstream ss;
-		ss << " x:" << Mouse->x << "  y:" << Mouse->y;
-		al_draw_text(mediumFont, Yellow, cameraPosition[0], cameraPosition[1], NULL, ss.str().c_str());
-		// cout << ss.str() << endl;
+		if (state == _Editing) {
+			// displaying mouse coords if editing map
+			stringstream ss;
+			ss << " x:" << Mouse->x << "  y:" << Mouse->y;
+			al_draw_text(mediumFont, Yellow, cameraPosition[0], cameraPosition[1], NULL, ss.str().c_str());
+		}		
 
 		// flipping display and preparing buffer for next cycle
 		al_flip_display();
@@ -239,14 +241,8 @@ void Editor::Draw() {
 void Editor::Terminate() {
 	cout << "Deallocating memory and quitting..." << endl;
 
-	// audio samples
-
-
 	// deleting mouse cursor
 	delete Mouse;
-
-	// destroying display
-	al_destroy_display(display);
 
 	// destroying fonts
 	for (unsigned int i = 0; i < fonts.size(); i++)
@@ -256,15 +252,32 @@ void Editor::Terminate() {
 	// destroying event queue
 	al_destroy_event_queue(eventQueue);
 
+	// destroying display
+	al_destroy_display(display);
+
 	// destroying timers
 	for (unsigned int i = 0; i < timers.size(); i++)
 		al_destroy_timer(timers[i]);
 	timers.clear();
 
+	// destroying states
+	for (State *obj: states)
+		delete obj;
+	states.clear();
+
 	// deleting instance
 	delete instance;
 }
 
+
+void Editor::CameraReset() {
+	cameraPosition[0] = 0;
+	cameraPosition[1] = 0;
+
+	al_identity_transform(&camera);
+	al_translate_transform(&camera, -cameraPosition[0], -cameraPosition[1]);
+	al_use_transform(&camera);
+}
 
 void Editor::SaveMap(const char *filename, vector<vector<int> > &map, string &tileSetPath) {
 	// opening input stream

@@ -15,6 +15,7 @@
     <ClCompile Include="EditingState.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuButton.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="SideBar.cpp" />
@@ -27,6 +28,7 @@
     <ClInclude Include="Editor.h" />
     <ClInclude Include="globalEnums.h" />
     <ClInclude Include="globalFunctions.h" />
+    <ClInclude Include="MenuButton.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="SideBar.h" />
