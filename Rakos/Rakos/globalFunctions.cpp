@@ -73,9 +73,10 @@ void DrawMap(const vector<vector<int> > &WorldMap, unsigned int SeaAnimationFram
 	for(unsigned int i = 0; i < WorldMap.size(); i++) {
 		for(unsigned int j = 0; j < WorldMap[i].size(); j++) {
 			// drawing sea animation
-			if (WorldMap[i][j] == 0)
-				al_draw_bitmap_region(RPG::GetInstance()->GetSeaBitmap(), SeaAnimationFrame, SeaAnimationFrame, WorldBlockSize, WorldBlockSize, j*WorldBlockSize, i*WorldBlockSize, NULL);
-			else
+			al_draw_bitmap_region(RPG::GetInstance()->GetSeaBitmap(), SeaAnimationFrame, SeaAnimationFrame, WorldBlockSize, WorldBlockSize, j*WorldBlockSize, i*WorldBlockSize, NULL);
+
+			// drawing tile
+			if (WorldMap[i][j] != 0)
 				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), WorldMap[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
 		}
 	}

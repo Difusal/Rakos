@@ -318,31 +318,24 @@ bool RPG::RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings) {
 
 
 bool RPG::livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles) {
-	int north_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][player->getFeetX()/WorldBlockSize];
-	int ne_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
-	int east_scan = worldMap[player->getFeetY()/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
-	int se_scan = worldMap[(player->getFeetY()+25)/WorldBlockSize][(player->getFeetX()+25)/WorldBlockSize];
-	int south_scan = worldMap[(player->getFeetY()+25)/WorldBlockSize][player->getFeetX()/WorldBlockSize];
-	int sw_scan = worldMap[(player->getFeetY()+25)/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
-	int west_scan = worldMap[player->getFeetY()/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
-	int nw_scan = worldMap[(player->getFeetY()-15)/WorldBlockSize][(player->getFeetX()-25)/WorldBlockSize];
+	int scan = worldMap[player->getFeetY()/WorldBlockSize][player->getFeetX()/WorldBlockSize];
 
 	for (unsigned int i = 0; i < unaccessibleTiles.size(); i++) {
 		switch (Dir) {
 		case UP:
-			if (north_scan == unaccessibleTiles[i] || east_scan == unaccessibleTiles[i] || west_scan == unaccessibleTiles[i] || ne_scan == unaccessibleTiles[i] || nw_scan == unaccessibleTiles[i])
+			if (scan == unaccessibleTiles[i])
 				return true;
 			break;
 		case DOWN:
-			if (east_scan == unaccessibleTiles[i] || south_scan == unaccessibleTiles[i] || west_scan == unaccessibleTiles[i] || se_scan == unaccessibleTiles[i] || sw_scan == unaccessibleTiles[i])
+			if (scan == unaccessibleTiles[i])
 				return true;
 			break;
 		case LEFT:
-			if (north_scan == unaccessibleTiles[i] || south_scan == unaccessibleTiles[i] || west_scan == unaccessibleTiles[i] || sw_scan == unaccessibleTiles[i] || nw_scan == unaccessibleTiles[i])
+			if (scan == unaccessibleTiles[i])
 				return true;
 			break;
 		case RIGHT:
-			if (north_scan == unaccessibleTiles[i] || east_scan == unaccessibleTiles[i] || south_scan == unaccessibleTiles[i] || ne_scan == unaccessibleTiles[i] || se_scan == unaccessibleTiles[i])
+			if (scan == unaccessibleTiles[i])
 				return true;
 			break;
 		}
