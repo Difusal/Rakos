@@ -317,25 +317,25 @@ bool RPG::RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings) {
 }
 
 
-bool RPG::livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles) {
+bool RPG::livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &accessibleTiles) {
 	int scan = worldMap[player->getFeetY()/WorldBlockSize][player->getFeetX()/WorldBlockSize];
 
-	for (unsigned int i = 0; i < unaccessibleTiles.size(); i++) {
+	for (unsigned int i = 0; i < accessibleTiles.size(); i++) {
 		switch (Dir) {
 		case UP:
-			if (scan == unaccessibleTiles[i])
+			if (scan != accessibleTiles[i])
 				return true;
 			break;
 		case DOWN:
-			if (scan == unaccessibleTiles[i])
+			if (scan != accessibleTiles[i])
 				return true;
 			break;
 		case LEFT:
-			if (scan == unaccessibleTiles[i])
+			if (scan != accessibleTiles[i])
 				return true;
 			break;
 		case RIGHT:
-			if (scan == unaccessibleTiles[i])
+			if (scan != accessibleTiles[i])
 				return true;
 			break;
 		}

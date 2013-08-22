@@ -285,7 +285,7 @@ void TutorialState::InitializeDialogs() {
 void TutorialState::MoveLivingBeings(ALLEGRO_EVENT *ev) {
 	// moving player, npcs and creatures
 	if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerMoveTimer))
-		player->Move(keyState, worldMap, unaccessibleTiles);
+		player->Move(keyState, worldMap, accessibleTiles);
 	for (unsigned int i = 1; i < livingBeings.size(); i++)
 		if (!livingBeings[i]->isDead())
 			if (ev->timer.source == RPG::GetInstance()->GetTimer(livingBeings[i]->getTimerType()))
@@ -456,7 +456,9 @@ void TutorialState::Initialize() {
 	// loading map
 	LoadMap(TutorialWorldMapPath, worldMap);
 	seaAnimationFrame = 0;
-	unaccessibleTiles.push_back(0);
+
+	// stating tiles player can walk on
+	accessibleTiles.push_back(1);
 
 	sideBar = new SideBar(&livingBeings);
 
