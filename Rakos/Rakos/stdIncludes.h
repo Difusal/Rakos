@@ -93,4 +93,5 @@ const float SlowCreaturesSpeed = FPS/2.5;
 #define SwordThumb "res//weapon thumbnails//Sword.png"
 
 /* world maps */
-#define TutorialWorldMapPath "res//maps//tutorial.txt"
+#define TutorialMapPath "res//maps//tutorial.txt"
+#define RakosMapPath "res//maps//rakos.txt"

@@ -25,6 +25,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Rabbit.cpp" />
+    <ClCompile Include="RakosState.cpp" />
     <ClCompile Include="RPG.cpp" />
     <ClCompile Include="Shield.cpp" />
     <ClCompile Include="SideBar.cpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Rabbit.h" />
+    <ClInclude Include="RakosState.h" />
     <ClInclude Include="RPG.h" />
     <ClInclude Include="Shield.h" />
     <ClInclude Include="SideBar.h" />

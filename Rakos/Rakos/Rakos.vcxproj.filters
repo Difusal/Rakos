@@ -84,6 +84,9 @@
     <ClCompile Include="CreatureWindowObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RakosState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdIncludes.h">
@@ -159,6 +162,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CreatureWindowObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RakosState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

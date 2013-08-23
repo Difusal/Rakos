@@ -11,7 +11,8 @@ enum Language {
 };
 
 enum GameState {
-	_Tutorial
+	_Tutorial,
+	_Rakos
 };
 
 enum Vocation {

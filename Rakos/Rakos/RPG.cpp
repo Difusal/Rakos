@@ -1,5 +1,6 @@
 #include "RPG.h"
 #include "TutorialState.h"
+#include "RakosState.h"
 #include "globalFunctions.h"
 
 RPG *RPG::instance = NULL;
@@ -642,8 +643,9 @@ void RPG::StartGameControlCycle() {
 	player = new Player("Difusal", no_weapon, no_shield, 480, 580);
 
 	states.push_back(new TutorialState());
+	states.push_back(new RakosState());
 	state = -1;
-	ChangeState(_Tutorial);
+	ChangeState(_Rakos);
 
 	cout << "Starting game control cycle..." << endl;
 	while (!done) {

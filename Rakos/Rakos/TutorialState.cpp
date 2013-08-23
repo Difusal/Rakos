@@ -454,7 +454,7 @@ void TutorialState::DrawDialogs() {
 
 void TutorialState::Initialize() {
 	// loading map
-	LoadMap(TutorialWorldMapPath, &worldMapLevel1, &worldMapLevel2);
+	LoadMap(TutorialMapPath, &worldMapLevel1, &worldMapLevel2);
 	seaAnimationFrame = 0;
 
 	// stating tiles player can walk on
@@ -493,6 +493,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 			UpdateDialogs();
 		}
 
+		// controlling sea animation
 		if (ev->timer.source == RPG::GetInstance()->GetTimer(_DrawTimer)) {
 			seaAnimationFrame++;
 			if (seaAnimationFrame > WorldBlockSize-1)
