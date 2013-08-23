@@ -1,4 +1,4 @@
-#include "MenuState.h"
+﻿#include "MenuState.h"
 #include "Editor.h"
 
 void MenuState::Initialize() {

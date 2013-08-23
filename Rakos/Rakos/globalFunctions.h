@@ -6,8 +6,8 @@
 int randomNumber (int min, int max);
 
 bool fileExists(const string &filename);
-void LoadMap(const char *filename, vector<vector<int> > &map);
-void DrawMap(const vector<vector<int> > &WorldMap, unsigned int SeaAnimationFrame);
+void LoadMap(const char *filename, vector<vector<int> > *mapLevel1, vector<vector<int> > *mapLevel2);
+void DrawMap(const vector<vector<int> > &WorldMapLevel1, const vector<vector<int> > &WorldMapLevel2, unsigned int SeaAnimationFrame);
 
 void CameraUpdate(vector<vector<int> > &worldMap, float *cameraPosition, float x, float y, int width, int height);
 bool boxCollision(float x, float y, float ex, float ey, int width, int height);

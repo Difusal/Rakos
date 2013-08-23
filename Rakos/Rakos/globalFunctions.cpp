@@ -19,48 +19,82 @@ bool fileExists (const string &filename) {
 }
 
 // loads world maps from text files
-void LoadMap(const char *filename, vector<vector<int> > &map) {
+void LoadMap(const char *filename, vector<vector<int> > *mapLevel1, vector<vector<int> > *mapLevel2) {
+	vector<vector<int> > *mapLevelBeingLoaded;
+
+	// clearing vectors
+	mapLevel1->clear();
+	mapLevel2->clear();
+
+	// loading state phases
 	int state = NULL;
 	enum LoadState {
 		TileSet,
 		Map
 	};
-	
+
+	// opening input stream
 	ifstream openfile(filename);
-	if(openfile.is_open()) {
+	if (openfile.is_open()) {
 		string line, value;
 
-		while(!openfile.eof()) {
+		// while end of file is not reached
+		while (!openfile.eof()) {
+			// read a line
 			getline(openfile, line);
 
-			if(line.find("[TileSet]") != string::npos) {
+			// if keyword found, start corresponding loading phase
+			if (line.find("[TileSet]") != string::npos) {
+				// loading tile set phase
 				state = TileSet;
 				continue;
 			}
-			else if (line.find("[Map]") != string::npos) {
+			else if (line.find("[MapLevel1]") != string::npos) {
+				// loading map phase
 				state = Map;
+				mapLevelBeingLoaded = mapLevel1;
 				continue;
 			}
+			else if (line.find("[MapLevel2]") != string::npos) {
+				// loading map phase
+				state = Map;
+				mapLevelBeingLoaded = mapLevel2;
+				continue;
+			}
+			////////////////////////
+			// EDIT HERE TO ADD AN ELSE IF TO [Creatures]
 
-			switch(state)
-			{
+			switch(state) {
 			case TileSet:
-				if(line.length() > 0)
-					RPG::GetInstance()->SetTileSet(al_load_bitmap(line.c_str()));
-				break;
-			case Map: 
-				stringstream str(line);
-				vector<int> tempVector;
-
-				while(!str.eof()) {
-					getline(str, value, ' ');
-					if(value.length() > 0)
-						tempVector.push_back(atoi(value.c_str()));
+				{
+					// if loading tile set, assign tile set to the corresponding .png
+					if(line.length() > 0)
+						RPG::GetInstance()->SetTileSet(al_load_bitmap(line.c_str()));
+					break;
 				}
-				map.push_back(tempVector);
-				break;
+
+				// loading map
+			case Map:
+				{
+					stringstream str(line);
+					vector<int> tempVector;
+
+					// pushing value read to temporary vector
+					while (!str.eof()) {
+						getline(str, value, ' ');
+						if (value.length() > 0)
+							tempVector.push_back(atoi(value.c_str()));
+					}
+
+					// push back temporary vector to map vector and read next line
+					mapLevelBeingLoaded->push_back(tempVector);
+
+					break;
+				}
 			}
 		}
+
+		cout << "Map loaded." << endl;
 	}
 	else {
 		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load world map.", "Your game folder must be corrupt.\nQuitting game.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
@@ -69,15 +103,19 @@ void LoadMap(const char *filename, vector<vector<int> > &map) {
 }
 
 // draws world map to display
-void DrawMap(const vector<vector<int> > &WorldMap, unsigned int SeaAnimationFrame) {
-	for(unsigned int i = 0; i < WorldMap.size(); i++) {
-		for(unsigned int j = 0; j < WorldMap[i].size(); j++) {
+void DrawMap(const vector<vector<int> > &WorldMapLevel1, const vector<vector<int> > &WorldMapLevel2, unsigned int SeaAnimationFrame) {
+	for(unsigned int i = 0; i < WorldMapLevel1.size(); i++) {
+		for(unsigned int j = 0; j < WorldMapLevel1[i].size(); j++) {
 			// drawing sea animation
 			al_draw_bitmap_region(RPG::GetInstance()->GetSeaBitmap(), SeaAnimationFrame, SeaAnimationFrame, WorldBlockSize, WorldBlockSize, j*WorldBlockSize, i*WorldBlockSize, NULL);
 
-			// drawing tile
-			if (WorldMap[i][j] != 0)
-				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), WorldMap[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
+			// drawing level 1 tiles
+			if (WorldMapLevel1[i][j] != 0)
+				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), WorldMapLevel1[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
+
+			// drawing level 2 tiles
+			if (WorldMapLevel2[i][j] != 0)
+				al_draw_bitmap_region(RPG::GetInstance()->GetTileSet(), WorldMapLevel2[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
 		}
 	}
 }

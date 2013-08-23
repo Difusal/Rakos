@@ -167,14 +167,14 @@ void TutorialState::InitializeDialogs() {
 			textBoxes.push_back(tutorialDialog1);
 
 			tempVec.clear();
-			tempVec.push_back("Parabens!");
+			tempVec.push_back("Parabéns!");
 			tempVec.push_back("Agora devias ir falar com o Steve.");
 			tempVec.push_back("Para falar, aproxima-te dele e pressiona a tecla <C>.");
 			tutorialDialog2 = new TextBox(_Bottom, tempVec);
 			textBoxes.push_back(tutorialDialog2);
 
 			tempVec.clear();
-			tempVec.push_back("Ola! Deves ser novo por aqui...");
+			tempVec.push_back("Olá! Deves ser novo por aqui...");
 			tempVec.push_back("Toma esta faca e mata aquele coelho.");
 			tempVec.push_back("Carrega na tecla <K> para atacar.");
 			tempVec.push_back("Depois de terminares, volta a falar comigo.");
@@ -184,32 +184,32 @@ void TutorialState::InitializeDialogs() {
 
 			tempVec.clear();
 			tempVec.push_back("Muito bem! Agora caminha em cima daquele");
-			tempVec.push_back("botao castanho e um portal ira abrir-se.");
-			tempVec.push_back("Atravessa o portal! Aqui esta uma dica:");
+			tempVec.push_back("botão castanho e um portal irá abrir-se.");
+			tempVec.push_back("Atravessa o portal! Aqui está uma dica:");
 			tempVec.push_back("Carrega na tecla <SHIFT> para correres.");
 			steveDialog2 = new SpeechBubble(Steve->getAddressOfX(), Steve->getAddressOfY(), tempVec);
 			Steve->speechBubbles.push_back(steveDialog2);
 			speechBubbles.push_back(steveDialog2);
 
 			tempVec.clear();
-			tempVec.push_back("Ola " + RPG::GetInstance()->GetPlayer()->getName() + "! Estas a safar-te bastante bem.");
-			tempVec.push_back("Chegou a altura de escolheres uma profissao.");
-			tempVec.push_back("Existem 2 profissoes: Mage e Warrior.");
+			tempVec.push_back("Olá " + RPG::GetInstance()->GetPlayer()->getName() + "! Estás a safar-te bastante bem.");
+			tempVec.push_back("Chegou a altura de escolheres uma profissão.");
+			tempVec.push_back("Existem 2 profissões: Mage e Warrior.");
 			tempVec.push_back("Fala com cada um dos Mestres para aprenderes detalhes");
-			tempVec.push_back("sobre cada profissao. ESCOLHE BEM!");
-			tempVec.push_back("So podes escolher a tua profissao uma vez!");
+			tempVec.push_back("sobre cada profissão. ESCOLHE BEM!");
+			tempVec.push_back("Só podes escolher a tua profissão uma vez!");
 			whiteKnightDialog = new SpeechBubble(WhiteKnight->getAddressOfX(), WhiteKnight->getAddressOfY(), tempVec);
 			WhiteKnight->speechBubbles.push_back(whiteKnightDialog);
 			speechBubbles.push_back(whiteKnightDialog);
 
 			tempVec.clear();
-			tempVec.push_back("Saudacoes " + RPG::GetInstance()->GetPlayer()->getName() + ".");
-			tempVec.push_back("Os Mages sao os mestres da MAGIA!");
-			tempVec.push_back("Nos nao usamos espadas. Usamos magia e");
+			tempVec.push_back("Saudações " + RPG::GetInstance()->GetPlayer()->getName() + ".");
+			tempVec.push_back("Os Mages são os mestres da MAGIA!");
+			tempVec.push_back("Nós não usamos espadas. Usamos magia e");
 			tempVec.push_back("skills poderosas para atacar monstros e nos");
 			tempVec.push_back("defender dos inimigos! Contudo, precisamos de");
 			tempVec.push_back("estar quase sempre a CORRER em vez de lutar");
-			tempVec.push_back("perto deles porque nao somos tao bons como");
+			tempVec.push_back("perto deles porque não somos tão bons como");
 			tempVec.push_back("os Warriors a usar escudos.");
 			tempVec.push_back("");
 			tempVec.push_back("Se queres ser um Mage, carrega agora na tecla <ENTER>.");
@@ -219,7 +219,7 @@ void TutorialState::InitializeDialogs() {
 
 			tempVec.clear();
 			tempVec.push_back("Muito bem " + RPG::GetInstance()->GetPlayer()->getName() + "!");
-			tempVec.push_back("Agora es oficialmente um Mage!");
+			tempVec.push_back("Agora és oficialmente um Mage!");
 			tempVec.push_back("Aceita esta VARINHA como presente.");
 			tempVec.push_back("");
 			tempVec.push_back("Agora atravessa o portal a Este daqui.");
@@ -230,7 +230,7 @@ void TutorialState::InitializeDialogs() {
 			speechBubbles.push_back(mageDialogIfPlayerIsAMage);
 
 			tempVec.clear();
-			tempVec.push_back("Ola outra vez, " + RPG::GetInstance()->GetPlayer()->getName() + "!");
+			tempVec.push_back("Olá outra vez, " + RPG::GetInstance()->GetPlayer()->getName() + "!");
 			tempVec.push_back("Vejo que te tornaste num Warrior");
 			tempVec.push_back("");
 			tempVec.push_back("Atravessa o portal a Este daqui.");
@@ -242,12 +242,12 @@ void TutorialState::InitializeDialogs() {
 
 			tempVec.clear();
 			tempVec.push_back("Hey " + RPG::GetInstance()->GetPlayer()->getName() + ".");
-			tempVec.push_back("Os Warriors sao eximios com ESPADAS!");
+			tempVec.push_back("Os Warriors sao exímios com ESPADAS!");
 			tempVec.push_back("Usamos uma grande variedade de armas como espadas");
-			tempVec.push_back("machados e lancas. Tambem usamos escudos para nos defender.");
-			tempVec.push_back("Lutamos PERTO do inimigo, nao temos medo!");
-			tempVec.push_back("Junta-te a nos! Nunca seras derrotado e");
-			tempVec.push_back("ate os Dragoes vao ter medo da tua espada.");
+			tempVec.push_back("machados e lanças. Também usamos escudos para nos defender.");
+			tempVec.push_back("Lutamos PERTO do inimigo, não temos medo!");
+			tempVec.push_back("Junta-te a nós! Nunca serás derrotado e");
+			tempVec.push_back("até os Dragões vão ter medo da tua espada.");
 			tempVec.push_back("");
 			tempVec.push_back("Se queres ser um Warrior, carrega agora na tecla <ENTER>.");
 			warriorDialog = new SpeechBubble(Warrior->getAddressOfX(), Warrior->getAddressOfY(), tempVec);
@@ -256,7 +256,7 @@ void TutorialState::InitializeDialogs() {
 
 			tempVec.clear();
 			tempVec.push_back("Muito bem " + RPG::GetInstance()->GetPlayer()->getName() + "!");
-			tempVec.push_back("Agora es oficialmente um Warrior!");
+			tempVec.push_back("Agora és oficialmente um Warrior!");
 			tempVec.push_back("Aceita esta ESPADA como presente.");
 			tempVec.push_back("");
 			tempVec.push_back("Agora atravessa o portal a Este daqui.");
@@ -267,7 +267,7 @@ void TutorialState::InitializeDialogs() {
 			speechBubbles.push_back(warriorDialogIfPlayerIsAWarrior);
 
 			tempVec.clear();
-			tempVec.push_back("Ola outra vez, " + RPG::GetInstance()->GetPlayer()->getName() + "!");
+			tempVec.push_back("Olá outra vez, " + RPG::GetInstance()->GetPlayer()->getName() + "!");
 			tempVec.push_back("Vejo que te tornaste um Mage");
 			tempVec.push_back("");
 			tempVec.push_back("Atravessa o portal a Este daqui.");
@@ -285,7 +285,7 @@ void TutorialState::InitializeDialogs() {
 void TutorialState::MoveLivingBeings(ALLEGRO_EVENT *ev) {
 	// moving player, npcs and creatures
 	if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerMoveTimer))
-		player->Move(keyState, worldMap, accessibleTiles);
+		player->Move(keyState, worldMapLevel1, accessibleTiles);
 	for (unsigned int i = 1; i < livingBeings.size(); i++)
 		if (!livingBeings[i]->isDead())
 			if (ev->timer.source == RPG::GetInstance()->GetTimer(livingBeings[i]->getTimerType()))
@@ -401,7 +401,7 @@ bool TutorialState::CheckIfPlayerChoseAVocation(ALLEGRO_EVENT *ev) {
 					str2 = "Do you really want to become a Mage?";
 					break;
 				case _Portuguese:
-					str1 = "ATENCAO! So podes escolher a tua profissao uma vez!";
+					str1 = "ATENCÃO! Só podes escolher a tua profissão uma vez!";
 					str2 = "Tens a certeza que te queres tornar um Mage?";
 				}
 
@@ -423,7 +423,7 @@ bool TutorialState::CheckIfPlayerChoseAVocation(ALLEGRO_EVENT *ev) {
 					str2 = "Do you really want to become a Warrior?";
 					break;
 				case _Portuguese:
-					str1 = "ATENCAO! So podes escolher a tua profissao uma vez!";
+					str1 = "ATENCÃO! Só podes escolher a tua profissão uma vez!";
 					str2 = "Tens a certeza que te queres tornar um Warrior?";
 				}
 
@@ -454,7 +454,7 @@ void TutorialState::DrawDialogs() {
 
 void TutorialState::Initialize() {
 	// loading map
-	LoadMap(TutorialWorldMapPath, worldMap);
+	LoadMap(TutorialWorldMapPath, &worldMapLevel1, &worldMapLevel2);
 	seaAnimationFrame = 0;
 
 	// stating tiles player can walk on
@@ -499,7 +499,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 				seaAnimationFrame = 0;
 		}
 
-		RPG::GetInstance()->UpdateCamera(worldMap, livingBeings);
+		RPG::GetInstance()->UpdateCamera(worldMapLevel1, livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(portals);
 		RPG::GetInstance()->UpdateWeaponAndShieldPositions(livingBeings);
@@ -526,7 +526,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 
 void TutorialState::Draw() {
 	// drawing world map
-	DrawMap(worldMap, seaAnimationFrame);
+	DrawMap(worldMapLevel1, worldMapLevel2, seaAnimationFrame);
 
 	// drawing switches
 	for (Switch *obj : switches)

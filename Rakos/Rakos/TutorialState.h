@@ -28,7 +28,8 @@ public:
 	virtual void Terminate();
 
 private:
-	vector<vector<int> > worldMap;
+	vector<vector<int> > worldMapLevel1;
+	vector<vector<int> > worldMapLevel2;
 	unsigned int seaAnimationFrame;
 	vector<int> accessibleTiles;
 
