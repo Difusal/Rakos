@@ -279,7 +279,7 @@ void Editor::CameraReset() {
 	al_use_transform(&camera);
 }
 
-void Editor::SaveMap(const char *filename, vector<vector<int> > &map, string &tileSetPath) {
+void Editor::SaveMap(const char *filename, vector<vector<int> > &map, vector<vector<int> > &mapLevel2, string &tileSetPath) {
 	// opening input stream
 	ofstream openfile(filename);
 	if (openfile.is_open()) {
@@ -288,8 +288,7 @@ void Editor::SaveMap(const char *filename, vector<vector<int> > &map, string &ti
 		// writing updated map to text file
 		openfile << "[TileSet]" << endl;
 		openfile << tileSetPath << endl;
-		openfile << endl;
-		openfile << "[Map]" << endl;
+		openfile << "[MapLevel1]" << endl;
 		for (unsigned int i = 0; i  < map.size(); i++) {
 			cout << ". ";
 
@@ -305,6 +304,26 @@ void Editor::SaveMap(const char *filename, vector<vector<int> > &map, string &ti
 
 				if (j == map[i].size()-1)
 					if (i < map.size()-1)
+						openfile << endl;
+			}
+		}
+		openfile << endl;
+		openfile << "[MapLevel2]" << endl;
+		for (unsigned int i = 0; i  < mapLevel2.size(); i++) {
+			cout << ". ";
+
+			for (unsigned int j = 0; j < mapLevel2[i].size(); j++) {
+				// writing tile id
+				openfile << mapLevel2[i][j];
+
+				// leaving a space
+				if (mapLevel2[i][j] < 10)
+					openfile << "  ";
+				else if (mapLevel2[i][j] < 100)
+					openfile << " ";
+
+				if (j == mapLevel2[i].size()-1)
+					if (i < mapLevel2.size()-1)
 						openfile << endl;
 			}
 		}

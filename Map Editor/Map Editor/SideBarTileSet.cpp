@@ -34,7 +34,7 @@ void SideBarTileSet::Update(unsigned int sideBarWidth, unsigned int tileSetY, bo
 	}
 
 	// updating tiles real coords based on side bar current position
-	for (unsigned int i = 16*(pageToDisplay-1); i < tiles.size(); i++) {
+	for (unsigned int i = 16*(pageToDisplay-1), j = 0; i < tiles.size() && j < 16; i++, j++) {
 		tiles[i]->Update(this, *sideBarX, *sideBarY, dragging);
 	}
 
@@ -44,7 +44,7 @@ void SideBarTileSet::Update(unsigned int sideBarWidth, unsigned int tileSetY, bo
 }
 
 void SideBarTileSet::Draw() {
-	for (unsigned int i = 16*(pageToDisplay-1); i < tiles.size() || i < 6*pageToDisplay; i++) {
+	for (unsigned int i = 16*(pageToDisplay-1), j = 0; i < tiles.size() && j < 16; i++, j++) {
 		tiles[i]->Draw(tileSet);
 	}
 }

@@ -207,7 +207,7 @@ void TutorialState::InitializeDialogs() {
 			tempVec.push_back("Os Mages sao os mestres da MAGIA!");
 			tempVec.push_back("Nos nao usamos espadas. Usamos magia e");
 			tempVec.push_back("skills poderosas para atacar monstros e nos");
-			tempVec.push_back("defender dos enimigos! Contudo, precisamos de");
+			tempVec.push_back("defender dos inimigos! Contudo, precisamos de");
 			tempVec.push_back("estar quase sempre a CORRER em vez de lutar");
 			tempVec.push_back("perto deles porque nao somos tao bons como");
 			tempVec.push_back("os Warriors a usar escudos.");

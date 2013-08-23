@@ -30,7 +30,7 @@ public:
 	void Terminate();
 
 	void CameraReset();
-	void SaveMap(const char *filename, vector<vector<int> > &map, string &tileSetPath);
+	void SaveMap(const char *filename, vector<vector<int> > &map, vector<vector<int> > &mapLevel2, string &tileSetPath);
 
 	ALLEGRO_DISPLAY *GetDisplay() { return display; }
 	ALLEGRO_TIMER *GetTimer(TimerType Timer);

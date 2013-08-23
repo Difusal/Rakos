@@ -70,7 +70,7 @@ void SideBar::InitializeButtons() {
 	buttons.push_back(Quit);
 }
 
-void SideBar::Update(string &MapBeingEdited, string &tileSetPath, vector<vector<int> > &worldMap) {
+void SideBar::Update(string &MapBeingEdited, string &tileSetPath, vector<vector<int> > &worldMap, vector<vector<int> > &worldMapLevel2) {
 	// updating side bar coords
 	x = Editor::GetInstance()->cameraPosition[0] + ScreenWidth - width;
 	y = Editor::GetInstance()->cameraPosition[1] + ScreenHeight - height;
@@ -107,13 +107,18 @@ void SideBar::Update(string &MapBeingEdited, string &tileSetPath, vector<vector<
 	if (IncreaseMapWidth->wasPressed()) {
 		for (unsigned int i = 0; i < worldMap.size(); i++)
 			worldMap[i].push_back(0);
+
+		for (unsigned int i = 0; i < worldMapLevel2.size(); i++)
+			worldMapLevel2[i].push_back(0);
 	}
 	else if (IncreaseMapHeight->wasPressed()) {
 		worldMap.push_back(vector<int> (worldMap[0].size(), 0));
+
+		worldMapLevel2.push_back(vector<int> (worldMapLevel2[0].size(), 0));
 	}
 
 	if (Save->wasPressed())
-		Editor::GetInstance()->SaveMap(MapBeingEdited.c_str(), worldMap, tileSetPath);
+		Editor::GetInstance()->SaveMap(MapBeingEdited.c_str(), worldMap, worldMapLevel2, tileSetPath);
 	else if (Quit->wasPressed())
 		Editor::GetInstance()->ChangeState(_Menu);
 }

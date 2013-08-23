@@ -16,7 +16,8 @@ private:
 	string MapBeingEdited;
 	string tileSetPath;
 	ALLEGRO_BITMAP *tileSet;
-	vector<vector<int> > worldMap;
+	vector<vector<int> > worldMapLevel1;
+	vector<vector<int> > worldMapLevel2;
 	unsigned int numberOfTiles;
 
 	bool drawSelectedTile;

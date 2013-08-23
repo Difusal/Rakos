@@ -31,7 +31,13 @@ bool fileExists(const string &filename) {
 // Parameter: ALLEGRO_BITMAP **tileSet
 // Summary:   reads map from text file and stores it on a vector passed by reference
 //************************************
-void LoadMapAndTileSet(const char *filename, vector<vector<int> > &map, string &tileSetPath, ALLEGRO_BITMAP **tileSet, unsigned int &numberOfTiles) {
+void LoadMapAndTileSet(const char *filename, vector<vector<int> > *mapLevel1, vector<vector<int> > *mapLevel2, string &tileSetPath, ALLEGRO_BITMAP **tileSet, unsigned int &numberOfTiles) {
+	vector<vector<int> > *mapLevelBeingLoaded;
+
+	// clearing vectors
+	mapLevel1->clear();
+	mapLevel2->clear();
+
 	// loading state phases
 	int state = NULL;
 	enum LoadState {
@@ -55,9 +61,16 @@ void LoadMapAndTileSet(const char *filename, vector<vector<int> > &map, string &
 				state = TileSet;
 				continue;
 			}
-			else if (line.find("[Map]") != string::npos) {
+			else if (line.find("[MapLevel1]") != string::npos) {
 				// loading map phase
 				state = Map;
+				mapLevelBeingLoaded = mapLevel1;
+				continue;
+			}
+			else if (line.find("[MapLevel2]") != string::npos) {
+				// loading map phase
+				state = Map;
+				mapLevelBeingLoaded = mapLevel2;
 				continue;
 			}
 			////////////////////////
@@ -65,36 +78,44 @@ void LoadMapAndTileSet(const char *filename, vector<vector<int> > &map, string &
 
 			switch (state) {
 			case TileSet:
-				// if loading tile set, assign tile set to the corresponding .png
-				if (line.length() > 0) {
-					tileSetPath = line;
-					*tileSet = al_load_bitmap(line.c_str());
-					if (!*tileSet) {
-						al_show_native_message_box(Editor::GetInstance()->GetDisplay(), "Error", "Could not load tile set.", "Make sure you include the world tile set on the same folder as the map file and that the map file contains the correct path to the tile set png.\n\nThe program will now quit.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-						exit(-1);
+				{
+					// if loading tile set, assign tile set to the corresponding .png
+					if (line.length() > 0) {
+						tileSetPath = line;
+						*tileSet = al_load_bitmap(line.c_str());
+						if (!*tileSet) {
+							al_show_native_message_box(Editor::GetInstance()->GetDisplay(), "Error", "Could not load tile set.", "Make sure you include the world tile set on the same folder as the map file and that the map file contains the correct path to the tile set png.\n\nThe program will now quit.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+							exit(-1);
+						}
+
+						// registering number of tiles on tile set
+						numberOfTiles = al_get_bitmap_width(*tileSet)/WorldBlockSize;
+					}
+					break;
+				}
+
+				// loading map
+			case Map:
+				{
+					stringstream str(line);
+					vector<int> tempVector;
+
+					// pushing value read to temporary vector
+					while (!str.eof()) {
+						getline(str, value, ' ');
+						if (value.length() > 0)
+							tempVector.push_back(atoi(value.c_str()));
 					}
 
-					// registering number of tiles on tile set
-					numberOfTiles = al_get_bitmap_width(*tileSet)/WorldBlockSize;
-				}
-				break;
-			case Map:
-				// if loading map
-				stringstream str(line);
-				vector<int> tempVector;
+					// push back temporary vector to map vector and read next line
+					mapLevelBeingLoaded->push_back(tempVector);
 
-				// pushing value read to temporary vector
-				while (!str.eof()) {
-					getline(str, value, ' ');
-					if (value.length() > 0)
-						tempVector.push_back(atoi(value.c_str()));
+					break;
 				}
-
-				// push back temporary vector to map vector and read next line
-				map.push_back(tempVector);
-				break;
 			}
 		}
+
+		cout << "Map loaded." << endl;
 	}
 	else {
 		// if input stream was not opened successfully
@@ -114,10 +135,18 @@ void LoadMapAndTileSet(const char *filename, vector<vector<int> > &map, string &
 // Parameter: ALLEGRO_BITMAP **tileSet
 // Summary:   draws world map on display
 //************************************
-void DrawMap(const vector<vector<int> > &WorldMap, ALLEGRO_BITMAP **tileSet) {
+void DrawMap(const vector<vector<int> > &WorldMap, const vector<vector<int> > &WorldMapLevel2, ALLEGRO_BITMAP **tileSet) {
 	for(unsigned int i = 0; i < WorldMap.size(); i++) {
 		for(unsigned int j = 0; j < WorldMap[i].size(); j++) {
+			// drawing sea animation
+			al_draw_bitmap_region(*tileSet, 0, 10, WorldBlockSize, WorldBlockSize, j*WorldBlockSize, i*WorldBlockSize, NULL);
+
+			// drawing level 1 tiles
 			al_draw_bitmap_region(*tileSet, WorldMap[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
+
+			// drawing level 2 tiles
+			if (WorldMapLevel2[i][j] != 0)
+				al_draw_bitmap_region(*tileSet, WorldMapLevel2[i][j] * WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, j * WorldBlockSize, i * WorldBlockSize, NULL);
 		}
 	}
 }

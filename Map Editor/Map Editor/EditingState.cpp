@@ -21,9 +21,12 @@ void EditingState::Initialize() {
 		MapBeingEdited = strstrm.str();
 
 		// creating a new map
-		worldMap.clear();
+		worldMapLevel1.clear();
 		for (unsigned int i = 0; i < 3; i++)
-			worldMap.push_back(vector<int> (3, 0));
+			worldMapLevel1.push_back(vector<int> (3, 0));
+		worldMapLevel2.clear();
+		for (unsigned int i = 0; i < 3; i++)
+			worldMapLevel2.push_back(vector<int> (3, 0));
 
 		// loading default tile set
 		tileSetPath = DefaultTileSetPath;
@@ -33,7 +36,7 @@ void EditingState::Initialize() {
 		numberOfTiles = al_get_bitmap_width(tileSet)/WorldBlockSize;
 
 		// saving map already
-		Editor::GetInstance()->SaveMap(MapBeingEdited.c_str(), worldMap, tileSetPath);
+		Editor::GetInstance()->SaveMap(MapBeingEdited.c_str(), worldMapLevel1, worldMapLevel2, tileSetPath);
 	}
 	else {
 		// displaying warning box
@@ -54,7 +57,7 @@ void EditingState::Initialize() {
 		MapBeingEdited = strstrm.str();
 
 		// loading map, tile set and tiles
-		LoadMapAndTileSet(strstrm.str().c_str(), worldMap, tileSetPath, &tileSet, numberOfTiles);
+		LoadMapAndTileSet(strstrm.str().c_str(), &worldMapLevel1, &worldMapLevel2, tileSetPath, &tileSet, numberOfTiles);
 	}
 
 	// creating side bar
@@ -77,7 +80,7 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 			cameraCenterY -= Editor::GetInstance()->Mouse->yDraggingDisplacement;
 
 			// updating camera
-			CameraUpdate(worldMap, Editor::GetInstance()->cameraPosition, &cameraCenterX, &cameraCenterY, sideBar->Width());
+			CameraUpdate(worldMapLevel1, Editor::GetInstance()->cameraPosition, &cameraCenterX, &cameraCenterY, sideBar->Width());
 			al_identity_transform(&Editor::GetInstance()->camera);
 			al_translate_transform(&Editor::GetInstance()->camera, -Editor::GetInstance()->cameraPosition[0], -Editor::GetInstance()->cameraPosition[1]);
 			al_use_transform(&Editor::GetInstance()->camera);
@@ -95,7 +98,19 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 					// if player presses mouse button, place tile on map
 					if (Editor::GetInstance()->Mouse->leftMouseButtonPressed) {
 						cout << "Tile set at: " << selectedTileX << " " << selectedTileY << endl;
-						worldMap[selectedTileY][selectedTileX] = sideBar->GetTileSet()->GetSelectedTile();
+
+						// if selected tile is sea, clear tiles from both levels
+						if (sideBar->GetTileSet()->GetSelectedTile() == 0) {
+							worldMapLevel1[selectedTileY][selectedTileX] = sideBar->GetTileSet()->GetSelectedTile();
+							worldMapLevel2[selectedTileY][selectedTileX] = sideBar->GetTileSet()->GetSelectedTile();
+						}
+						else {
+							// if first level tile is set, set an additional tile
+							if (worldMapLevel1[selectedTileY][selectedTileX] != 0)
+								worldMapLevel2[selectedTileY][selectedTileX] = sideBar->GetTileSet()->GetSelectedTile();
+							else
+								worldMapLevel1[selectedTileY][selectedTileX] = sideBar->GetTileSet()->GetSelectedTile();
+						}
 					}
 				}
 				else
@@ -103,7 +118,7 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 		}
 
 		// updating side bar
-		sideBar->Update(MapBeingEdited, tileSetPath, worldMap);
+		sideBar->Update(MapBeingEdited, tileSetPath, worldMapLevel1, worldMapLevel2);
 
 		return true;
 	}	
@@ -113,7 +128,7 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 
 void EditingState::Draw() {
 	// drawing world map
-	DrawMap(worldMap, &tileSet);
+	DrawMap(worldMapLevel1, worldMapLevel2, &tileSet);
 
 	// drawing tile to be placed on map
 	if (drawSelectedTile) {
@@ -135,7 +150,8 @@ void EditingState::Draw() {
 
 void EditingState::Terminate() {
 	// clearing map vector
-	worldMap.clear();
+	worldMapLevel1.clear();
+	worldMapLevel2.clear();
 
 	// destroying tile set bitmap
 	al_destroy_bitmap(tileSet);
