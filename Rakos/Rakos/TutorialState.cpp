@@ -8,7 +8,7 @@ void TutorialState::InitializeLivingBeings() {
 	// initializing player
 	player = RPG::GetInstance()->GetPlayer();
 	player->setX(WorldBlockSize*13);
-	player->setY(WorldBlockSize*23.5);
+	player->setY(WorldBlockSize*23);
 	livingBeings.push_back(player);
 
 
@@ -19,10 +19,10 @@ void TutorialState::InitializeLivingBeings() {
 	WhiteKnight = new NPC("White Knight", WorldBlockSize*18, WorldBlockSize*13, WorldBlockSize*19, WorldBlockSize*15, knight_whitePng);
 	livingBeings.push_back(WhiteKnight);
 
-	Mage = new NPC("Mage", WorldBlockSize*25.6, WorldBlockSize*11.25, mage_bluePng);
+	Mage = new NPC("Mage", WorldBlockSize*26, WorldBlockSize*11, mage_bluePng);
 	livingBeings.push_back(Mage);
 
-	Warrior = new NPC("Warrior", WorldBlockSize*25.6, WorldBlockSize*15.25, warrior_yellowPng);
+	Warrior = new NPC("Warrior", WorldBlockSize*26, WorldBlockSize*14, warrior_yellowPng);
 	livingBeings.push_back(Warrior);
 	
 

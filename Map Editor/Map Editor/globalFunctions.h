@@ -136,8 +136,10 @@ void LoadMapAndTileSet(const char *filename, vector<vector<int> > *mapLevel1, ve
 // Summary:   draws world map on display
 //************************************
 void DrawMap(const vector<vector<int> > &WorldMap, const vector<vector<int> > &WorldMapLevel2, ALLEGRO_BITMAP **tileSet) {
-	for(unsigned int i = 0; i < WorldMap.size(); i++) {
-		for(unsigned int j = 0; j < WorldMap[i].size(); j++) {
+	// this special conditions are very important because they save memory. they do so because they only draw what can be
+	// seen in the window. it does not waste time drawing what can't be seen. if these conditions weren't set, the map would lag A LOT!
+	for(unsigned int i = Editor::GetInstance()->cameraPosition[1]/WorldBlockSize, ii = 0; i < WorldMap.size() && ii < ScreenHeight/WorldBlockSize+1; i++, ii++) {
+		for(unsigned int j = Editor::GetInstance()->cameraPosition[0]/WorldBlockSize, jj = 0; j < WorldMap[i].size() && jj < ScreenWidth/WorldBlockSize; j++, jj++) {
 			// drawing sea animation
 			al_draw_bitmap_region(*tileSet, 0, 10, WorldBlockSize, WorldBlockSize, j*WorldBlockSize, i*WorldBlockSize, NULL);
 
