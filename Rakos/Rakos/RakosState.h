@@ -28,8 +28,10 @@ public:
 private:
 	vector<vector<int> > worldMapLevel1;
 	vector<vector<int> > worldMapLevel2;
+	vector<vector<int> > accessibleTilesWorldMap;
 	unsigned int seaAnimationFrame;
-	vector<int> accessibleTiles;
+	vector<int> level1AccessibleTiles;
+	vector<int> level2AccessibleTiles;
 
 	SideBar *sideBar;
 

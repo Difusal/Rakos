@@ -25,6 +25,13 @@ public:
 	void LoadWeapons();
 	void LoadShields();
 
+	void StartGameControlCycle();
+	void Initialize();
+	void Update();
+	void Draw();
+	void Terminate();
+
+	// Public Methods
 	void CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
 	void CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
 	bool RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings);
@@ -38,14 +45,8 @@ public:
 	void UpdateWeaponAttackAnimations(vector<LivingBeing*> &livingBeings);
 	void UpdateCamera(vector<vector<int> > &worldMap, vector<LivingBeing*> &livingBeings);
 
-	void Initialize();
-	void Update();
-	void Draw();
-	void StartGameControlCycle();
-	void Terminate();
-
 	ALLEGRO_DISPLAY *GetDisplay() { return display; }
-	ALLEGRO_TIMER *GetTimer(TimerType Timer);
+	ALLEGRO_TIMER *GetTimer(TimerType Timer) { return timers[Timer]; }
 	ALLEGRO_TRANSFORM *GetCamera() { return &camera; }
 
 	ALLEGRO_BITMAP *GetTileSet() { return tileSet; }
@@ -53,8 +54,8 @@ public:
 	ALLEGRO_BITMAP *GetSeaBitmap() { return seaAnimation; }
 
 	Player *GetPlayer() { return player; }
-	Weapon *GetWeapon(WeaponType Weapon);
-	Shield *GetShield(ShieldType Shield);
+	Weapon *GetWeapon(WeaponType Weapon) { return weapons[Weapon]; }
+	Shield *GetShield(ShieldType Shield) { return shields[Shield]; }
 
 
 	// Public Variables

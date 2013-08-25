@@ -201,10 +201,6 @@ void RPG::LoadWeapons() {
 	weapons.push_back(sword);
 }
 
-Weapon *RPG::GetWeapon(WeaponType Weapon) {
-	return weapons[Weapon];
-}
-
 void RPG::LoadShields() {
 	cout << "Loading shields..." << endl;
 	no_shield = new Shield(_NoShield, 0);
@@ -214,11 +210,145 @@ void RPG::LoadShields() {
 	shields.push_back(woodenShield);
 }
 
-Shield *RPG::GetShield(ShieldType Shield) {
-	return shields[Shield];
+
+void RPG::StartGameControlCycle() {
+	Initialize();
+
+	// EDIT THIS
+	player = new Player("Difusal", no_weapon, no_shield, 480, 580);
+
+	states.push_back(new TutorialState());
+	states.push_back(new RakosState());
+	state = -1;
+	ChangeState(_Rakos);
+
+	cout << "Starting game control cycle..." << endl;
+	while (!done) {
+		al_wait_for_event(event_queue, &ev);
+		Update();
+		Draw();
+	}
+
+	Terminate();
+}
+
+void RPG::Initialize() {
+	cout << endl;
+	cout << "#########################" << endl;
+	cout << "##                     ##" << endl;
+	cout << "##    STARTING GAME    ##" << endl;
+	cout << "##                     ##" << endl;
+	cout << "#########################" << endl;
+	cout << endl;
+	cout << "-------------" << endl;
+	cout << "Activity Log:" << endl;
+	cout << "-------------" << endl;
+
+	cout << "Getting time seed for random numbers..." << endl;
+	srand ((unsigned int) time(NULL));
+
+	StartAllegro5();
+	CreateAllegroDisplay();
+	DisplayLoadingSplashScreen();
+	StartMouseCursor();
+	LoadFonts();
+	CreateTimers();
+	CreateEventQueue();
+	LoadSoundSamples();
+
+	LoadWeapons();
+	LoadShields();
+
+	InitializeVariables();
+	StartTimers();
+}
+
+void RPG::Update() {
+	// if window is closed on dedicated button (upper right corner)
+	if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+		cout << "Close button pressed..." << endl;
+		done = true;
+	}
+
+	draw = Mouse->Update(&ev);
+	states[state]->Update(&ev);
+	if (ev.type != ALLEGRO_EVENT_MOUSE_AXES)
+		draw = Mouse->CorrectMousePosition();
+
+	if (ev.type == ALLEGRO_EVENT_TIMER) {
+		Mouse->SetAllReleaseValuesToFalse();
+		draw = true;
+	}
+}
+
+void RPG::Draw() {
+	if (draw && al_event_queue_is_empty(event_queue)) {
+		/*
+		// ---------------
+		// Debugging code:
+		// Uncomment this block of code to display mouse coords.
+		// -----------------------------------------------------
+		stringstream ss;
+		ss << mouse_x << " " << mouse_y;
+		al_draw_text(font, Yellow, 0, 0, NULL, ss.str().c_str());
+		cout << ss.str() << endl;
+		*/
+
+		states[state]->Draw();			
+		Mouse->Draw();
+
+		al_flip_display();
+		al_clear_to_color(Black);
+		draw = false;
+	}
+}
+
+void RPG::Terminate() {
+	cout << "Deallocating memory and quitting..." << endl;
+
+	// audio samples
+
+
+	// deleting mouse cursor
+	delete Mouse;
+
+	// destroying display
+	al_destroy_display(display);
+
+	// weapons
+	for (Weapon *obj : weapons)
+		delete obj;
+	weapons.clear();
+
+	// shields
+	for (Shield *obj : shields)
+		delete obj;
+	shields.clear();
+
+	// living beings
+	delete player;
+	delete previousNPCWhoTalkedToPlayer;
+
+	// bitmaps
+	al_destroy_bitmap(loading_background);
+	al_destroy_bitmap(tileSet);
+
+	// destroying fonts
+	for (unsigned int i = 0; i < fonts.size(); i++)
+		al_destroy_font(fonts[i]);
+	fonts.clear();
+
+	// destroying event queue and timers
+	al_destroy_event_queue(event_queue);
+	for (unsigned int i = 0; i < timers.size(); i++)
+		al_destroy_timer(timers[i]);
+	timers.clear();
+
+	delete instance;
 }
 
 
+// Public Methods
 void RPG::CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState) {
 	bool playerAttackedSomething = false;
 
@@ -322,27 +452,11 @@ bool RPG::livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &world
 	int scan = worldMap[player->getFeetY()/WorldBlockSize][player->getFeetX()/WorldBlockSize];
 
 	for (unsigned int i = 0; i < accessibleTiles.size(); i++) {
-		switch (Dir) {
-		case UP:
-			if (scan != accessibleTiles[i])
-				return true;
-			break;
-		case DOWN:
-			if (scan != accessibleTiles[i])
-				return true;
-			break;
-		case LEFT:
-			if (scan != accessibleTiles[i])
-				return true;
-			break;
-		case RIGHT:
-			if (scan != accessibleTiles[i])
-				return true;
-			break;
-		}
+		if (scan == accessibleTiles[i])
+			return false;
 	}
 
-	return false;
+	return true;
 }
 
 void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
@@ -562,146 +676,4 @@ void RPG::UpdateCamera(vector<vector<int> > &worldMap, vector<LivingBeing*> &liv
 	al_identity_transform(RPG::GetInstance()->GetCamera());
 	al_translate_transform(RPG::GetInstance()->GetCamera(), -RPG::GetInstance()->cameraPosition[0], -RPG::GetInstance()->cameraPosition[1]);
 	al_use_transform(RPG::GetInstance()->GetCamera());
-}
-
-
-void RPG::Initialize() {
-	cout << endl;
-	cout << "#########################" << endl;
-	cout << "##                     ##" << endl;
-	cout << "##    STARTING GAME    ##" << endl;
-	cout << "##                     ##" << endl;
-	cout << "#########################" << endl;
-	cout << endl;
-	cout << "-------------" << endl;
-	cout << "Activity Log:" << endl;
-	cout << "-------------" << endl;
-
-	cout << "Getting time seed for random numbers..." << endl;
-	srand ((unsigned int) time(NULL));
-
-	StartAllegro5();
-	CreateAllegroDisplay();
-	DisplayLoadingSplashScreen();
-	StartMouseCursor();
-	LoadFonts();
-	CreateTimers();
-	CreateEventQueue();
-	LoadSoundSamples();
-
-	LoadWeapons();
-	LoadShields();
-
-	InitializeVariables();
-	StartTimers();
-}
-
-void RPG::Update() {
-	// if window is closed on dedicated button (upper right corner)
-	if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-		cout << "Close button pressed..." << endl;
-		done = true;
-	}
-
-	draw = Mouse->Update(&ev);
-	states[state]->Update(&ev);
-	if (ev.type != ALLEGRO_EVENT_MOUSE_AXES)
-		draw = Mouse->CorrectMousePosition();
-
-	if (ev.type == ALLEGRO_EVENT_TIMER) {
-		Mouse->SetAllReleaseValuesToFalse();
-		draw = true;
-	}
-}
-
-void RPG::Draw() {
-	if (draw && al_event_queue_is_empty(event_queue)) {
-		/*
-		// ---------------
-		// Debugging code:
-		// Uncomment this block of code to display mouse coords.
-		// -----------------------------------------------------
-		stringstream ss;
-		ss << mouse_x << " " << mouse_y;
-		al_draw_text(font, Yellow, 0, 0, NULL, ss.str().c_str());
-		cout << ss.str() << endl;
-		*/
-
-		states[state]->Draw();			
-		Mouse->Draw();
-
-		al_flip_display();
-		al_clear_to_color(Black);
-		draw = false;
-	}
-}
-
-void RPG::StartGameControlCycle() {
-	Initialize();
-
-	// EDIT THIS
-	player = new Player("Difusal", no_weapon, no_shield, 480, 580);
-
-	states.push_back(new TutorialState());
-	states.push_back(new RakosState());
-	state = -1;
-	ChangeState(_Rakos);
-
-	cout << "Starting game control cycle..." << endl;
-	while (!done) {
-		al_wait_for_event(event_queue, &ev);
-		Update();
-		Draw();
-	}
-
-	Terminate();
-}
-
-void RPG::Terminate() {
-	cout << "Deallocating memory and quitting..." << endl;
-
-	// audio samples
-
-
-	// deleting mouse cursor
-	delete Mouse;
-
-	// destroying display
-	al_destroy_display(display);
-
-	// weapons
-	for (Weapon *obj : weapons)
-		delete obj;
-	weapons.clear();
-
-	// shields
-	for (Shield *obj : shields)
-		delete obj;
-	shields.clear();
-
-	// living beings
-	delete player;
-	delete previousNPCWhoTalkedToPlayer;
-
-	// bitmaps
-	al_destroy_bitmap(loading_background);
-	al_destroy_bitmap(tileSet);
-
-	// destroying fonts
-	for (unsigned int i = 0; i < fonts.size(); i++)
-		al_destroy_font(fonts[i]);
-	fonts.clear();
-
-	// destroying event queue and timers
-	al_destroy_event_queue(event_queue);
-	for (unsigned int i = 0; i < timers.size(); i++)
-		al_destroy_timer(timers[i]);
-	timers.clear();
-
-	delete instance;
-}
-
-
-ALLEGRO_TIMER * RPG::GetTimer(TimerType Timer) {
-	return timers[Timer];
 }

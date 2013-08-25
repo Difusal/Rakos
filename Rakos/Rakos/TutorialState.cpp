@@ -285,7 +285,7 @@ void TutorialState::InitializeDialogs() {
 void TutorialState::MoveLivingBeings(ALLEGRO_EVENT *ev) {
 	// moving player, npcs and creatures
 	if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerMoveTimer))
-		player->Move(keyState, worldMapLevel1, accessibleTiles);
+		player->Move(keyState, worldMapLevel1, worldMapLevel2, level1AccessibleTiles, level2AccessibleTiles);
 	for (unsigned int i = 1; i < livingBeings.size(); i++)
 		if (!livingBeings[i]->isDead())
 			if (ev->timer.source == RPG::GetInstance()->GetTimer(livingBeings[i]->getTimerType()))
@@ -457,8 +457,23 @@ void TutorialState::Initialize() {
 	LoadMap(TutorialMapPath, &worldMapLevel1, &worldMapLevel2);
 	seaAnimationFrame = 0;
 
-	// stating tiles player can walk on
-	accessibleTiles.push_back(1);
+	// stating level 1 tiles player can walk on
+	level1AccessibleTiles.push_back(1);		// grass
+	level1AccessibleTiles.push_back(15);	// snow
+	level1AccessibleTiles.push_back(32);	// sand
+	level1AccessibleTiles.push_back(48);	// wood
+	level1AccessibleTiles.push_back(49);
+
+	// stating level 2 tiles player can walk on
+	level2AccessibleTiles.push_back(1);		// grass
+	level2AccessibleTiles.push_back(15);	// snow
+	for (unsigned int i = 28; i < 32; i++)
+		level2AccessibleTiles.push_back(i);
+	level2AccessibleTiles.push_back(32);	// sand
+	for (unsigned int i = 34; i < 46; i++)
+		level2AccessibleTiles.push_back(i);
+	level2AccessibleTiles.push_back(48);	// wood
+	level2AccessibleTiles.push_back(49);
 
 	sideBar = new SideBar(&livingBeings);
 

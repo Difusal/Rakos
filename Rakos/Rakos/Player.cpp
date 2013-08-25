@@ -38,7 +38,7 @@ Player::Player(string Name, Weapon *weapon, Shield *shield, double X, double Y) 
 		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load player bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
 	}
-	bitmap_sourceX = 32;
+	bitmap_sourceX = al_get_bitmap_width(bitmap)/4.0;
 	bitmap_sourceY = 0;
 }
 
@@ -93,15 +93,18 @@ void Player::UpdatePosition(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector
 		active = false;
 }
 
-void Player::Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles) {
+void Player::Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMapLevel1, const vector<vector<int> > &worldMapLevel2, const vector<int> &level1AccessibleTiles, const vector<int> &level2AccessibleTiles) {
 	CheckIfRunning(keyState);
-	UpdatePosition(keyState, worldMap);
+	UpdatePosition(keyState, worldMapLevel1);
 	UpdateFeetCoords();
-	CorrectPositionIfCollidingWithMapLimits(worldMap, unaccessibleTiles);
+	if (CorrectPositionIfCollidingWithMapLimits(worldMapLevel1, level1AccessibleTiles))
+		return;
+	else
+		CorrectPositionIfCollidingWithMapLimits(worldMapLevel2, level2AccessibleTiles);
 }
 
-void Player::CorrectPositionIfCollidingWithMapLimits(const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles) {
-	if (RPG::GetInstance()->livingBeingCollidingWithMap(direction, worldMap, unaccessibleTiles)) {
+bool Player::CorrectPositionIfCollidingWithMapLimits(const vector<vector<int> > &worldMap, const vector<int> &accessibleTiles) {
+	if (RPG::GetInstance()->livingBeingCollidingWithMap(direction, worldMap, accessibleTiles)) {
 		switch (direction) {
 		default:
 		case UP:
@@ -117,7 +120,11 @@ void Player::CorrectPositionIfCollidingWithMapLimits(const vector<vector<int> > 
 			x--;
 			break;
 		}
+
+		return true;
 	}
+
+	return false;
 }
 
 void Player::ControlAttackRate() {
@@ -130,8 +137,8 @@ void Player::ControlAttackRate() {
 }
 
 void Player::UpdateFeetCoords() {
-	feet_x = this->getX() + 16;
-	feet_y = this->getY() + 32;
+	feet_x = this->getX() + al_get_bitmap_width(bitmap)/4.0/2.0;
+	feet_y = this->getY() + al_get_bitmap_height(bitmap)/4.0;
 }
 
 

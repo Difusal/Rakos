@@ -46,7 +46,7 @@ void LivingBeing::UpdateAnimationFrame() {
 	if(active)
 		bitmap_sourceX += al_get_bitmap_width(bitmap)/4.0;
 	else
-		bitmap_sourceX = 32;
+		bitmap_sourceX = al_get_bitmap_width(bitmap)/4.0;
 
 	if(bitmap_sourceX >= al_get_bitmap_width(bitmap))
 		bitmap_sourceX = 0;

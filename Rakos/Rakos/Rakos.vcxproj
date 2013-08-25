@@ -31,6 +31,7 @@
     <ClCompile Include="SideBar.cpp" />
     <ClCompile Include="SideBarWindow.cpp" />
     <ClCompile Include="SpeechBubble.cpp" />
+    <ClCompile Include="Spider.cpp" />
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TutorialState.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="SideBar.h" />
     <ClInclude Include="SideBarWindow.h" />
     <ClInclude Include="SpeechBubble.h" />
+    <ClInclude Include="Spider.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="stdIncludes.h" />
     <ClInclude Include="Switch.h" />

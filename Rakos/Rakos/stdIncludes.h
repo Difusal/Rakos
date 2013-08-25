@@ -69,6 +69,7 @@ const float SlowCreaturesSpeed = FPS/2.5;
 #define mage_bluePng "res//living beings sprites//mage_blue.png"
 #define warrior_yellowPng "res//living beings sprites//warrior_yellow.png"
 #define rabbitPng "res//living beings sprites//rabbit.png"
+#define spiderPng "res//living beings sprites//spider.png"
 
 /* sprites */
 #define PortalPng "res//sprites//portal.png"
