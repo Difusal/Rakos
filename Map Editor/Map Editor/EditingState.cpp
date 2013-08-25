@@ -64,8 +64,8 @@ void EditingState::Initialize() {
 	sideBar = new SideBar(&tileSet, numberOfTiles);
 
 	// setting camera start position
-	cameraCenterX = (ScreenWidth - sideBar->Width())/2.0;
-	cameraCenterY = ScreenHeight/2.0;
+	cameraCenterX = (Editor::GetInstance()->ScreenWidth - sideBar->Width())/2.0;
+	cameraCenterY = Editor::GetInstance()->ScreenHeight/2.0;
 
 	// initializing bool variables
 	drawSelectedTile = false;
@@ -88,7 +88,7 @@ bool EditingState::Update(ALLEGRO_EVENT *ev) {
 
 		// checking if new tile was placed on map
 		if (Editor::GetInstance()->cameraPosition[0] < Editor::GetInstance()->Mouse->x && Editor::GetInstance()->Mouse->x < sideBar->X() &&
-			Editor::GetInstance()->cameraPosition[1] < Editor::GetInstance()->Mouse->y && Editor::GetInstance()->Mouse->y < Editor::GetInstance()->cameraPosition[1] + ScreenHeight) {
+			Editor::GetInstance()->cameraPosition[1] < Editor::GetInstance()->Mouse->y && Editor::GetInstance()->Mouse->y < Editor::GetInstance()->cameraPosition[1] + Editor::GetInstance()->ScreenHeight) {
 				if (sideBar->GetTileSet()->GetSelectedTile() != -1) {
 					drawSelectedTile = true;
 
@@ -138,10 +138,10 @@ void EditingState::Draw() {
 		unsigned int y2 = selectedTileY*WorldBlockSize + WorldBlockSize;
 
 		al_draw_bitmap_region(tileSet, sideBar->GetTileSet()->GetSelectedTile()*WorldBlockSize, 10, WorldBlockSize, WorldBlockSize, x1, y1, ALLEGRO_ALIGN_LEFT);
-		al_draw_line(x1, Editor::GetInstance()->cameraPosition[1], x1, Editor::GetInstance()->cameraPosition[1] + ScreenHeight, Yellow, 1.0);
-		al_draw_line(x2, Editor::GetInstance()->cameraPosition[1], x2, Editor::GetInstance()->cameraPosition[1] + ScreenHeight, Yellow, 1.0);
-		al_draw_line(Editor::GetInstance()->cameraPosition[0], y1, Editor::GetInstance()->cameraPosition[0] + ScreenWidth, y1, Yellow, 1.0);
-		al_draw_line(Editor::GetInstance()->cameraPosition[0], y2, Editor::GetInstance()->cameraPosition[0] + ScreenWidth, y2, Yellow, 1.0);
+		al_draw_line(x1, Editor::GetInstance()->cameraPosition[1], x1, Editor::GetInstance()->cameraPosition[1] + Editor::GetInstance()->ScreenHeight, Yellow, 1.0);
+		al_draw_line(x2, Editor::GetInstance()->cameraPosition[1], x2, Editor::GetInstance()->cameraPosition[1] + Editor::GetInstance()->ScreenHeight, Yellow, 1.0);
+		al_draw_line(Editor::GetInstance()->cameraPosition[0], y1, Editor::GetInstance()->cameraPosition[0] + Editor::GetInstance()->ScreenWidth, y1, Yellow, 1.0);
+		al_draw_line(Editor::GetInstance()->cameraPosition[0], y2, Editor::GetInstance()->cameraPosition[0] + Editor::GetInstance()->ScreenWidth, y2, Yellow, 1.0);
 	}
 
 	// drawing side bar

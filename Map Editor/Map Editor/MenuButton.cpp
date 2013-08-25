@@ -17,7 +17,7 @@ MenuButton::MenuButton( string Label, unsigned int Y ) {
 	height = 1.5*font->height;
 
 	// setting button coords
-	x = ScreenWidth/2.0;
+	x = Editor::GetInstance()->ScreenWidth/2.0;
 	y = Y;
 
 	// initializing bool values

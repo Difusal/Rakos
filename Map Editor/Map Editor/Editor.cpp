@@ -42,7 +42,18 @@ void Editor::StartAllegro5() {
 void Editor::CreateAllegroDisplay() {
 	cout << "Creating display..." << endl;
 	
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
+	// specifying program to run on full screen
+	al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+
+	// getting monitor info
+	ALLEGRO_DISPLAY_MODE disp_data;
+	al_get_display_mode(al_get_num_display_modes() - 1, &disp_data);
+
+	// setting screen width and height
+	ScreenWidth = disp_data.width;
+	ScreenHeight = disp_data.height;
+
+	// creating display
 	display = al_create_display(ScreenWidth, ScreenHeight);
 
 	// if display was not loaded correctly, show error message and quit program

@@ -3,7 +3,7 @@
 
 SideBar::SideBar(ALLEGRO_BITMAP **tileSet, unsigned int numberOfTiles) {
 	width = 110;
-	height = 600;
+	height = Editor::GetInstance()->ScreenHeight;
 
 	this->tileSet = new SideBarTileSet(tileSet, numberOfTiles, &x, &y);
 
@@ -72,8 +72,8 @@ void SideBar::InitializeButtons() {
 
 void SideBar::Update(string &MapBeingEdited, string &tileSetPath, vector<vector<int> > &worldMap, vector<vector<int> > &worldMapLevel2) {
 	// updating side bar coords
-	x = Editor::GetInstance()->cameraPosition[0] + ScreenWidth - width;
-	y = Editor::GetInstance()->cameraPosition[1] + ScreenHeight - height;
+	x = Editor::GetInstance()->cameraPosition[0] + Editor::GetInstance()->ScreenWidth - width;
+	y = Editor::GetInstance()->cameraPosition[1] + Editor::GetInstance()->ScreenHeight - height;
 
 	// updating buttons
 	for (Button *button: buttons)

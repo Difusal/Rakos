@@ -24,8 +24,6 @@ using namespace std;
 
 /* global variables */
 #define ProgramTitle "Map Editor"
-#define ScreenWidth 800
-#define ScreenHeight 600
 #define WorldBlockSize 40
 const float FPS = 60.0;
 

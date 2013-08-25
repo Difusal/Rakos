@@ -1,0 +1,10 @@
+[TileSet]
+res//maps//Tiles.png
+[MapLevel1]
+0  0  0  
+0  0  0  
+0  0  0  
+[MapLevel2]
+0  0  0  
+0  0  0  
+0  0  0  

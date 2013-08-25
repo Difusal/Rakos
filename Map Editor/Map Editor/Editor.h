@@ -37,6 +37,9 @@ public:
 
 
 	// Public Variables
+	unsigned int ScreenWidth;
+	unsigned int ScreenHeight;
+
 	bool creatingNewMap;
 
 	MouseCursor *Mouse;

@@ -138,8 +138,8 @@ void LoadMapAndTileSet(const char *filename, vector<vector<int> > *mapLevel1, ve
 void DrawMap(const vector<vector<int> > &WorldMap, const vector<vector<int> > &WorldMapLevel2, ALLEGRO_BITMAP **tileSet) {
 	// this special conditions are very important because they save memory. they do so because they only draw what can be
 	// seen in the window. it does not waste time drawing what can't be seen. if these conditions weren't set, the map would lag A LOT!
-	for(unsigned int i = Editor::GetInstance()->cameraPosition[1]/WorldBlockSize, ii = 0; i < WorldMap.size() && ii < ScreenHeight/WorldBlockSize+1; i++, ii++) {
-		for(unsigned int j = Editor::GetInstance()->cameraPosition[0]/WorldBlockSize, jj = 0; j < WorldMap[i].size() && jj < ScreenWidth/WorldBlockSize; j++, jj++) {
+	for(unsigned int i = Editor::GetInstance()->cameraPosition[1]/WorldBlockSize, ii = 0; i < WorldMap.size() && ii < Editor::GetInstance()->ScreenHeight/WorldBlockSize+2; i++, ii++) {
+		for(unsigned int j = Editor::GetInstance()->cameraPosition[0]/WorldBlockSize, jj = 0; j < WorldMap[i].size() && jj < Editor::GetInstance()->ScreenWidth/WorldBlockSize+2; j++, jj++) {
 			// drawing sea animation
 			al_draw_bitmap_region(*tileSet, 0, 10, WorldBlockSize, WorldBlockSize, j*WorldBlockSize, i*WorldBlockSize, NULL);
 
@@ -167,23 +167,23 @@ void DrawMap(const vector<vector<int> > &WorldMap, const vector<vector<int> > &W
 // Summary:   updates camera position based on mouse dragging
 //************************************
 void CameraUpdate(vector<vector<int> > &worldMap, float *cameraPosition, double *x, double *y, unsigned int sideBarWidth) {
-	cameraPosition[0] = *x - (ScreenWidth-sideBarWidth)/2.0; 
-	cameraPosition[1] = *y - ScreenHeight/2.0;
+	cameraPosition[0] = *x - (Editor::GetInstance()->ScreenWidth-sideBarWidth)/2.0; 
+	cameraPosition[1] = *y - Editor::GetInstance()->ScreenHeight/2.0;
 
 	if(cameraPosition[0] < 0 || worldMap[0].size() < 18) {
 		cameraPosition[0] = 0;
-		*x = (ScreenWidth-sideBarWidth)/2.0;
+		*x = (Editor::GetInstance()->ScreenWidth-sideBarWidth)/2.0;
 	}
 	if(cameraPosition[1] < 0 || worldMap.size() < 15) {
 		cameraPosition[1] = 0;
-		*y = ScreenHeight/2.0;
+		*y = Editor::GetInstance()->ScreenHeight/2.0;
 	}
-	if(cameraPosition[0] > WorldBlockSize*worldMap[0].size() - (ScreenWidth-sideBarWidth)) {
-		cameraPosition[0] = WorldBlockSize*worldMap[0].size() - (ScreenWidth-sideBarWidth);
-		*x = WorldBlockSize*worldMap[0].size() - (ScreenWidth-sideBarWidth)/2.0;
+	if(cameraPosition[0] > WorldBlockSize*worldMap[0].size() - (Editor::GetInstance()->ScreenWidth-sideBarWidth)) {
+		cameraPosition[0] = WorldBlockSize*worldMap[0].size() - (Editor::GetInstance()->ScreenWidth-sideBarWidth);
+		*x = WorldBlockSize*worldMap[0].size() - (Editor::GetInstance()->ScreenWidth-sideBarWidth)/2.0;
 	}
-	if(cameraPosition[1] > WorldBlockSize*worldMap.size() - ScreenHeight) {
-		cameraPosition[1] = WorldBlockSize*worldMap.size() - ScreenHeight;
-		*y = WorldBlockSize*worldMap.size() - ScreenHeight/2.0;
+	if(cameraPosition[1] > WorldBlockSize*worldMap.size() - Editor::GetInstance()->ScreenHeight) {
+		cameraPosition[1] = WorldBlockSize*worldMap.size() - Editor::GetInstance()->ScreenHeight;
+		*y = WorldBlockSize*worldMap.size() - Editor::GetInstance()->ScreenHeight/2.0;
 	}
 }

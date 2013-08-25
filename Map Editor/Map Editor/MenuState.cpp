@@ -49,28 +49,28 @@ bool MenuState::Update(ALLEGRO_EVENT *ev) {
 
 void MenuState::Draw() {
 	// drawing title
-	al_draw_text(Editor::GetInstance()->extraLargeFont, Black, ScreenWidth/2.0+1, titleY+2, ALLEGRO_ALIGN_CENTER, "RAKOS");
-	al_draw_text(Editor::GetInstance()->extraLargeFont, White, ScreenWidth/2.0, titleY, ALLEGRO_ALIGN_CENTER, "RAKOS");
+	al_draw_text(Editor::GetInstance()->extraLargeFont, Black, Editor::GetInstance()->ScreenWidth/2.0+1, titleY+2, ALLEGRO_ALIGN_CENTER, "RAKOS");
+	al_draw_text(Editor::GetInstance()->extraLargeFont, White, Editor::GetInstance()->ScreenWidth/2.0, titleY, ALLEGRO_ALIGN_CENTER, "RAKOS");
 
 	// drawing line under title and above subtitle
-	al_draw_line(ScreenWidth/2.0-lineWidth+1, lineY+2, ScreenWidth/2.0+lineWidth+1, lineY+2, Black, 4.0);
-	al_draw_line(ScreenWidth/2.0-lineWidth, lineY, ScreenWidth/2.0+lineWidth, lineY, White, 4.0);
+	al_draw_line(Editor::GetInstance()->ScreenWidth/2.0-lineWidth+1, lineY+2, Editor::GetInstance()->ScreenWidth/2.0+lineWidth+1, lineY+2, Black, 4.0);
+	al_draw_line(Editor::GetInstance()->ScreenWidth/2.0-lineWidth, lineY, Editor::GetInstance()->ScreenWidth/2.0+lineWidth, lineY, White, 4.0);
 
 	// drawing subtitle
-	al_draw_text(Editor::GetInstance()->largeFont, Black, ScreenWidth/2.0+1, subTitleY+2, ALLEGRO_ALIGN_CENTER, "Map Editor");
-	al_draw_text(Editor::GetInstance()->largeFont, White, ScreenWidth/2.0, subTitleY, ALLEGRO_ALIGN_CENTER, "Map Editor");
+	al_draw_text(Editor::GetInstance()->largeFont, Black, Editor::GetInstance()->ScreenWidth/2.0+1, subTitleY+2, ALLEGRO_ALIGN_CENTER, "Map Editor");
+	al_draw_text(Editor::GetInstance()->largeFont, White, Editor::GetInstance()->ScreenWidth/2.0, subTitleY, ALLEGRO_ALIGN_CENTER, "Map Editor");
 
 	// drawing buttons
 	for (MenuButton *button: buttons)
 		button->Draw();
 
 	// printing program version
-	al_draw_text(Editor::GetInstance()->mediumFont, Black, 1, ScreenHeight-Editor::GetInstance()->mediumFont->height+1, ALLEGRO_ALIGN_LEFT, " Rakos: Map Editor v1.0");
-	al_draw_text(Editor::GetInstance()->mediumFont, White, 0, ScreenHeight-Editor::GetInstance()->mediumFont->height, ALLEGRO_ALIGN_LEFT, " Rakos: Map Editor v1.0");
+	al_draw_text(Editor::GetInstance()->mediumFont, Black, 1, Editor::GetInstance()->ScreenHeight-Editor::GetInstance()->mediumFont->height+1, ALLEGRO_ALIGN_LEFT, " Rakos: Map Editor v1.0");
+	al_draw_text(Editor::GetInstance()->mediumFont, White, 0, Editor::GetInstance()->ScreenHeight-Editor::GetInstance()->mediumFont->height, ALLEGRO_ALIGN_LEFT, " Rakos: Map Editor v1.0");
 
 	// printing author and date
-	al_draw_text(Editor::GetInstance()->mediumFont, Black, ScreenWidth+1, ScreenHeight-Editor::GetInstance()->mediumFont->height+1, ALLEGRO_ALIGN_RIGHT, "Henrique Ferrolho - August, 2013 ");
-	al_draw_text(Editor::GetInstance()->mediumFont, White, ScreenWidth, ScreenHeight-Editor::GetInstance()->mediumFont->height, ALLEGRO_ALIGN_RIGHT, "Henrique Ferrolho - August, 2013 ");
+	al_draw_text(Editor::GetInstance()->mediumFont, Black, Editor::GetInstance()->ScreenWidth+1, Editor::GetInstance()->ScreenHeight-Editor::GetInstance()->mediumFont->height+1, ALLEGRO_ALIGN_RIGHT, "Henrique Ferrolho - August, 2013 ");
+	al_draw_text(Editor::GetInstance()->mediumFont, White, Editor::GetInstance()->ScreenWidth, Editor::GetInstance()->ScreenHeight-Editor::GetInstance()->mediumFont->height, ALLEGRO_ALIGN_RIGHT, "Henrique Ferrolho - August, 2013 ");
 }
 
 void MenuState::Terminate() {

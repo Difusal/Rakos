@@ -4,8 +4,8 @@
 MouseCursor::MouseCursor(void) {
 	cout << "Creating mouse cursor..." << endl;
 
-	x = ScreenWidth;
-	y = ScreenHeight;
+	x = Editor::GetInstance()->ScreenWidth;
+	y = Editor::GetInstance()->ScreenHeight;
 	
 	xDraggingDisplacement = 0;
 	yDraggingDisplacement = 0;
