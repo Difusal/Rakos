@@ -8,6 +8,7 @@
 #include "NPC.h"
 #include "Rabbit.h"
 #include "Portal.h"
+#include "BasicPortal.h"
 #include "Switch.h"
 #include "TextBox.h"
 #include "SideBarWindow.h"
@@ -51,6 +52,7 @@ private:
 
 	vector<Portal*> portals;
 	Portal *tutorialPortal;
+	BasicPortal *portalToRakos;
 
 	ALLEGRO_KEYBOARD_STATE keyState;
 

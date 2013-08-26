@@ -73,8 +73,10 @@ void ConfirmationDialog::Draw() {
 	al_draw_text(font, White, realX + width/2, realY-font->height, ALLEGRO_ALIGN_CENTER, title.c_str());
 
 	// text
-	for (unsigned int i = 0; i < text.size(); i++)
-		al_draw_text(font, White, realX + font->height/2.8, realY + i*font->height + 1 + font->height/2, ALLEGRO_ALIGN_LEFT, text[i].c_str());
+	for (unsigned int i = 0; i < text.size(); i++) {
+		al_draw_text(font, Black, realX+font->height/2.8 + 1, realY+i*font->height+1+font->height/2 + 1, ALLEGRO_ALIGN_LEFT, text[i].c_str());
+		al_draw_text(font, White, realX+font->height/2.8, realY+i*font->height+1+font->height/2, ALLEGRO_ALIGN_LEFT, text[i].c_str());
+	}
 
 	// drawing buttons
 	Yes->Draw();

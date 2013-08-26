@@ -1,7 +1,7 @@
-#include "Portal.h"
+#include "BasicPortal.h"
 #include "RPG.h"
 
-Portal::Portal(bool alreadyOpened, int sourceBlockX, int sourceBlockY, int destinyBlockX, int destinyBlockY) {
+BasicPortal::BasicPortal( bool alreadyOpened, int sourceBlockX, int sourceBlockY ) {
 	bitmap = al_load_bitmap(PortalPng);
 	if (!bitmap) {
 		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Could not load portal bitmap.", "Your resources folder must be corrupt, please download it again.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
@@ -10,8 +10,6 @@ Portal::Portal(bool alreadyOpened, int sourceBlockX, int sourceBlockY, int desti
 
 	this->sourceX = sourceBlockX*WorldBlockSize;
 	this->sourceY = sourceBlockY*WorldBlockSize;
-	destinyX = destinyBlockX*WorldBlockSize;
-	destinyY = destinyBlockY*WorldBlockSize;
 
 	openingSpeed = 7;
 	regularSpeed = 2;
@@ -22,30 +20,30 @@ Portal::Portal(bool alreadyOpened, int sourceBlockX, int sourceBlockY, int desti
 		bitmap_sourceX = 5*al_get_bitmap_width(bitmap)/7.0;
 }
 
-
-void Portal::Open() {
+void BasicPortal::Open() {
 	opening = true;
 	al_set_timer_speed(RPG::GetInstance()->GetTimer(_PortalAnimTimer), 1.0 / openingSpeed);
 	bitmap_sourceX = 0;
 	open = true;
 }
 
-void Portal::Close() {
+void BasicPortal::Close() {
 	open = false;
 }
 
-void Portal::CheckIfPlayerPassedThrough(Player *player) {
-	// if player passed through portal, transport player to destiny
+bool BasicPortal::PassedThrough( Player *player ) {
+	// if player passed through portal return true
 	if (isOpen()) {
 		if ((sourceX+3 <= player->getFeetX() && player->getFeetX() <= sourceX+35) &&
 			(sourceY+3 <= player->getFeetY() && player->getFeetY() <= sourceY+36)) {
-			player->setX(destinyX + al_get_bitmap_width(bitmap)/7.0/2 - player->width()/2);
-			player->setY(destinyY + al_get_bitmap_width(bitmap)/7.0/2 - player->height());
+				return true;
 		}
 	}
+
+	return false;
 }
 
-void Portal::UpdateAnimationFrame() {
+void BasicPortal::UpdateAnimationFrame() {
 	bitmap_sourceX += al_get_bitmap_width(bitmap)/7.0;
 
 	if (opening && bitmap_sourceX == 5*al_get_bitmap_width(bitmap)/7.0) {
@@ -57,14 +55,12 @@ void Portal::UpdateAnimationFrame() {
 		bitmap_sourceX = 5*al_get_bitmap_width(bitmap)/7.0;
 }
 
-void Portal::Draw() {
+void BasicPortal::Draw() {
 	if (open) {
 		al_draw_bitmap_region(bitmap, bitmap_sourceX, 10, al_get_bitmap_width(bitmap)/7.0, al_get_bitmap_height(bitmap), sourceX, sourceY, NULL);
-		al_draw_bitmap_region(bitmap, bitmap_sourceX, 10, al_get_bitmap_width(bitmap)/7.0, al_get_bitmap_height(bitmap), destinyX, destinyY, NULL);
 	}
 }
 
-
-Portal::~Portal(void) {
+BasicPortal::~BasicPortal(void) {
 	al_destroy_bitmap(bitmap);
 }

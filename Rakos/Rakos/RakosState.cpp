@@ -50,28 +50,19 @@ void RakosState::DrawDialogs() {
 
 
 void RakosState::Initialize() {
+	// display loading splash screen
+	ALLEGRO_BITMAP *loading_background = al_load_bitmap(LoadingGameBackgroundPath);
+	if (!loading_background)
+		cout << "Error loading loading game bitmap... Proceeding anyway." << endl;
+	else
+		al_draw_bitmap(loading_background, 0, 0, NULL);
+	al_flip_display();
+	al_destroy_bitmap(loading_background);
+
 	// loading map
 	LoadMap(RakosMapPath, &worldMapLevel1, &worldMapLevel2);
 	seaAnimationFrame = 0;
-
-	// stating level 1 tiles player can walk on
-	level1AccessibleTiles.push_back(1);		// grass
-	level1AccessibleTiles.push_back(15);	// snow
-	level1AccessibleTiles.push_back(32);	// sand
-	level1AccessibleTiles.push_back(48);	// wood
-	level1AccessibleTiles.push_back(49);
-	for (unsigned int i = 52; i < 67; i++)
-		level1AccessibleTiles.push_back(i);
-
-	// stating level 2 tiles player can walk on
-	level2AccessibleTiles = level1AccessibleTiles;
-	level2AccessibleTiles.push_back(0);		// empty tile
-	level2AccessibleTiles.push_back(14);	// dirt
-	for (unsigned int i = 28; i < 32; i++)
-		level2AccessibleTiles.push_back(i);
-	level2AccessibleTiles.push_back(32);	// sand
-	for (unsigned int i = 34; i < 46; i++)
-		level2AccessibleTiles.push_back(i);
+	RPG::GetInstance()->LoadAccessibleTiles(level1AccessibleTiles, level2AccessibleTiles);
 
 	// initializing side bar
 	sideBar = new SideBar(&livingBeings);

@@ -63,6 +63,4 @@ void SpeechBubble::Draw() {
 
 SpeechBubble::~SpeechBubble(void) {
 	al_destroy_font(font);
-	delete x;
-	delete y;
 }

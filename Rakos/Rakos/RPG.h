@@ -38,6 +38,7 @@ public:
 
 	bool livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles);
 	void UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b);
+	void LoadAccessibleTiles(vector<int> &Level1AccessibleTiles, vector<int> &Level2AccessibleTiles);
 
 	void UpdateAnimationsFrame(vector<LivingBeing*> &livingBeings);
 	void UpdateAnimationsFrame(vector<Portal*> &portals);

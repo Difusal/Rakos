@@ -113,7 +113,5 @@ SideBar::~SideBar() {
 	for (SideBarWindow *obj: windows)
 		delete obj;
 
-	delete cameraX;
-	delete cameraY;
 	al_destroy_bitmap(background);
 }

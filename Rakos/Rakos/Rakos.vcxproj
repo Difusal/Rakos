@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicButton.cpp" />
+    <ClCompile Include="BasicPortal.cpp" />
     <ClCompile Include="ConfirmationDialog.cpp" />
     <ClCompile Include="CreaturesWindow.cpp" />
     <ClCompile Include="CreatureWindowObject.cpp" />
@@ -40,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicButton.h" />
+    <ClInclude Include="BasicPortal.h" />
     <ClInclude Include="ConfirmationDialog.h" />
     <ClInclude Include="CreaturesWindow.h" />
     <ClInclude Include="CreatureWindowObject.h" />

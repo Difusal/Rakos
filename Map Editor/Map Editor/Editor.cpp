@@ -240,6 +240,9 @@ void Editor::Draw() {
 			stringstream ss;
 			ss << " x:" << Mouse->x << "  y:" << Mouse->y;
 			al_draw_text(mediumFont, Yellow, cameraPosition[0], cameraPosition[1], NULL, ss.str().c_str());
+			ss.str(string());
+			ss << " block x:" << Mouse->x/WorldBlockSize << "  block y:" << Mouse->y/WorldBlockSize;
+			al_draw_text(mediumFont, Yellow, cameraPosition[0], cameraPosition[1]+mediumFont->height, NULL, ss.str().c_str());
 		}		
 
 		// flipping display and preparing buffer for next cycle

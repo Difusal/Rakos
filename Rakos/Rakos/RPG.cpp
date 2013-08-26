@@ -16,9 +16,7 @@ RPG *RPG::GetInstance() {
 
 void RPG::ChangeState (int newState) {
 	if (state != -1)
-	{
 		states[state]->Terminate();
-	}
 
 	state = newState;
 
@@ -327,7 +325,6 @@ void RPG::Terminate() {
 
 	// living beings
 	delete player;
-	delete previousNPCWhoTalkedToPlayer;
 
 	// bitmaps
 	al_destroy_bitmap(loading_background);
@@ -637,6 +634,39 @@ void RPG::UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b) {
 			}
 		}
 	}
+}
+
+void RPG::LoadAccessibleTiles( vector<int> &level1AccessibleTiles, vector<int> &level2AccessibleTiles ) {
+	// stating level 1 tiles player can walk on
+	level1AccessibleTiles.push_back(1);		// grass
+	level1AccessibleTiles.push_back(15);	// snow
+	level1AccessibleTiles.push_back(32);	// sand
+	level1AccessibleTiles.push_back(48);	// wood
+	level1AccessibleTiles.push_back(49);
+	for (unsigned int i = 52; i < 67; i++)
+		level1AccessibleTiles.push_back(i);
+
+	// stating level 2 tiles player can walk on
+	level2AccessibleTiles = level1AccessibleTiles;
+	level2AccessibleTiles.push_back(0);		// empty tile
+	level2AccessibleTiles.push_back(14);	// dirt
+	for (unsigned int i = 28; i < 32; i++)
+		level2AccessibleTiles.push_back(i);
+	level2AccessibleTiles.push_back(32);	// sand
+	for (unsigned int i = 34; i < 46; i++)
+		level2AccessibleTiles.push_back(i);
+	// flowers and other stuff
+	level2AccessibleTiles.push_back(77);
+	level2AccessibleTiles.push_back(81);
+	level2AccessibleTiles.push_back(88);
+	level2AccessibleTiles.push_back(89);
+	level2AccessibleTiles.push_back(94);
+	level2AccessibleTiles.push_back(95);
+	level2AccessibleTiles.push_back(96);
+	level2AccessibleTiles.push_back(99);
+	level2AccessibleTiles.push_back(100);
+	level2AccessibleTiles.push_back(103);
+	level2AccessibleTiles.push_back(106);
 }
 
 

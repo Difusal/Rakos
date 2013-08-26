@@ -323,24 +323,7 @@ void TutorialState::Initialize() {
 	// loading map
 	LoadMap(TutorialMapPath, &worldMapLevel1, &worldMapLevel2);
 	seaAnimationFrame = 0;
-
-	// stating level 1 tiles player can walk on
-	level1AccessibleTiles.push_back(1);		// grass
-	level1AccessibleTiles.push_back(15);	// snow
-	level1AccessibleTiles.push_back(32);	// sand
-	level1AccessibleTiles.push_back(48);	// wood
-	level1AccessibleTiles.push_back(49);
-
-	// stating level 2 tiles player can walk on
-	level2AccessibleTiles.push_back(1);		// grass
-	level2AccessibleTiles.push_back(15);	// snow
-	for (unsigned int i = 28; i < 32; i++)
-		level2AccessibleTiles.push_back(i);
-	level2AccessibleTiles.push_back(32);	// sand
-	for (unsigned int i = 34; i < 46; i++)
-		level2AccessibleTiles.push_back(i);
-	level2AccessibleTiles.push_back(48);	// wood
-	level2AccessibleTiles.push_back(49);
+	RPG::GetInstance()->LoadAccessibleTiles(level1AccessibleTiles, level2AccessibleTiles);
 
 	sideBar = new SideBar(&livingBeings);
 
@@ -353,6 +336,8 @@ void TutorialState::Initialize() {
 
 	tutorialPortal = new Portal(false, 13, 12, 18, 12);
 	portals.push_back(tutorialPortal);
+
+	portalToRakos = new BasicPortal(false, 45, 8);
 
 	tutorialDialog1->Show();
 	playerHasTalkedToSteve = false;
@@ -482,6 +467,7 @@ bool TutorialState::CheckIfPlayerChoseAVocation(ALLEGRO_EVENT *ev) {
 		RPG::GetInstance()->Mouse->leftMouseButtonReleased = false;
 		Mage->Speak();
 		mageDialogIfPlayerIsAMage->Show();
+		portalToRakos->Open();
 		break;
 	}
 
@@ -501,6 +487,7 @@ bool TutorialState::CheckIfPlayerChoseAVocation(ALLEGRO_EVENT *ev) {
 		RPG::GetInstance()->Mouse->leftMouseButtonReleased = false;
 		Warrior->Speak();
 		warriorDialogIfPlayerIsAWarrior->Show();
+		portalToRakos->Open();
 		break;
 	}
 
@@ -537,6 +524,15 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 
 			UpdateSwitches();
 			tutorialPortal->CheckIfPlayerPassedThrough(player);
+
+			// if player went through portal to Rakos and has chosen a vocation, teleport it to Rakos Temple
+			if (portalToRakos->PassedThrough(player)) {
+				if (player->getVocation() != _NoVocation) {
+					RPG::GetInstance()->ChangeState(_Rakos);
+					return true;
+				}
+			}
+
 			UpdateDialogs();
 		}
 
@@ -550,6 +546,8 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 		RPG::GetInstance()->UpdateCamera(worldMapLevel1, livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(livingBeings);
 		RPG::GetInstance()->UpdateAnimationsFrame(portals);
+		if (ev->timer.source == RPG::GetInstance()->GetTimer(_PortalAnimTimer))
+			portalToRakos->UpdateAnimationFrame();
 		RPG::GetInstance()->UpdateWeaponAndShieldPositions(livingBeings);
 		RPG::GetInstance()->UpdateWeaponAttackAnimations(livingBeings);
 
@@ -582,6 +580,7 @@ void TutorialState::Draw() {
 		obj->Draw();
 
 	// drawing portals
+	portalToRakos->Draw();
 	for (Portal *obj : portals)
 		obj->Draw();
 
@@ -613,13 +612,15 @@ void TutorialState::Draw() {
 
 void TutorialState::Terminate() {
 	for (LivingBeing *being : livingBeings)
-		delete being;
+		if (being->getType() != _Player)
+			delete being;
 	livingBeings.clear();
 
 	for (Switch *obj: switches)
 		delete obj;
 	switches.clear();
 
+	delete portalToRakos;
 	for (Portal *obj: portals)
 		delete obj;
 	portals.clear();
