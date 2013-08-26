@@ -11,19 +11,21 @@
 #include "Switch.h"
 #include "TextBox.h"
 #include "SideBarWindow.h"
+#include "ConfirmationDialog.h"
 
 class TutorialState: public State {
 public:
 	void InitializeLivingBeings();
 	void InitializeDialogs();
-	void MoveLivingBeings(ALLEGRO_EVENT *ev);
-	void UpdateDialogs();
-	void UpdateSwitches();
-	bool CheckIfPlayerChoseAVocation(ALLEGRO_EVENT *ev);
-	void DrawDialogs();
-
+	void InitializeConfirmationDialogs();
 	virtual void Initialize();
+
+	void MoveLivingBeings(ALLEGRO_EVENT *ev);
+	void UpdateSwitches();
+	void UpdateDialogs();
+	bool CheckIfPlayerChoseAVocation(ALLEGRO_EVENT *ev);
 	bool Update (ALLEGRO_EVENT *ev);
+
 	virtual void Draw();
 	virtual void Terminate();
 
@@ -66,6 +68,10 @@ private:
 	SpeechBubble *warriorDialog;
 	SpeechBubble *warriorDialogIfPlayerIsAWarrior;
 	SpeechBubble *warriorDialogIfPlayerIsNOTAWarrior;
+
+	vector<ConfirmationDialog*> confirmationDialogs;
+	ConfirmationDialog *mageConfirmation;
+	ConfirmationDialog *warriorConfirmation;
 
 	bool playerHasTalkedToSteve;
 };

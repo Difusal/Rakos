@@ -282,6 +282,83 @@ void TutorialState::InitializeDialogs() {
 	}
 }
 
+void TutorialState::InitializeConfirmationDialogs() {
+	string tempTitle;
+	vector<string> tempVec;
+
+	tempVec.clear();
+	switch (RPG::GetInstance()->LanguageBeingUsed) {
+	case _English:
+		tempTitle = "ATTENTION";
+		tempVec.push_back("You only get to choose your vocation ONCE!");
+		tempVec.push_back("Do you really want to become a Mage?");
+		break;
+	case _Portuguese:
+		tempTitle = "ATENÇÃO";
+		tempVec.push_back("Só podes escolher a tua profissão uma vez!");
+		tempVec.push_back("Tens a certeza que te queres tornar um Mage?");
+		break;
+	}
+	mageConfirmation = new ConfirmationDialog(tempTitle, tempVec);
+	confirmationDialogs.push_back(mageConfirmation);
+
+	tempVec.clear();
+	switch (RPG::GetInstance()->LanguageBeingUsed) {
+	case _English:
+		tempTitle = "ATTENTION";
+		tempVec.push_back("You only get to choose your vocation ONCE!");
+		tempVec.push_back("Do you really want to become a Warrior?");
+		break;
+	case _Portuguese:
+		tempTitle = "ATENÇÃO";
+		tempVec.push_back("Só podes escolher a tua profissão uma vez!");
+		tempVec.push_back("Tens a certeza que te queres tornar um Warrior?");
+		break;
+	}
+	warriorConfirmation = new ConfirmationDialog(tempTitle, tempVec);
+	confirmationDialogs.push_back(warriorConfirmation);
+}
+
+void TutorialState::Initialize() {
+	// loading map
+	LoadMap(TutorialMapPath, &worldMapLevel1, &worldMapLevel2);
+	seaAnimationFrame = 0;
+
+	// stating level 1 tiles player can walk on
+	level1AccessibleTiles.push_back(1);		// grass
+	level1AccessibleTiles.push_back(15);	// snow
+	level1AccessibleTiles.push_back(32);	// sand
+	level1AccessibleTiles.push_back(48);	// wood
+	level1AccessibleTiles.push_back(49);
+
+	// stating level 2 tiles player can walk on
+	level2AccessibleTiles.push_back(1);		// grass
+	level2AccessibleTiles.push_back(15);	// snow
+	for (unsigned int i = 28; i < 32; i++)
+		level2AccessibleTiles.push_back(i);
+	level2AccessibleTiles.push_back(32);	// sand
+	for (unsigned int i = 34; i < 46; i++)
+		level2AccessibleTiles.push_back(i);
+	level2AccessibleTiles.push_back(48);	// wood
+	level2AccessibleTiles.push_back(49);
+
+	sideBar = new SideBar(&livingBeings);
+
+	InitializeLivingBeings();
+	InitializeDialogs();
+	InitializeConfirmationDialogs();
+
+	tutorialSwitch = new Switch(4, 12, FPS*4.6);
+	switches.push_back(tutorialSwitch);
+
+	tutorialPortal = new Portal(false, 13, 12, 18, 12);
+	portals.push_back(tutorialPortal);
+
+	tutorialDialog1->Show();
+	playerHasTalkedToSteve = false;
+}
+
+
 void TutorialState::MoveLivingBeings(ALLEGRO_EVENT *ev) {
 	// moving player, npcs and creatures
 	if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerMoveTimer))
@@ -295,6 +372,24 @@ void TutorialState::MoveLivingBeings(ALLEGRO_EVENT *ev) {
 	for (unsigned int i = 0; i < livingBeings.size()-1; i++)
 		for (unsigned int j = i+1; j < livingBeings.size(); j++)
 			RPG::GetInstance()->UpdateLivingBeingsCollisions(livingBeings[i], livingBeings[j]);
+}
+
+void TutorialState::UpdateSwitches() {
+	// tutorial switch
+	if (tutorialSwitch->isBeingPressed(player)) {
+		tutorialSwitch->Press();
+
+		// opening portal if not already opened
+		if (!tutorialPortal->isOpen())
+			tutorialPortal->Open();
+	}
+	else {
+		if (tutorialSwitch->isPressed())
+			tutorialSwitch->incrementUnpressDelayCounter();
+
+		if (tutorialSwitch->unpressDelayPassed())
+			tutorialPortal->Close();
+	}
 }
 
 void TutorialState::UpdateDialogs() {
@@ -370,73 +465,55 @@ void TutorialState::UpdateDialogs() {
 	}
 }
 
-void TutorialState::UpdateSwitches() {
-	// tutorial switch
-	if (tutorialSwitch->isBeingPressed(player)) {
-		tutorialSwitch->Press();
-
-		// opening portal if not already opened
-		if (!tutorialPortal->isOpen())
-			tutorialPortal->Open();
-	}
-	else {
-		if (tutorialSwitch->isPressed())
-			tutorialSwitch->incrementUnpressDelayCounter();
-
-		if (tutorialSwitch->unpressDelayPassed())
-			tutorialPortal->Close();
-	}
-}
-
 bool TutorialState::CheckIfPlayerChoseAVocation(ALLEGRO_EVENT *ev) {
+	// mage confirmation dialog
+	switch (mageConfirmation->Update()) {
+	case 2:
+		// nothing chosen
+		break;
+	case 0:
+		cout << "NO button pressed." << endl;
+		break;
+	case 1:
+		cout << "YES button pressed." << endl;
+		player->setVocation(_Mage);
+		player->setWeapon(RPG::GetInstance()->GetWeapon(_Wand));
+		// setting this to false to prevent speech bubbles of being closed
+		RPG::GetInstance()->Mouse->leftMouseButtonReleased = false;
+		Mage->Speak();
+		mageDialogIfPlayerIsAMage->Show();
+		break;
+	}
+
+	// warrior confirmation dialog
+	switch (warriorConfirmation->Update()) {
+	case 2:
+		// nothing chosen
+		break;
+	case 0:
+		cout << "NO button pressed." << endl;
+		break;
+	case 1:
+		cout << "YES button pressed." << endl;
+		player->setVocation(_Warrior);
+		player->setWeapon(RPG::GetInstance()->GetWeapon(_Sword));
+		// setting this to false to prevent speech bubbles of being closed
+		RPG::GetInstance()->Mouse->leftMouseButtonReleased = false;
+		Warrior->Speak();
+		warriorDialogIfPlayerIsAWarrior->Show();
+		break;
+	}
+
+	// checking if any confirmation dialog needs to be open
 	if (player->getVocation() == _NoVocation) {
 		if (ev->type == ALLEGRO_EVENT_KEY_UP && ev->keyboard.keycode == ALLEGRO_KEY_ENTER) {
-			const char *str1;
-			const char *str2;
-
 			if (Mage->isSpeaking()) {
-				switch (RPG::GetInstance()->LanguageBeingUsed) {
-				case _English:
-					str1 = "You only get to choose your vocation ONCE!";
-					str2 = "Do you really want to become a Mage?";
-					break;
-				case _Portuguese:
-					str1 = "ATENCÃO! Só podes escolher a tua profissão uma vez!";
-					str2 = "Tens a certeza que te queres tornar um Mage?";
-				}
-
-				switch (al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Rakos", str1, str2, NULL, ALLEGRO_MESSAGEBOX_YES_NO)) {
-				case 0:
-					cout << "NO button pressed." << endl;
-					break;
-				case 1:
-					cout << "YES button pressed." << endl;
-					player->setVocation(_Mage);
-					player->setWeapon(RPG::GetInstance()->GetWeapon(_Wand));
-					break;
-				}
+				mageConfirmation->Open();
+				warriorConfirmation->Close();
 			}
 			else if (Warrior->isSpeaking()) {
-				switch (RPG::GetInstance()->LanguageBeingUsed) {
-				case _English:
-					str1 = "You only get to choose your vocation ONCE!";
-					str2 = "Do you really want to become a Warrior?";
-					break;
-				case _Portuguese:
-					str1 = "ATENCÃO! Só podes escolher a tua profissão uma vez!";
-					str2 = "Tens a certeza que te queres tornar um Warrior?";
-				}
-
-				switch (al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Rakos", str1, str2, NULL, ALLEGRO_MESSAGEBOX_YES_NO)) {
-				case 0:
-					cout << "NO button pressed." << endl;
-					break;
-				case 1:
-					cout << "YES button pressed." << endl;
-					player->setVocation(_Warrior);
-					player->setWeapon(RPG::GetInstance()->GetWeapon(_Sword));
-					break;
-				}
+				warriorConfirmation->Open();
+				mageConfirmation->Close();
 			}
 
 			return true;
@@ -444,51 +521,6 @@ bool TutorialState::CheckIfPlayerChoseAVocation(ALLEGRO_EVENT *ev) {
 	}
 
 	return false;
-}
-
-void TutorialState::DrawDialogs() {
-	for (TextBox *obj: textBoxes)
-		obj->Draw();
-}
-
-
-void TutorialState::Initialize() {
-	// loading map
-	LoadMap(TutorialMapPath, &worldMapLevel1, &worldMapLevel2);
-	seaAnimationFrame = 0;
-
-	// stating level 1 tiles player can walk on
-	level1AccessibleTiles.push_back(1);		// grass
-	level1AccessibleTiles.push_back(15);	// snow
-	level1AccessibleTiles.push_back(32);	// sand
-	level1AccessibleTiles.push_back(48);	// wood
-	level1AccessibleTiles.push_back(49);
-
-	// stating level 2 tiles player can walk on
-	level2AccessibleTiles.push_back(1);		// grass
-	level2AccessibleTiles.push_back(15);	// snow
-	for (unsigned int i = 28; i < 32; i++)
-		level2AccessibleTiles.push_back(i);
-	level2AccessibleTiles.push_back(32);	// sand
-	for (unsigned int i = 34; i < 46; i++)
-		level2AccessibleTiles.push_back(i);
-	level2AccessibleTiles.push_back(48);	// wood
-	level2AccessibleTiles.push_back(49);
-
-	sideBar = new SideBar(&livingBeings);
-
-	InitializeLivingBeings();
-
-	tutorialSwitch = new Switch(4, 12, FPS*4.6);
-	switches.push_back(tutorialSwitch);
-
-	tutorialPortal = new Portal(false, 13, 12, 18, 12);
-	portals.push_back(tutorialPortal);
-
-	InitializeDialogs();
-
-	tutorialDialog1->Show();
-	playerHasTalkedToSteve = false;
 }
 
 bool TutorialState::Update(ALLEGRO_EVENT *ev) {
@@ -525,7 +557,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 		sideBar->Update();
 
 		// if left mouse pressed and any being is speaking, stop speaking
-		if (RPG::GetInstance()->Mouse->left_mouse_button_released)
+		if (RPG::GetInstance()->Mouse->leftMouseButtonReleased)
 			for (LivingBeing *being: livingBeings)
 				being->StopSpeaking();
 
@@ -539,6 +571,7 @@ bool TutorialState::Update(ALLEGRO_EVENT *ev) {
 
 	return draw;
 }
+
 
 void TutorialState::Draw() {
 	// drawing world map
@@ -559,8 +592,13 @@ void TutorialState::Draw() {
 	// drawing side bar
 	sideBar->Draw();
 
-	// drawing dialogs
-	DrawDialogs();
+	// drawing text boxes
+	for (TextBox *obj: textBoxes)
+		obj->Draw();
+
+	// drawing confirmation dialogs
+	for (ConfirmationDialog *obj: confirmationDialogs)
+		obj->Draw();
 
 	/*
 	// ---------------
@@ -593,6 +631,10 @@ void TutorialState::Terminate() {
 	for (SpeechBubble *obj: speechBubbles)
 		delete obj;
 	speechBubbles.clear();
+
+	for (ConfirmationDialog *obj: confirmationDialogs)
+		delete obj;
+	confirmationDialogs.clear();
 
 	delete sideBar;
 }

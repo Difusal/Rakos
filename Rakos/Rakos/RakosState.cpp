@@ -114,7 +114,7 @@ bool RakosState::Update( ALLEGRO_EVENT *ev ) {
 		sideBar->Update();
 
 		// if left mouse pressed and any being is speaking, stop speaking
-		if (RPG::GetInstance()->Mouse->left_mouse_button_released)
+		if (RPG::GetInstance()->Mouse->leftMouseButtonReleased)
 			for (LivingBeing *being: livingBeings)
 				being->StopSpeaking();
 

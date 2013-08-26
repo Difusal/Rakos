@@ -32,7 +32,7 @@ void SideBarWindow::CheckIfWindowIsBeingMoved() {
 	}
 
 	// if window stops being dragged
-	if (mouse->left_mouse_button_released && beingDragged) {
+	if (mouse->leftMouseButtonReleased && beingDragged) {
 		beingDragged = false;
 	}
 }

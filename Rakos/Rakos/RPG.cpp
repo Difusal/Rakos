@@ -220,7 +220,7 @@ void RPG::StartGameControlCycle() {
 	states.push_back(new TutorialState());
 	states.push_back(new RakosState());
 	state = -1;
-	ChangeState(_Rakos);
+	ChangeState(_Tutorial);
 
 	cout << "Starting game control cycle..." << endl;
 	while (!done) {

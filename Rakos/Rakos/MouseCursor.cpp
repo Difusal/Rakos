@@ -10,9 +10,9 @@ MouseCursor::MouseCursor(void) {
 	leftMouseButtonHasJustBeenPressed = false;
 	leftMouseButtonWasBeingPressedBefore = false;
 	leftMouseButtonPressed = false;
-	left_mouse_button_released = false;
-	right_mouse_button_pressed = false;
-	right_mouse_button_released = false;
+	leftMouseButtonReleased = false;
+	rightMouseButtonPressed = false;
+	rightMouseButtonReleased = false;
 
 	playAnim = false;
 	animFrame = 0;
@@ -51,13 +51,13 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 		if (ev->mouse.button &1) {
 			//cout << "* Left mouse button pressed *" << endl;
 			leftMouseButtonPressed = true;
-			left_mouse_button_released = false;
+			leftMouseButtonReleased = false;
 			draw = true;
 		}
 		if (ev->mouse.button &2) {
 			//cout << "* Right mouse button pressed *" << endl;
-			right_mouse_button_pressed = true;
-			right_mouse_button_released = false;
+			rightMouseButtonPressed = true;
+			rightMouseButtonReleased = false;
 			draw = true;
 		}
 	}
@@ -65,14 +65,14 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 		if (ev->mouse.button &1) {
 			if (possible_double_press) {
 				cout << "* Left mouse button released(pressed) twice *" << endl;
-				left_mouse_button_pressed_twice = true;
+				leftMouseButtonPressedTwice = true;
 			}
 			else
 				cout << "* Left mouse button released *" << endl;
 
 			possible_double_press = true;
 			leftMouseButtonPressed = false;
-			left_mouse_button_released = true;
+			leftMouseButtonReleased = true;
 
 			playAnim = true;
 			animFrame = 0;
@@ -81,8 +81,8 @@ bool MouseCursor::Update(ALLEGRO_EVENT *ev) {
 		}
 		if (ev->mouse.button &2) {
 			cout << "* Right mouse button released *" << endl;
-			right_mouse_button_pressed = false;
-			right_mouse_button_released = true;
+			rightMouseButtonPressed = false;
+			rightMouseButtonReleased = true;
 
 			playAnim = true;
 			animFrame = 0;
@@ -124,9 +124,9 @@ void MouseCursor::Draw() {
 
 void MouseCursor::SetAllReleaseValuesToFalse() {
 	leftMouseButtonWasBeingPressedBefore = leftMouseButtonPressed;
-	left_mouse_button_released = false;
-	left_mouse_button_pressed_twice = false;
-	right_mouse_button_released = false;
+	leftMouseButtonReleased = false;
+	leftMouseButtonPressedTwice = false;
+	rightMouseButtonReleased = false;
 }
 
 MouseCursor::~MouseCursor(void) {

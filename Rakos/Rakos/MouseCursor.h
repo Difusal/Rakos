@@ -18,10 +18,10 @@ public:
 	bool leftMouseButtonHasJustBeenPressed;
 	bool leftMouseButtonWasBeingPressedBefore;
 	bool leftMouseButtonPressed;
-	bool left_mouse_button_released;
-	bool left_mouse_button_pressed_twice;
-	bool right_mouse_button_pressed;
-	bool right_mouse_button_released;
+	bool leftMouseButtonReleased;
+	bool leftMouseButtonPressedTwice;
+	bool rightMouseButtonPressed;
+	bool rightMouseButtonReleased;
 
 private:
 	float prevMouseRawX;
