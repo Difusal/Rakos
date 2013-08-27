@@ -11,9 +11,7 @@ public:
 	void CheckIfRunning(ALLEGRO_KEYBOARD_STATE keyState);
 	void UpdatePosition(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMap);
 	void Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<vector<int> >*> &WorldMapLevels, const vector<vector<int>*> &LevelsAccessibleTiles);
-	bool CorrectPositionIfCollidingWithMapLimits(const vector<vector<int> > &worldMap, const vector<int> &accessibleTiles);
 	void ControlAttackRate();
-	void UpdateFeetCoords();
 
 	bool CanAttack() { return playerCanAttack; }
 	void CanNotAttackNow() { playerCanAttack = false; }

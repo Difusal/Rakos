@@ -357,7 +357,7 @@ void TutorialState::MoveLivingBeings(ALLEGRO_EVENT *ev) {
 	for (unsigned int i = 1; i < livingBeings.size(); i++)
 		if (!livingBeings[i]->isDead())
 			if (ev->timer.source == RPG::GetInstance()->GetTimer(livingBeings[i]->getTimerType()))
-				livingBeings[i]->Move();
+				livingBeings[i]->Move(worldMapLevels, levelsAccessibleTiles);
 
 	// checking if something collided with something
 	for (unsigned int i = 0; i < livingBeings.size()-1; i++)

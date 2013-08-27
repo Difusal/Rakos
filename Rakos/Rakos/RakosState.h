@@ -29,7 +29,6 @@ private:
 	vector<vector<vector<int> >*> worldMapLevels;
 	vector<vector<int> > worldMapLevel1;
 	vector<vector<int> > worldMapLevel2;
-	//vector<vector<int> > accessibleTilesWorldMap;
 	vector<vector<int>*> levelsAccessibleTiles;
 	vector<int> level1AccessibleTiles;
 	vector<int> level2AccessibleTiles;

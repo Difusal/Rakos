@@ -2,7 +2,7 @@
 #include "globalFunctions.h"
 #include "RPG.h"
 
-void LivingBeing::Move() {
+void LivingBeing::Move(const vector<vector<vector<int> >*> &WorldMapLevels, const vector<vector<int>*> &LevelsAccessibleTiles) {
 	// Skip this if trying to move player. Player has it's own move function.
 	if (this->type == _Player)
 		return;
@@ -60,9 +60,45 @@ void LivingBeing::Move() {
 			direction = newDir;
 		}
 
-		// changing direction if colliding with map
-		//RPG::GetInstance()->
+		// making corrections if being is colliding with map
+		for (unsigned int i = 0; i < WorldMapLevels.size(); i++) {
+			if (CorrectPositionIfCollidingWithMapLimits(this, *WorldMapLevels[i], *LevelsAccessibleTiles[i])) {
+				// changing direction
+				Direction newDir;
+				do {
+					newDir = (Direction)randomNumber(0,3);
+				} while (newDir == direction);
+				direction = newDir;
+
+				if (i != WorldMapLevels.size()-1)
+					return;
+			}
+		}
 	}
+}
+
+bool LivingBeing::CorrectPositionIfCollidingWithMapLimits(LivingBeing *being, const vector<vector<int> > &worldMap, const vector<int> &accessibleTiles) {
+	if (RPG::GetInstance()->livingBeingCollidingWithMap(being, worldMap, accessibleTiles)) {
+		switch (direction) {
+		default:
+		case UP:
+			y++;
+			break;
+		case DOWN:
+			y--;
+			break;
+		case LEFT:
+			x++;
+			break;
+		case RIGHT:
+			x--;
+			break;
+		}
+
+		return true;
+	}
+
+	return false;
 }
 
 void LivingBeing::UpdateAnimationFrame() {

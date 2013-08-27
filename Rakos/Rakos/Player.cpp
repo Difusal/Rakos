@@ -96,36 +96,13 @@ void Player::UpdatePosition(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector
 void Player::Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<vector<int> >*> &WorldMapLevels, const vector<vector<int>*> &LevelsAccessibleTiles) {
 	CheckIfRunning(keyState);
 	UpdatePosition(keyState, *WorldMapLevels[0]);
-	UpdateFeetCoords();
+
+	// making corrections if being is colliding with map
 	for (unsigned int i = 0; i < WorldMapLevels.size(); i++) {
-		if (CorrectPositionIfCollidingWithMapLimits(*WorldMapLevels[i], *LevelsAccessibleTiles[i]))
+		if (CorrectPositionIfCollidingWithMapLimits(this, *WorldMapLevels[i], *LevelsAccessibleTiles[i]))
 			if (i != WorldMapLevels.size()-1)
 				return;
 	}
-}
-
-bool Player::CorrectPositionIfCollidingWithMapLimits(const vector<vector<int> > &worldMap, const vector<int> &accessibleTiles) {
-	if (RPG::GetInstance()->livingBeingCollidingWithMap(this, worldMap, accessibleTiles)) {
-		switch (direction) {
-		default:
-		case UP:
-			y++;
-			break;
-		case DOWN:
-			y--;
-			break;
-		case LEFT:
-			x++;
-			break;
-		case RIGHT:
-			x--;
-			break;
-		}
-
-		return true;
-	}
-
-	return false;
 }
 
 void Player::ControlAttackRate() {
@@ -135,11 +112,6 @@ void Player::ControlAttackRate() {
 		attackCooldown = 0;
 		playerCanAttack = true;
 	}
-}
-
-void Player::UpdateFeetCoords() {
-	feet_x = this->getX() + al_get_bitmap_width(bitmap)/4.0/2.0;
-	feet_y = this->getY() + al_get_bitmap_height(bitmap)/4.0;
 }
 
 

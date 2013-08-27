@@ -8,7 +8,8 @@
 
 class LivingBeing {
 public:
-	void Move();
+	void Move(const vector<vector<vector<int> >*> &WorldMapLevels, const vector<vector<int>*> &LevelsAccessibleTiles);
+	bool CorrectPositionIfCollidingWithMapLimits(LivingBeing *being, const vector<vector<int> > &worldMap, const vector<int> &accessibleTiles);
 	void UpdateAnimationFrame();
 	void Draw();
 	void DrawName();
@@ -61,8 +62,8 @@ public:
 	void setX(double X) { x = X; }
 	void setY(double Y) { y = Y; }
 
-	double getFeetX() { return feet_x; }
-	double getFeetY() { return feet_y; }
+	double getFeetX() { return x + al_get_bitmap_width(bitmap)/4.0/2.0; }
+	double getFeetY() { return y + al_get_bitmap_height(bitmap)/4.0; }
 
 	Direction getDir() { return direction; }
 	void setDir(Direction Direction) { direction = Direction; }
@@ -101,7 +102,6 @@ private:
 	unsigned int wanderRadius;
 
 	unsigned int x, y;
-	unsigned int feet_x, feet_y;
 	Direction direction;
 
 	ALLEGRO_BITMAP *bitmap;
