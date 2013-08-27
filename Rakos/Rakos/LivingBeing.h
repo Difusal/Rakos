@@ -17,9 +17,12 @@ public:
 
 	LivingBeingType getType() { return type; }
 	void setType(LivingBeingType Type) { type = Type; }
+
 	TimerType getTimerType() { return timer; }
+
 	string getName() { return name; }
 	void setName(string Name) { name = Name; }
+
 	Weapon *GetWeapon() { return weapon; }
 	Shield *GetShield() { return shield; }
 
@@ -30,9 +33,11 @@ public:
 
 	bool isDead() { return dead; }
 	void setDeadState(bool Dead) { dead = Dead; }
+
 	bool isActive() { return active; }
 	void Activate() { active = true; }
 	void Deactivate() { active = false; }
+
 	bool isSpeaking() { return speaking; }
 	void Speak();
 	void StopSpeaking();
@@ -55,11 +60,13 @@ public:
 	double getY() { return y; }
 	void setX(double X) { x = X; }
 	void setY(double Y) { y = Y; }
+
 	Direction getDir() { return direction; }
 	void setDir(Direction Direction) { direction = Direction; }
 
 	double getWanderRadius() { return wanderRadius; }
 	void setWanderRadius(double Radius) { wanderRadius = Radius; }
+
 	double getP1_x() { return p1_x; }
 	void setP1_x(double x) { p1_x = x; }
 	double getP1_y() { return p1_y; }
