@@ -93,18 +93,19 @@ void Player::UpdatePosition(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector
 		active = false;
 }
 
-void Player::Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMapLevel1, const vector<vector<int> > &worldMapLevel2, const vector<int> &level1AccessibleTiles, const vector<int> &level2AccessibleTiles) {
+void Player::Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<vector<int> >*> &WorldMapLevels, const vector<vector<int>*> &LevelsAccessibleTiles) {
 	CheckIfRunning(keyState);
-	UpdatePosition(keyState, worldMapLevel1);
+	UpdatePosition(keyState, *WorldMapLevels[0]);
 	UpdateFeetCoords();
-	if (CorrectPositionIfCollidingWithMapLimits(worldMapLevel1, level1AccessibleTiles))
-		return;
-	else
-		CorrectPositionIfCollidingWithMapLimits(worldMapLevel2, level2AccessibleTiles);
+	for (unsigned int i = 0; i < WorldMapLevels.size(); i++) {
+		if (CorrectPositionIfCollidingWithMapLimits(*WorldMapLevels[i], *LevelsAccessibleTiles[i]))
+			if (i != WorldMapLevels.size()-1)
+				return;
+	}
 }
 
 bool Player::CorrectPositionIfCollidingWithMapLimits(const vector<vector<int> > &worldMap, const vector<int> &accessibleTiles) {
-	if (RPG::GetInstance()->livingBeingCollidingWithMap(direction, worldMap, accessibleTiles)) {
+	if (RPG::GetInstance()->livingBeingCollidingWithMap(this, worldMap, accessibleTiles)) {
 		switch (direction) {
 		default:
 		case UP:

@@ -147,7 +147,7 @@ bool boxCollision(float x, float y, float ex, float ey, int width, int height) {
 }
 
 /* calculates distance between 2 points */
-float calculateDistance(float p1_x, float p1_y, float p2_x, float p2_y) {
+float calcDistance(float p1_x, float p1_y, float p2_x, float p2_y) {
 	return sqrt(pow(p2_y-p1_y, 2) + pow(p2_x-p1_x, 2));
 }
 

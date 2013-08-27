@@ -8,37 +8,60 @@ void LivingBeing::Move() {
 		return;
 
 	if (active) {
+		// changing being direction once in a while
+		if (1 == randomNumber(1, 70)) {
+			Direction newDir;
+			do {
+				newDir = (Direction)randomNumber(0,3);
+			} while (newDir == direction);
+			direction = newDir;
+		}
+
+		// moving being
 		switch (direction) {
 		default:
 		case DOWN:
 			y++;
-			if (y > p2_y) {
-				y = p2_y;
-				direction = RIGHT;
-			}	
 			break;
 		case RIGHT:
 			x++;
-			if (x > p2_x) {
-				x = p2_x;
-				direction = UP;
-			}				
 			break;
 		case UP:
 			y--;
-			if (y < p1_y) {
-				y = p1_y;
-				direction = LEFT;
-			}
 			break;
 		case LEFT:
 			x--;
-			if (x < p1_x) {
-				x = p1_x;
-				direction = DOWN;
-			}	
 			break;
 		}
+
+		// checking if being is moving inside its radius
+		if (calcDistance(x, y, centerX, centerY) > wanderRadius) {
+			switch (direction) {
+			default:
+			case DOWN:
+				y--;
+				break;
+			case RIGHT:
+				x--;
+				break;
+			case UP:
+				y++;
+				break;
+			case LEFT:
+				x++;
+				break;
+			}
+
+			// changing direction
+			Direction newDir;
+			do {
+				newDir = (Direction)randomNumber(0,3);
+			} while (newDir == direction);
+			direction = newDir;
+		}
+
+		// changing direction if colliding with map
+		//RPG::GetInstance()->
 	}
 }
 

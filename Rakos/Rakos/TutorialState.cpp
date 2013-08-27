@@ -13,21 +13,21 @@ void TutorialState::InitializeLivingBeings() {
 
 
 	// initializing npcs
-	Steve = new NPC("Steve", WorldBlockSize*5, WorldBlockSize*14, WorldBlockSize*7, WorldBlockSize*17, explorer_greenPng);
+	Steve = new NPC("Steve", WorldBlockSize*5, WorldBlockSize*14, explorer_greenPng);
 	livingBeings.push_back(Steve);
 
-	WhiteKnight = new NPC("White Knight", WorldBlockSize*18, WorldBlockSize*13, WorldBlockSize*19, WorldBlockSize*15, knight_whitePng);
+	WhiteKnight = new NPC("White Knight", WorldBlockSize*18, WorldBlockSize*13, knight_whitePng);
 	livingBeings.push_back(WhiteKnight);
 
-	Mage = new NPC("Mage", WorldBlockSize*26, WorldBlockSize*11, mage_bluePng);
+	Mage = new NPC("Mage", WorldBlockSize*26, WorldBlockSize*11, mage_bluePng, true);
 	livingBeings.push_back(Mage);
 
-	Warrior = new NPC("Warrior", WorldBlockSize*26, WorldBlockSize*14, warrior_yellowPng);
+	Warrior = new NPC("Warrior", WorldBlockSize*26, WorldBlockSize*14, warrior_yellowPng, true);
 	livingBeings.push_back(Warrior);
 	
 
 	// initializing creatures
-	rabbit = new Rabbit(WorldBlockSize*5, WorldBlockSize*19, WorldBlockSize*7, WorldBlockSize*19);
+	rabbit = new Rabbit(WorldBlockSize*5, WorldBlockSize*19);
 	livingBeings.push_back(rabbit);
 }
 
@@ -322,8 +322,14 @@ void TutorialState::InitializeConfirmationDialogs() {
 void TutorialState::Initialize() {
 	// loading map
 	LoadMap(TutorialMapPath, &worldMapLevel1, &worldMapLevel2);
-	seaAnimationFrame = 0;
+	worldMapLevels.push_back(&worldMapLevel1);
+	worldMapLevels.push_back(&worldMapLevel2);
+
 	RPG::GetInstance()->LoadAccessibleTiles(level1AccessibleTiles, level2AccessibleTiles);
+	levelsAccessibleTiles.push_back(&level1AccessibleTiles);
+	levelsAccessibleTiles.push_back(&level2AccessibleTiles);
+
+	seaAnimationFrame = 0;
 
 	sideBar = new SideBar(&livingBeings);
 
@@ -347,7 +353,7 @@ void TutorialState::Initialize() {
 void TutorialState::MoveLivingBeings(ALLEGRO_EVENT *ev) {
 	// moving player, npcs and creatures
 	if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerMoveTimer))
-		player->Move(keyState, worldMapLevel1, worldMapLevel2, level1AccessibleTiles, level2AccessibleTiles);
+		player->Move(keyState, worldMapLevels, levelsAccessibleTiles);
 	for (unsigned int i = 1; i < livingBeings.size(); i++)
 		if (!livingBeings[i]->isDead())
 			if (ev->timer.source == RPG::GetInstance()->GetTimer(livingBeings[i]->getTimerType()))

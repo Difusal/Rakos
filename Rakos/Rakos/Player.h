@@ -10,7 +10,7 @@ public:
 
 	void CheckIfRunning(ALLEGRO_KEYBOARD_STATE keyState);
 	void UpdatePosition(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMap);
-	void Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<int> > &worldMapLevel1, const vector<vector<int> > &worldMapLevel2, const vector<int> &level1AccessibleTiles, const vector<int> &level2AccessibleTiles);
+	void Move(ALLEGRO_KEYBOARD_STATE keyState, const vector<vector<vector<int> >*> &WorldMapLevels, const vector<vector<int>*> &LevelsAccessibleTiles);
 	bool CorrectPositionIfCollidingWithMapLimits(const vector<vector<int> > &worldMap, const vector<int> &accessibleTiles);
 	void ControlAttackRate();
 	void UpdateFeetCoords();
@@ -39,9 +39,6 @@ public:
 	bool getRunningState() { return running; }
 	void setRunningState(bool newState) { running = newState; }
 
-	double getFeetX() { return feet_x; }
-	double getFeetY() { return feet_y; }
-
 	~Player(void);
 
 private:
@@ -56,5 +53,4 @@ private:
 	bool playerCanAttack;
 
 	bool running;
-	unsigned int feet_x, feet_y;
 };

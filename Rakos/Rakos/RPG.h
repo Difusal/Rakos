@@ -36,7 +36,7 @@ public:
 	void CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
 	bool RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings);
 
-	bool livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles);
+	bool livingBeingCollidingWithMap(LivingBeing *being, const vector<vector<int> > &worldMap, const vector<int> &unaccessibleTiles);
 	void UpdateLivingBeingsCollisions(LivingBeing *a, LivingBeing *b);
 	void LoadAccessibleTiles(vector<int> &Level1AccessibleTiles, vector<int> &Level2AccessibleTiles);
 

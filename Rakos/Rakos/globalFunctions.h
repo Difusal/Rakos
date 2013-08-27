@@ -11,7 +11,7 @@ void DrawMap(const vector<vector<int> > &WorldMapLevel1, const vector<vector<int
 
 void CameraUpdate(vector<vector<int> > &worldMap, float *cameraPosition, float x, float y, int width, int height);
 bool boxCollision(float x, float y, float ex, float ey, int width, int height);
-float calculateDistance(float p1_x, float p1_y, float p2_x, float p2_y);
+float calcDistance(float p1_x, float p1_y, float p2_x, float p2_y);
 
 int getLengthOfBiggestSentenceOnVector(vector<string> &vec);
 

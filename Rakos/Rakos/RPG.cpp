@@ -369,7 +369,7 @@ void RPG::CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALL
 			if (livingBeings[i]->getType() != _Creature)
 				continue;
 
-			if (calculateDistance(player->getX(), player->getY(), livingBeings[i]->getX(), livingBeings[i]->getY()) < maximumAttackDistance) {
+			if (calcDistance(player->getX(), player->getY(), livingBeings[i]->getX(), livingBeings[i]->getY()) < maximumAttackDistance) {
 				if (!(livingBeings[i]->getY() > player->getY() && player->getDir() == UP) &&
 					!(livingBeings[i]->getY() < player->getY() && player->getDir() == DOWN) &&
 					!(livingBeings[i]->getX() > player->getX() && player->getDir() == LEFT) &&
@@ -400,7 +400,7 @@ void RPG::CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_K
 			continue;
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_C)) {
-			currentDistance = calculateDistance(player->getX(), player->getY(), livingBeings[i]->getX(), livingBeings[i]->getY());
+			currentDistance = calcDistance(player->getX(), player->getY(), livingBeings[i]->getX(), livingBeings[i]->getY());
 
 			if (currentDistance < 40 && (idOfClosestNPCAbleToTalk == -1 || currentDistance < minimumDistance)) {
 				minimumDistance = currentDistance;
@@ -417,7 +417,7 @@ void RPG::CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_K
 
 	// if no npc is talking to player, activate previous npc who talked to player, if there is one
 	if (idOfClosestNPCAbleToTalk == -1 && previousNPCWhoTalkedToPlayer != NULL)
-		if (calculateDistance(player->getX(),player->getY(), previousNPCWhoTalkedToPlayer->getX(), previousNPCWhoTalkedToPlayer->getY()) > 60)
+		if (calcDistance(player->getX(),player->getY(), previousNPCWhoTalkedToPlayer->getX(), previousNPCWhoTalkedToPlayer->getY()) > 60)
 			previousNPCWhoTalkedToPlayer->StopSpeaking();
 }
 
@@ -445,8 +445,8 @@ bool RPG::RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings) {
 }
 
 
-bool RPG::livingBeingCollidingWithMap(int Dir, const vector<vector<int> > &worldMap, const vector<int> &accessibleTiles) {
-	int scan = worldMap[player->getFeetY()/WorldBlockSize][player->getFeetX()/WorldBlockSize];
+bool RPG::livingBeingCollidingWithMap(LivingBeing *being, const vector<vector<int> > &worldMap, const vector<int> &accessibleTiles) {
+	int scan = worldMap[being->getFeetY()/WorldBlockSize][being->getFeetX()/WorldBlockSize];
 
 	for (unsigned int i = 0; i < accessibleTiles.size(); i++) {
 		if (scan == accessibleTiles[i])

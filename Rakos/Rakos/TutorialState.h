@@ -31,11 +31,13 @@ public:
 	virtual void Terminate();
 
 private:
+	vector<vector<vector<int> >*> worldMapLevels;
 	vector<vector<int> > worldMapLevel1;
 	vector<vector<int> > worldMapLevel2;
-	unsigned int seaAnimationFrame;
+	vector<vector<int>*> levelsAccessibleTiles;
 	vector<int> level1AccessibleTiles;
 	vector<int> level2AccessibleTiles;
+	unsigned int seaAnimationFrame;
 
 	SideBar *sideBar;
 

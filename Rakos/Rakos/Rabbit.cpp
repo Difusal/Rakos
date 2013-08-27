@@ -1,7 +1,7 @@
 #include "Rabbit.h"
 #include "globalFunctions.h"
 
-Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
+Rabbit::Rabbit(double X, double Y) {
 	type = _Creature;
 	timer = _SlowCreatureMoveTimer;
 	switch (RPG::GetInstance()->LanguageBeingUsed) {
@@ -25,13 +25,13 @@ Rabbit::Rabbit(double P1_X, double P1_Y, double P2_X, double P2_Y) {
 	maxHp = 10;
 	hp = maxHp;
 	
-	p1_x = P1_X;
-	p1_y = P1_Y;
-	p2_x = P2_X;
-	p2_y = P2_Y;
-	x = P1_X;
-	y = P1_Y;
+	x = X;
+	y = Y;
 	direction = DOWN;
+
+	centerX = x;
+	centerY = y;
+	wanderRadius = 4*WorldBlockSize;
 
 	bitmap = al_load_bitmap(rabbitPng);
 	if (!bitmap) {

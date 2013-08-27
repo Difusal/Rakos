@@ -27,7 +27,7 @@ void RakosState::InitializeDialogs() {
 void RakosState::MoveLivingBeings( ALLEGRO_EVENT *ev ) {
 	// moving player, npcs and creatures
 	if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerMoveTimer))
-		player->Move(keyState, worldMapLevel1, worldMapLevel2, level1AccessibleTiles, level2AccessibleTiles);
+		player->Move(keyState, worldMapLevels, levelsAccessibleTiles);
 	for (unsigned int i = 1; i < livingBeings.size(); i++)
 		if (!livingBeings[i]->isDead())
 			if (ev->timer.source == RPG::GetInstance()->GetTimer(livingBeings[i]->getTimerType()))
@@ -55,20 +55,27 @@ void RakosState::Initialize() {
 	if (!loading_background)
 		cout << "Error loading loading game bitmap... Proceeding anyway." << endl;
 	else
-		al_draw_bitmap(loading_background, 0, 0, NULL);
+		al_draw_bitmap(loading_background, RPG::GetInstance()->cameraPosition[0], RPG::GetInstance()->cameraPosition[1], NULL);
 	al_flip_display();
-	al_destroy_bitmap(loading_background);
 
 	// loading map
 	LoadMap(RakosMapPath, &worldMapLevel1, &worldMapLevel2);
-	seaAnimationFrame = 0;
+	worldMapLevels.push_back(&worldMapLevel1);
+	worldMapLevels.push_back(&worldMapLevel2);
+
 	RPG::GetInstance()->LoadAccessibleTiles(level1AccessibleTiles, level2AccessibleTiles);
+	levelsAccessibleTiles.push_back(&level1AccessibleTiles);
+	levelsAccessibleTiles.push_back(&level2AccessibleTiles);
+
+	seaAnimationFrame = 0;
 
 	// initializing side bar
 	sideBar = new SideBar(&livingBeings);
 
 	InitializeLivingBeings();
 	InitializeDialogs();
+
+	al_destroy_bitmap(loading_background);
 }
 
 bool RakosState::Update( ALLEGRO_EVENT *ev ) {

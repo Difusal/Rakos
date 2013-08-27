@@ -61,20 +61,14 @@ public:
 	void setX(double X) { x = X; }
 	void setY(double Y) { y = Y; }
 
+	double getFeetX() { return feet_x; }
+	double getFeetY() { return feet_y; }
+
 	Direction getDir() { return direction; }
 	void setDir(Direction Direction) { direction = Direction; }
 
 	double getWanderRadius() { return wanderRadius; }
 	void setWanderRadius(double Radius) { wanderRadius = Radius; }
-
-	double getP1_x() { return p1_x; }
-	void setP1_x(double x) { p1_x = x; }
-	double getP1_y() { return p1_y; }
-	void setP1_y(double y) { p1_y = y; }
-	double getP2_x() { return p2_x; }
-	void setP2_x(double x) { p2_x = x; }
-	double getP2_y() { return p2_y; }
-	void setP2_y(double y) { p2_y = y; }
 
 	int width() { return al_get_bitmap_width(bitmap)/4.0; }
 	int height() { return al_get_bitmap_height(bitmap)/4.0; }
@@ -103,11 +97,11 @@ private:
 	unsigned int hp;
 	unsigned int maxHp;
 
+	unsigned int centerX, centerY;
 	unsigned int wanderRadius;
-	unsigned int p1_x, p1_y;
-	unsigned int p2_x, p2_y;
 
 	unsigned int x, y;
+	unsigned int feet_x, feet_y;
 	Direction direction;
 
 	ALLEGRO_BITMAP *bitmap;
