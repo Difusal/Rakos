@@ -19,7 +19,7 @@ Player::Player(string Name, Weapon *weapon, Shield *shield, double X, double Y) 
 	maxMp = mp;
 	level = 1;
 	experience = 0;
-	gold = new Gold();
+	gold = 0;
 
 	this->weapon = weapon;
 	attackCooldown = 0;

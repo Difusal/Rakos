@@ -32,7 +32,6 @@ public:
 	unsigned int getMaxMP() { return maxMp; }
 
 	void addExperience(unsigned int Experience) { experience += Experience; }
-	void addGold(unsigned int Gold) { gold->addGoldCoins(Gold); }
 	unsigned int getLevel() { return level; }
 	void updateLevel() { level = computeLevel(experience); }
 

@@ -5,7 +5,6 @@
 #include "SpeechBubble.h"
 #include "Weapon.h"
 #include "Shield.h"
-#include "Gold.h"
 
 class LivingBeing {
 public:
@@ -23,8 +22,10 @@ public:
 	void setName(string Name) { name = Name; }
 	Weapon *GetWeapon() { return weapon; }
 	Shield *GetShield() { return shield; }
-	Gold *GetGold() { return gold; }
-	unsigned int GetAmountOfGold() { return gold->getAmountOfGoldCoins(); }
+
+	unsigned int GetAmountOfGold() { return gold; }
+	void addGold(unsigned int GoldAmount) { gold += GoldAmount; }
+
 	unsigned int GetExperience() { return experience; }
 
 	bool isDead() { return dead; }
@@ -84,7 +85,7 @@ private:
 	string name;
 	Weapon *weapon;
 	Shield *shield;
-	Gold *gold;
+	unsigned int gold;
 	unsigned int experience;
 
 	bool dead;

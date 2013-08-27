@@ -18,7 +18,6 @@
     <ClCompile Include="CreatureWindowObject.cpp" />
     <ClCompile Include="EquipmentWindow.cpp" />
     <ClCompile Include="globalFunctions.cpp" />
-    <ClCompile Include="Gold.cpp" />
     <ClCompile Include="InfoWindow.cpp" />
     <ClCompile Include="LivingBeing.cpp" />
     <ClCompile Include="main.cpp" />
@@ -47,7 +46,6 @@
     <ClInclude Include="CreatureWindowObject.h" />
     <ClInclude Include="EquipmentWindow.h" />
     <ClInclude Include="globalFunctions.h" />
-    <ClInclude Include="Gold.h" />
     <ClInclude Include="InfoWindow.h" />
     <ClInclude Include="LivingBeing.h" />
     <ClInclude Include="globalEnums.h" />
