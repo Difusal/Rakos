@@ -13,10 +13,10 @@ void TutorialState::InitializeLivingBeings() {
 
 
 	// initializing npcs
-	Steve = new NPC("Steve", WorldBlockSize*5, WorldBlockSize*14, explorer_greenPng);
+	Steve = new NPC("Steve", WorldBlockSize*6, WorldBlockSize*14, explorer_greenPng);
 	livingBeings.push_back(Steve);
 
-	WhiteKnight = new NPC("White Knight", WorldBlockSize*18, WorldBlockSize*13, knight_whitePng);
+	WhiteKnight = new NPC("White Knight", WorldBlockSize*19, WorldBlockSize*13, knight_whitePng);
 	livingBeings.push_back(WhiteKnight);
 
 	Mage = new NPC("Mage", WorldBlockSize*26, WorldBlockSize*11, mage_bluePng, true);
@@ -27,7 +27,7 @@ void TutorialState::InitializeLivingBeings() {
 	
 
 	// initializing creatures
-	rabbit = new Rabbit(WorldBlockSize*5, WorldBlockSize*19);
+	rabbit = new Rabbit(WorldBlockSize*8, WorldBlockSize*19);
 	livingBeings.push_back(rabbit);
 }
 
@@ -351,13 +351,15 @@ void TutorialState::Initialize() {
 
 
 void TutorialState::MoveLivingBeings(ALLEGRO_EVENT *ev) {
-	// moving player, npcs and creatures
+	// moving player
 	if (ev->timer.source == RPG::GetInstance()->GetTimer(_PlayerMoveTimer))
 		player->Move(keyState, worldMapLevels, levelsAccessibleTiles);
-	for (unsigned int i = 1; i < livingBeings.size(); i++)
-		if (!livingBeings[i]->isDead())
-			if (ev->timer.source == RPG::GetInstance()->GetTimer(livingBeings[i]->getTimerType()))
-				livingBeings[i]->Move(worldMapLevels, levelsAccessibleTiles);
+	// moving npcs and creatures
+	for (unsigned int i = 0; i < livingBeings.size(); i++)
+		if (livingBeings[i]->getType() != _Player)
+			if (!livingBeings[i]->isDead())
+				if (ev->timer.source == RPG::GetInstance()->GetTimer(livingBeings[i]->getTimerType()))
+					livingBeings[i]->Move(worldMapLevels, levelsAccessibleTiles);
 
 	// checking if something collided with something
 	for (unsigned int i = 0; i < livingBeings.size()-1; i++)

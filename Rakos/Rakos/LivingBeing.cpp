@@ -7,15 +7,11 @@ void LivingBeing::Move(const vector<vector<vector<int> >*> &WorldMapLevels, cons
 	if (this->type == _Player)
 		return;
 
+	bool changeDirection = false;
 	if (active) {
 		// changing being direction once in a while
-		if (1 == randomNumber(1, 70)) {
-			Direction newDir;
-			do {
-				newDir = (Direction)randomNumber(0,3);
-			} while (newDir == direction);
-			direction = newDir;
-		}
+		if (1 == randomNumber(1, 70))
+			changeDirection = true;
 
 		// moving being
 		switch (direction) {
@@ -52,27 +48,27 @@ void LivingBeing::Move(const vector<vector<vector<int> >*> &WorldMapLevels, cons
 				break;
 			}
 
+			changeDirection = true;
+		}
+
+		// making corrections if being is colliding with map
+		for (unsigned int i = 0; i < WorldMapLevels.size(); i++) {
+			if (CorrectPositionIfCollidingWithMapLimits(this, *WorldMapLevels[i], *LevelsAccessibleTiles[i])) {
+				changeDirection = true;
+
+				// if colliding with map and already made corrections, skip next scans
+				if (i != WorldMapLevels.size()-1)
+					break;
+			}
+		}
+
+		if (changeDirection) {
 			// changing direction
 			Direction newDir;
 			do {
 				newDir = (Direction)randomNumber(0,3);
 			} while (newDir == direction);
 			direction = newDir;
-		}
-
-		// making corrections if being is colliding with map
-		for (unsigned int i = 0; i < WorldMapLevels.size(); i++) {
-			if (CorrectPositionIfCollidingWithMapLimits(this, *WorldMapLevels[i], *LevelsAccessibleTiles[i])) {
-				// changing direction
-				Direction newDir;
-				do {
-					newDir = (Direction)randomNumber(0,3);
-				} while (newDir == direction);
-				direction = newDir;
-
-				if (i != WorldMapLevels.size()-1)
-					return;
-			}
 		}
 	}
 }
