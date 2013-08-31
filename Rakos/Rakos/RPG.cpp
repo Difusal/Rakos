@@ -209,27 +209,6 @@ void RPG::LoadShields() {
 }
 
 
-void RPG::StartGameControlCycle() {
-	Initialize();
-
-	// EDIT THIS
-	player = new Player("Difusal", no_weapon, no_shield, 480, 580);
-
-	states.push_back(new TutorialState());
-	states.push_back(new RakosState());
-	state = -1;
-	ChangeState(_Tutorial);
-
-	cout << "Starting game control cycle..." << endl;
-	while (!done) {
-		al_wait_for_event(event_queue, &ev);
-		Update();
-		Draw();
-	}
-
-	Terminate();
-}
-
 void RPG::Initialize() {
 	cout << endl;
 	cout << "#########################" << endl;
@@ -261,6 +240,27 @@ void RPG::Initialize() {
 	StartTimers();
 }
 
+void RPG::StartGameControlCycle() {
+	Initialize();
+
+	// EDIT THIS
+	player = new Player("Difusal", no_weapon, no_shield, 480, 580);
+
+	states.push_back(new TutorialState());
+	states.push_back(new RakosState());
+	state = -1;
+	ChangeState(_Tutorial);
+
+	cout << "Starting game control cycle..." << endl;
+	while (!done) {
+		al_wait_for_event(event_queue, &ev);
+		Update();
+		Draw();
+	}
+
+	Terminate();
+}
+
 void RPG::Update() {
 	// if window is closed on dedicated button (upper right corner)
 	if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -270,6 +270,7 @@ void RPG::Update() {
 
 	draw = Mouse->Update(&ev);
 	states[state]->Update(&ev);
+
 	if (ev.type != ALLEGRO_EVENT_MOUSE_AXES)
 		draw = Mouse->CorrectMousePosition();
 
