@@ -1,7 +1,8 @@
 #include "RPG.h"
+#include "globalFunctions.h"
+#include "MenuState.h"
 #include "TutorialState.h"
 #include "RakosState.h"
-#include "globalFunctions.h"
 
 RPG *RPG::instance = NULL;
 
@@ -246,10 +247,11 @@ void RPG::StartGameControlCycle() {
 	// EDIT THIS
 	player = new Player("Difusal", no_weapon, no_shield, 480, 580);
 
+	states.push_back(new MenuState());
 	states.push_back(new TutorialState());
 	states.push_back(new RakosState());
 	state = -1;
-	ChangeState(_Tutorial);
+	ChangeState(_MainMenu);
 
 	cout << "Starting game control cycle..." << endl;
 	while (!done) {
@@ -329,7 +331,8 @@ void RPG::Terminate() {
 
 	// bitmaps
 	al_destroy_bitmap(loading_background);
-	al_destroy_bitmap(tileSet);
+	// EDIT THIS
+	//al_destroy_bitmap(tileSet);
 
 	// destroying fonts
 	for (unsigned int i = 0; i < fonts.size(); i++)

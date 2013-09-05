@@ -59,6 +59,7 @@ const float SlowCreaturesSpeed = FPS/2.5;
 
 /* images */
 #define MouseCursorPng "res//images//mouse_cursor.png"
+#define MainMenuBackgroundPath "res//images//main_menu_bg.png"
 #define LoadingGameBackgroundPath "res//images//loading_game_bg.png"
 #define SideBarPath "res//images//side_bar.png"
 

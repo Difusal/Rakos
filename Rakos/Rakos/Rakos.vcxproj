@@ -21,6 +21,7 @@
     <ClCompile Include="InfoWindow.cpp" />
     <ClCompile Include="LivingBeing.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MouseCursor.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -49,6 +50,7 @@
     <ClInclude Include="InfoWindow.h" />
     <ClInclude Include="LivingBeing.h" />
     <ClInclude Include="globalEnums.h" />
+    <ClInclude Include="MenuState.h" />
     <ClInclude Include="MouseCursor.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
