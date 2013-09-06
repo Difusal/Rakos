@@ -7,7 +7,7 @@ SideBar::SideBar(vector<LivingBeing*> *livingBeings) {
 	cameraX = &RPG::GetInstance()->cameraPosition[0];
 	cameraY = &RPG::GetInstance()->cameraPosition[1];
 
-	width = 200;
+	width = RPG::GetInstance()->SideBarWidth;
 	height = RPG::GetInstance()->ScreenHeight;
 
 	background = al_load_bitmap(SideBarPath);
@@ -101,7 +101,7 @@ void SideBar::Update() {
 
 void SideBar::Draw() {
 	// drawing side bar background
-	al_draw_bitmap(background, x, y, NULL);
+	al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), x, y, RPG::GetInstance()->SideBarWidth, RPG::GetInstance()->ScreenHeight, NULL);
 
 	// drawing side bar windows
 	for (SideBarWindow *obj: windows)

@@ -16,11 +16,11 @@ TextBox::TextBox(Alignment Position, vector<string> Text) {
 	switch (Position) {
 	case _Center:
 		width = (getLengthOfBiggestSentenceOnVector(text)+1) * font->height/2.5;
-		x = 600/2 - width/2;
+		x = (RPG::GetInstance()->ScreenWidth - 200)/2 - width/2;
 		y = RPG::GetInstance()->ScreenHeight/2 - height/2;
 		break;
 	case _Bottom:
-		width = 600;
+		width = (RPG::GetInstance()->ScreenWidth - 200);
 		x = 1;
 		y = RPG::GetInstance()->ScreenHeight - height;
 		break;

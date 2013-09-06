@@ -65,4 +65,5 @@ void LanguageState::Terminate() {
 	// deleting flag buttons
 	for (FlagButton *flag: flags)
 		delete flag;
+	flags.clear();
 }

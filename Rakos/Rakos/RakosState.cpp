@@ -150,7 +150,8 @@ void RakosState::Draw() {
 
 void RakosState::Terminate() {
 	for (LivingBeing *being : livingBeings)
-		delete being;
+		if (being->getType() != _Player)
+			delete being;
 	livingBeings.clear();
 
 // 	for (Switch *obj: switches)

@@ -19,6 +19,7 @@
     <ClCompile Include="CreatureWindowObject.cpp" />
     <ClCompile Include="EquipmentWindow.cpp" />
     <ClCompile Include="FlagButton.cpp" />
+    <ClCompile Include="FullscreenButton.cpp" />
     <ClCompile Include="globalFunctions.cpp" />
     <ClCompile Include="InfoWindow.cpp" />
     <ClCompile Include="LanguageState.cpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="Spider.cpp" />
     <ClCompile Include="Switch.cpp" />
     <ClCompile Include="TextBox.cpp" />
+    <ClCompile Include="ToggleButton.cpp" />
     <ClCompile Include="TutorialState.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
@@ -52,6 +54,7 @@
     <ClInclude Include="CreatureWindowObject.h" />
     <ClInclude Include="EquipmentWindow.h" />
     <ClInclude Include="FlagButton.h" />
+    <ClInclude Include="FullscreenButton.h" />
     <ClInclude Include="globalFunctions.h" />
     <ClInclude Include="InfoWindow.h" />
     <ClInclude Include="LanguageState.h" />
@@ -75,6 +78,7 @@
     <ClInclude Include="stdIncludes.h" />
     <ClInclude Include="Switch.h" />
     <ClInclude Include="TextBox.h" />
+    <ClInclude Include="ToggleButton.h" />
     <ClInclude Include="TutorialState.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>

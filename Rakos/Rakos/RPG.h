@@ -69,6 +69,7 @@ public:
 
 	// Public Variables
 	unsigned int ScreenWidth, ScreenHeight;
+	unsigned int SideBarWidth;
 	Language LanguageBeingUsed;
 
 	ALLEGRO_FONT *big_font;

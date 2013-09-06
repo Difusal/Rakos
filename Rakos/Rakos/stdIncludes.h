@@ -62,6 +62,10 @@ const float SlowCreaturesSpeed = FPS/2.5;
 #define MainMenuBackgroundPath "res//images//main_menu_bg.png"
 #define LoadingGameBackgroundPath "res//images//loading_game_bg.png"
 #define SideBarPath "res//images//side_bar.png"
+#define ForbiddenPngPath "res//images//forbidden.png"
+#define ToggleFullscreenPngPath "res//images//toggle_fullscreen.png"
+#define ToggleMusicPngPath "res//images//toggle_music.png"
+#define ToggleSoundsPngPath "res//images//toggle_sounds.png"
 
 /* character sprites */
 #define playerPng "res//living beings sprites//noob_yellow.png"

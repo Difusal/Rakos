@@ -40,6 +40,9 @@ void RPG::CreateAllegroDisplay(bool FullScreenMode) {
 			ScreenWidth = DefaultScreenWidth;
 			ScreenHeight = DefaultScreenHeight;
 
+			// sidebar
+			SideBarWidth = 200;
+
 			break;
 		}
 	case true:
@@ -55,6 +58,9 @@ void RPG::CreateAllegroDisplay(bool FullScreenMode) {
 			// setting screen width and height
 			ScreenWidth = disp_data.width;
 			ScreenHeight = disp_data.height;
+
+			// sidebar
+			SideBarWidth = 200;
 
 			break;
 		}

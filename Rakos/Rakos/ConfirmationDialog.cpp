@@ -13,7 +13,7 @@ ConfirmationDialog::ConfirmationDialog(string Title, vector<string> Text) {
 	width = (getLengthOfBiggestSentenceOnVector(text)+1) * font->height/2.8;
 	height = (text.size() + 1) * font->height;
 
-	x = 600/2 - width/2;
+	x = (RPG::GetInstance()->ScreenWidth - 200)/2 - width/2;
 	y = RPG::GetInstance()->ScreenHeight/2 - height/2;
 
 	// defining dialog buttons
