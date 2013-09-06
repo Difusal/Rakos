@@ -8,7 +8,7 @@ SideBar::SideBar(vector<LivingBeing*> *livingBeings) {
 	cameraY = &RPG::GetInstance()->cameraPosition[1];
 
 	width = 200;
-	height = ScreenHeight;
+	height = RPG::GetInstance()->ScreenHeight;
 
 	background = al_load_bitmap(SideBarPath);
 	if (!background) {
@@ -74,7 +74,7 @@ void SideBar::CheckIfAnywindowIsBeingMoved() {
 }
 
 void SideBar::Update() {
-	x = ScreenWidth - width + *cameraX;
+	x = RPG::GetInstance()->ScreenWidth - width + *cameraX;
 	y = *cameraY;
 
 	CheckIfAnywindowIsBeingMoved();

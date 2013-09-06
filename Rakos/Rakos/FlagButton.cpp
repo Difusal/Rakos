@@ -6,7 +6,7 @@ FlagButton::FlagButton(string Label, const char *FlagBitmapPath, unsigned int Ce
 	active = true;
 
 	label = Label;
-	font = al_load_font(CalibriTTF, 0.3*Height, ALLEGRO_ALIGN_CENTER);
+	font = al_load_font(CalibriTTF, 0.2*Height, ALLEGRO_ALIGN_CENTER);
 
 	flag = al_load_bitmap(FlagBitmapPath);
 	if (!flag)
@@ -32,7 +32,7 @@ void FlagButton::Draw() {
 		return;
 
 	// printing label
-	al_draw_text(font, White, x + Width()/2, y + Height()/2, ALLEGRO_ALIGN_CENTER, label.c_str());
+	al_draw_text(font, White, x + Width()/2, y + Height()/2 - font->height/2, ALLEGRO_ALIGN_CENTER, label.c_str());
 
 	// drawing flag
 	if (flag)

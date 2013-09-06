@@ -22,48 +22,74 @@ void RPG::ChangeState (int newState) {
 		states[state]->Terminate();
 
 	state = newState;
-
 	states[state]->Initialize();
 }
 
 
-void RPG::StartAllegro5() {
-	cout << "Starting Allegro 5..." << endl;
-	if (!al_init())
-		al_show_native_message_box(NULL, NULL, "Could not initialize Allegro 5", NULL, NULL, NULL);
-
-	cout << "Initializing add ons..." << endl;
-	al_init_image_addon();
-	al_init_primitives_addon();
-	al_init_font_addon();
-	al_init_ttf_addon();
-	al_init_acodec_addon();
-
-	cout << "Installing devices..." << endl;
-	al_install_mouse();
-	al_install_keyboard();
-	al_install_audio();
-}
-
-void RPG::CreateAllegroDisplay() {
+void RPG::CreateAllegroDisplay(bool FullScreenMode) {
 	cout << "Creating display..." << endl;
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
+
+	switch (FullScreenMode) {
+	case false:
+		// creating a window
+		{
+			// specifying program to run on a window
+			al_set_new_display_flags(ALLEGRO_WINDOWED);
+
+			// default values
+			ScreenWidth = DefaultScreenWidth;
+			ScreenHeight = DefaultScreenHeight;
+
+			break;
+		}
+	case true:
+		// creating full screen display
+		{
+			// specifying program to run on full screen
+			al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+
+			// getting monitor info
+			ALLEGRO_DISPLAY_MODE disp_data;
+			al_get_display_mode(al_get_num_display_modes() - 1, &disp_data);
+
+			// setting screen width and height
+			ScreenWidth = disp_data.width;
+			ScreenHeight = disp_data.height;
+
+			break;
+		}
+	}
+
+	// creating display
 	display = al_create_display(ScreenWidth, ScreenHeight);
+
+	// if display was not loaded correctly, show error message and quit program
 	if (!display) {
-		al_show_native_message_box(display, "Error", "Display Settings", "Couldn't create a display.\nQuitting game.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		al_show_native_message_box(display, "Error", "Display Settings", "Couldn't create a display.\nQuitting program.", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		exit(-1);
 	}
-	/* setting new window title */
-	al_set_window_title(display, GameTitle);
+
+	// changing window title
+	al_set_window_title(display, ProgramTitle);
 }
 
 void RPG::DisplayLoadingSplashScreen() {
 	cout << "Displaying loading game background..." << endl;
+
+	cameraPosition[0] = 0;
+	cameraPosition[1] = 0;
+
 	loading_background = al_load_bitmap(LoadingGameBackgroundPath);
+
 	if (!loading_background)
 		cout << "Error loading loading game bitmap... Proceeding anyway." << endl;
-	else
-		al_draw_bitmap(loading_background, 0, 0, NULL);
+	else {
+		if (ScreenWidth <= 1366 && ScreenHeight <= 768)
+			al_draw_bitmap_region(loading_background, al_get_bitmap_width(loading_background)/2 - ScreenWidth/2, al_get_bitmap_height(loading_background)/2 - ScreenHeight/2, ScreenWidth, ScreenHeight, cameraPosition[0], cameraPosition[1], ALLEGRO_ALIGN_LEFT);
+		else
+			al_draw_scaled_bitmap(loading_background, 0, 0, al_get_bitmap_width(loading_background), al_get_bitmap_height(loading_background), cameraPosition[0], cameraPosition[1], cameraPosition[0]+ScreenWidth, cameraPosition[1]+ScreenHeight, ALLEGRO_ALIGN_LEFT);
+	}
+
 	al_flip_display();
 }
 
@@ -162,28 +188,18 @@ void RPG::InitializeVariables() {
 
 	seaAnimation = al_load_bitmap(SeaPng);
 
-	LanguageBeingUsed = DefaultLanguage = _English;
-	// EDIT THIS
-	LanguageBeingUsed = _Portuguese;
-	cout << "Language being used: ";
-	switch (LanguageBeingUsed) {
-	case _English:
-		cout << "English" << endl;
-		break;
-	case _Portuguese:
-		cout << "Portuguese" << endl;
-		break;
-	}
+	DefaultLanguage = _English;
+	LanguageBeingUsed = _UndefinedLanguage;
 
+	togglingFullScreen = false;
 	done = false;
 	draw = true;
 }
 
 void RPG::StartTimers() {
 	cout << "Starting timers..." << endl;
-	for (unsigned int i = 0; i < timers.size(); i++) {
+	for (unsigned int i = 0; i < timers.size(); i++)
 		al_start_timer(timers[i]);
-	}
 }
 
 
@@ -212,7 +228,7 @@ void RPG::LoadShields() {
 }
 
 
-void RPG::Initialize() {
+void RPG::Initialize(bool FullScreenMode) {
 	cout << endl;
 	cout << "#########################" << endl;
 	cout << "##                     ##" << endl;
@@ -227,8 +243,7 @@ void RPG::Initialize() {
 	cout << "Getting time seed for random numbers..." << endl;
 	srand ((unsigned int) time(NULL));
 
-	StartAllegro5();
-	CreateAllegroDisplay();
+	CreateAllegroDisplay(FullScreenMode);
 	DisplayLoadingSplashScreen();
 	StartMouseCursor();
 	LoadFonts();
@@ -243,18 +258,28 @@ void RPG::Initialize() {
 	StartTimers();
 }
 
-void RPG::StartGameControlCycle() {
-	Initialize();
+GameCycleReturnValue RPG::StartGameControlCycle(bool FullScreenMode, Language GameLanguage) {
+	// initializing game
+	Initialize(FullScreenMode);
 
 	// EDIT THIS
 	player = new Player("Difusal", no_weapon, no_shield, 480, 580);
 
+	// building states vector
 	states.push_back(new LanguageState());
 	states.push_back(new MenuState());
 	states.push_back(new TutorialState());
 	states.push_back(new RakosState());
 	state = -1;
-	ChangeState(_Language);
+
+	// if not toggling full screen, choose a language
+	if (GameLanguage == _UndefinedLanguage)
+		ChangeState(_Language);
+	else {
+		// else use the same language being used before
+		LanguageBeingUsed = GameLanguage;
+		ChangeState(_MainMenu);
+	}
 
 	cout << "Starting game control cycle..." << endl;
 	while (!done) {
@@ -262,8 +287,15 @@ void RPG::StartGameControlCycle() {
 		Update();
 		Draw();
 	}
+	states[state]->Terminate();
+
+	GameCycleReturnValue returnValue;
+	returnValue.TogglingFullscreen = togglingFullScreen;
+	returnValue.CurrentLanguage = LanguageBeingUsed;
 
 	Terminate();
+
+	return returnValue;
 }
 
 void RPG::Update() {
@@ -347,12 +379,17 @@ void RPG::Terminate() {
 	for (unsigned int i = 0; i < timers.size(); i++)
 		al_destroy_timer(timers[i]);
 	timers.clear();
-
-	delete instance;
 }
 
 
 // Public Methods
+void RPG::ToggleFullScreen() {
+	cout << "Toggling full screen..." << endl;
+	togglingFullScreen = true;
+	done = true;
+}
+
+
 void RPG::CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState) {
 	bool playerAttackedSomething = false;
 

@@ -104,8 +104,8 @@ void LoadMap(const char *filename, vector<vector<int> > *mapLevel1, vector<vecto
 
 // draws world map to display
 void DrawMap(const vector<vector<int> > &WorldMapLevel1, const vector<vector<int> > &WorldMapLevel2, unsigned int SeaAnimationFrame) {
-	for(unsigned int i = RPG::GetInstance()->cameraPosition[1]/WorldBlockSize, ii = 0; i < WorldMapLevel1.size() && ii < ScreenHeight/WorldBlockSize+1; i++, ii++) {
-		for(unsigned int j = RPG::GetInstance()->cameraPosition[0]/WorldBlockSize, jj = 0; j < WorldMapLevel1[i].size() && jj < ScreenWidth/WorldBlockSize; j++, jj++) {
+	for(unsigned int i = RPG::GetInstance()->cameraPosition[1]/WorldBlockSize, ii = 0; i < WorldMapLevel1.size() && ii < RPG::GetInstance()->ScreenHeight/WorldBlockSize+1; i++, ii++) {
+		for(unsigned int j = RPG::GetInstance()->cameraPosition[0]/WorldBlockSize, jj = 0; j < WorldMapLevel1[i].size() && jj < RPG::GetInstance()->ScreenWidth/WorldBlockSize; j++, jj++) {
 			// drawing sea animation
 			al_draw_bitmap_region(RPG::GetInstance()->GetSeaBitmap(), SeaAnimationFrame, SeaAnimationFrame, WorldBlockSize, WorldBlockSize, j*WorldBlockSize, i*WorldBlockSize, NULL);
 
@@ -123,17 +123,17 @@ void DrawMap(const vector<vector<int> > &WorldMapLevel1, const vector<vector<int
 
 /* updates camera position */
 void CameraUpdate(vector<vector<int> > &worldMap, float *cameraPosition, float x, float y, int width, int height) {
-	cameraPosition[0] = -((ScreenWidth-200) / 2) + (x + width / 2); 
-	cameraPosition[1] = -(ScreenHeight / 2) + (y + height / 2);
+	cameraPosition[0] = -(int)((RPG::GetInstance()->ScreenWidth-200) / 2) + (x + width / 2); 
+	cameraPosition[1] = -(int)(RPG::GetInstance()->ScreenHeight / 2) + (y + height / 2);
 
 	if(cameraPosition[0] < 0)
 		cameraPosition[0] = 0; 
 	if(cameraPosition[1] < 0)
 		cameraPosition[1] = 0;
-	if(cameraPosition[0] > WorldBlockSize*worldMap[0].size() - (ScreenWidth-200))
-		cameraPosition[0] = WorldBlockSize*worldMap[0].size() - (ScreenWidth-200);
-	if(cameraPosition[1] > WorldBlockSize*worldMap.size() - ScreenHeight)
-		cameraPosition[1] = WorldBlockSize*worldMap.size() - ScreenHeight;
+	if(cameraPosition[0] > WorldBlockSize*worldMap[0].size() - (RPG::GetInstance()->ScreenWidth-200))
+		cameraPosition[0] = WorldBlockSize*worldMap[0].size() - (RPG::GetInstance()->ScreenWidth-200);
+	if(cameraPosition[1] > WorldBlockSize*worldMap.size() - RPG::GetInstance()->ScreenHeight)
+		cameraPosition[1] = WorldBlockSize*worldMap.size() - RPG::GetInstance()->ScreenHeight;
 }
 
 /* returns true if bounding boxes are colliding */

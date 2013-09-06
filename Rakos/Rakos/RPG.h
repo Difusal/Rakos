@@ -2,17 +2,22 @@
 
 #include "stdIncludes.h"
 #include "state.h"
+
 #include "MouseCursor.h"
 #include "Player.h"
 #include "Portal.h"
+
+struct GameCycleReturnValue {
+	bool TogglingFullscreen;
+	Language CurrentLanguage;
+};
 
 class RPG {
 public:
 	static RPG *GetInstance();
 	void ChangeState(int newState);
 
-	void StartAllegro5();
-	void CreateAllegroDisplay();
+	void CreateAllegroDisplay(bool FullScreenMode);
 	void DisplayLoadingSplashScreen();
 	void StartMouseCursor();
 	void LoadFonts();
@@ -25,13 +30,28 @@ public:
 	void LoadWeapons();
 	void LoadShields();
 
-	void StartGameControlCycle();
-	void Initialize();
+	void Initialize(bool FullScreenMode);
+	GameCycleReturnValue StartGameControlCycle(bool FullScreenMode, Language GameLanguage);
 	void Update();
 	void Draw();
 	void Terminate();
 
 	// Public Methods
+	void ToggleFullScreen();
+	void setDoneState(bool newState) { done = newState; }
+
+	ALLEGRO_DISPLAY *GetDisplay() { return display; }
+	ALLEGRO_TIMER *GetTimer(TimerType Timer) { return timers[Timer]; }
+	ALLEGRO_TRANSFORM *GetCamera() { return &camera; }
+
+	ALLEGRO_BITMAP *GetTileSet() { return tileSet; }
+	void SetTileSet (ALLEGRO_BITMAP *png) { tileSet = png; }
+	ALLEGRO_BITMAP *GetSeaBitmap() { return seaAnimation; }
+
+	Player *GetPlayer() { return player; }
+	Weapon *GetWeapon(WeaponType Weapon) { return weapons[Weapon]; }
+	Shield *GetShield(ShieldType Shield) { return shields[Shield]; }
+
 	void CheckIfPlayerWantsToChat(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
 	void CheckIfPlayerAttackedSomething(vector<LivingBeing*> &livingBeings, ALLEGRO_KEYBOARD_STATE keyState);
 	bool RemoveDeadLivingBeingsFromVector(vector<LivingBeing*> &livingBeings);
@@ -46,20 +66,9 @@ public:
 	void UpdateWeaponAttackAnimations(vector<LivingBeing*> &livingBeings);
 	void UpdateCamera(vector<vector<int> > &worldMap, vector<LivingBeing*> &livingBeings);
 
-	ALLEGRO_DISPLAY *GetDisplay() { return display; }
-	ALLEGRO_TIMER *GetTimer(TimerType Timer) { return timers[Timer]; }
-	ALLEGRO_TRANSFORM *GetCamera() { return &camera; }
-
-	ALLEGRO_BITMAP *GetTileSet() { return tileSet; }
-	void SetTileSet (ALLEGRO_BITMAP *png) { tileSet = png; }
-	ALLEGRO_BITMAP *GetSeaBitmap() { return seaAnimation; }
-
-	Player *GetPlayer() { return player; }
-	Weapon *GetWeapon(WeaponType Weapon) { return weapons[Weapon]; }
-	Shield *GetShield(ShieldType Shield) { return shields[Shield]; }
-
 
 	// Public Variables
+	unsigned int ScreenWidth, ScreenHeight;
 	Language LanguageBeingUsed;
 
 	ALLEGRO_FONT *big_font;
@@ -76,6 +85,10 @@ private:
 	static RPG *instance;
 	vector<State*> states;
 	int state;
+
+	Language DefaultLanguage;
+	bool togglingFullScreen;
+	bool done, draw;
 
 	vector<ALLEGRO_TIMER*> timers;
 	ALLEGRO_TIMER *timer;
@@ -106,9 +119,6 @@ private:
 	vector<Shield*> shields;
 	Shield *no_shield;
 	Shield *woodenShield;
-
-	Language DefaultLanguage;
-	bool done, draw;
 
 	ALLEGRO_DISPLAY *display;
 	

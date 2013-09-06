@@ -23,9 +23,9 @@
 using namespace std;
 
 /* global variables */
-#define GameTitle "Rakos"
-#define ScreenWidth 800
-#define ScreenHeight 600
+#define ProgramTitle "Rakos"
+const unsigned int DefaultScreenWidth = 800;
+const unsigned int DefaultScreenHeight = 600;
 #define WorldBlockSize 40
 #define xCollisionCorrection 15
 #define yCollisionCorrection 25

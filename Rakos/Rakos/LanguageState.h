@@ -14,5 +14,5 @@ public:
 
 private:
 	vector<FlagButton*> flags;
-	FlagButton *English, *Portugal;
+	FlagButton *England, *Portugal;
 };

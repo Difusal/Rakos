@@ -4,8 +4,8 @@
 MouseCursor::MouseCursor(void) {
 	cout << "Creating mouse cursor..." << endl;
 
-	x = ScreenWidth;
-	y = ScreenHeight;
+	x = RPG::GetInstance()->ScreenWidth;
+	y = RPG::GetInstance()->ScreenHeight;
 
 	leftMouseButtonHasJustBeenPressed = false;
 	leftMouseButtonWasBeingPressedBefore = false;

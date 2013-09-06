@@ -17,12 +17,12 @@ TextBox::TextBox(Alignment Position, vector<string> Text) {
 	case _Center:
 		width = (getLengthOfBiggestSentenceOnVector(text)+1) * font->height/2.5;
 		x = 600/2 - width/2;
-		y = ScreenHeight/2 - height/2;
+		y = RPG::GetInstance()->ScreenHeight/2 - height/2;
 		break;
 	case _Bottom:
 		width = 600;
 		x = 1;
-		y = ScreenHeight - height;
+		y = RPG::GetInstance()->ScreenHeight - height;
 		break;
 	}
 }

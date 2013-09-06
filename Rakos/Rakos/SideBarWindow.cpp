@@ -48,7 +48,7 @@ void SideBarWindow::UpdateBase() {
 	else
 		titleBarY = defaultWindowY + 1 + *cameraY;
 
-	titleBarX = ScreenWidth - width + *cameraX;
+	titleBarX = RPG::GetInstance()->ScreenWidth - width + *cameraX;
 	
 	x = titleBarX;
 	y = titleBarY + titleBarHeight;
