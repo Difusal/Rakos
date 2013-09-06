@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stdIncludes.h"
-#include "BasicButton.h"
+#include "ConfirmationDialogButton.h"
 
 class ConfirmationDialog {
 public:
@@ -22,9 +22,9 @@ private:
 	int x, y;
 	int realX, realY;
 
-	unsigned int buttonsWidth;
+	unsigned int buttonsWidth, buttonsHeight;
 	unsigned int spaceBetweenButtons;
-	BasicButton *Yes, *No;
+	ConfirmationDialogButton *Yes, *No;
 
 	string title;
 	vector<string> text;

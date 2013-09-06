@@ -11,6 +11,7 @@ enum Language {
 };
 
 enum GameState {
+	_Language,
 	_MainMenu,
 	_Tutorial,
 	_Rakos

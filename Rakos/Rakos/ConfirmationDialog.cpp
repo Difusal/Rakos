@@ -18,9 +18,10 @@ ConfirmationDialog::ConfirmationDialog(string Title, vector<string> Text) {
 
 	// defining dialog buttons
 	buttonsWidth = 35;
+	buttonsHeight = font->height - 0.1*font->height;
 	spaceBetweenButtons = 5;
-	Yes = new BasicButton("Yes", width-buttonsWidth+10-buttonsWidth-spaceBetweenButtons, height+spaceBetweenButtons, buttonsWidth);
-	No = new BasicButton("No", width-buttonsWidth+10, height+spaceBetweenButtons, buttonsWidth);
+	Yes = new ConfirmationDialogButton("Yes", x+width-buttonsWidth+13-buttonsWidth-spaceBetweenButtons, y+height+spaceBetweenButtons+buttonsHeight/2, buttonsWidth, buttonsHeight, 15);
+	No = new ConfirmationDialogButton("No", x+width-buttonsWidth+13, y+height+spaceBetweenButtons+buttonsHeight/2, buttonsWidth, buttonsHeight, 15);
 
 	Close();
 }
@@ -33,14 +34,14 @@ int ConfirmationDialog::Update() {
 	realX = x + RPG::GetInstance()->cameraPosition[0];
 	realY = y + RPG::GetInstance()->cameraPosition[1];
 
-	Yes->Update(realX, realY);
-	if (Yes->wasPressed()) {
+	Yes->Update();
+	if (Yes->wasReleased()) {
 		Close();
 		return 1;
 	}
 
-	No->Update(realX, realY);
-	if (No->wasPressed()) {
+	No->Update();
+	if (No->wasReleased()) {
 		Close();
 		return 0;
 	}

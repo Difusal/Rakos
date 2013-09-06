@@ -1,5 +1,7 @@
 #include "RPG.h"
 #include "globalFunctions.h"
+
+#include "LanguageState.h"
 #include "MenuState.h"
 #include "TutorialState.h"
 #include "RakosState.h"
@@ -247,11 +249,12 @@ void RPG::StartGameControlCycle() {
 	// EDIT THIS
 	player = new Player("Difusal", no_weapon, no_shield, 480, 580);
 
+	states.push_back(new LanguageState());
 	states.push_back(new MenuState());
 	states.push_back(new TutorialState());
 	states.push_back(new RakosState());
 	state = -1;
-	ChangeState(_MainMenu);
+	ChangeState(_Language);
 
 	cout << "Starting game control cycle..." << endl;
 	while (!done) {

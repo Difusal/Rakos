@@ -4,23 +4,28 @@
 
 class BasicButton {
 public:
-	BasicButton(string Label, unsigned int X, unsigned int Y, unsigned int Width);
-
-	void Update(unsigned int referencePointX, unsigned int referencePointY);
-	void Draw(ALLEGRO_COLOR ButtonColor = White, ALLEGRO_COLOR ButtonColorWhenBeingHovered = LightBlue);
-
-	unsigned int Height() { return height; }
-	bool wasPressed() { return released; }
-
+	void Update();
 	~BasicButton(void);
 
-private:
+	void Activate() { active = true; }
+	void Deactivate() { released = false; active = false; }
+
+	unsigned int Width() { return width; }
+	unsigned int Height() { return height; }
+
+	bool isPressed() { return beingPressed; }
+	bool wasReleased() { return released; }
+
+protected:
+	bool active;
+
 	string label;
 	unsigned int x, y;
-	unsigned int realX, realY;
 	unsigned int width, height;
 
-	ALLEGRO_FONT *font;
 	bool beingHovered;
+	bool beingPressed;
 	bool released;
+
+	ALLEGRO_FONT *font;
 };
