@@ -7,7 +7,7 @@
 
 void LanguageState::Initialize() {
 	unsigned int flagsWidth, flagsHeight;
-	flagsWidth = 0.44*RPG::GetInstance()->ScreenWidth;
+	flagsWidth = 0.4*RPG::GetInstance()->ScreenWidth;
 	flagsHeight = flagsWidth/1.5;
 
 	// creating buttons

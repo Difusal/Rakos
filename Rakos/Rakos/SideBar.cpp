@@ -101,13 +101,17 @@ void SideBar::Update() {
 
 void SideBar::Draw() {
 	// drawing side bar background
-	al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), x, y, RPG::GetInstance()->SideBarWidth, RPG::GetInstance()->ScreenHeight, NULL);
+	// if screen height is greater than bitmap height, scale it
+	if (RPG::GetInstance()->ScreenHeight > (unsigned int)al_get_bitmap_height(background))
+		al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), x, y, RPG::GetInstance()->SideBarWidth, RPG::GetInstance()->ScreenHeight, NULL);
+	// else draw the respective region
+	else
+		al_draw_bitmap_region(background, 0, 0, RPG::GetInstance()->SideBarWidth, RPG::GetInstance()->ScreenHeight, x, y, NULL);
 
 	// drawing side bar windows
 	for (SideBarWindow *obj: windows)
 		obj->Draw();
 }
-
 
 SideBar::~SideBar() {
 	for (SideBarWindow *obj: windows)

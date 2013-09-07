@@ -19,6 +19,7 @@
     <ClCompile Include="CreatureWindowObject.cpp" />
     <ClCompile Include="EquipmentWindow.cpp" />
     <ClCompile Include="FlagButton.cpp" />
+    <ClCompile Include="Form.cpp" />
     <ClCompile Include="FullscreenButton.cpp" />
     <ClCompile Include="globalFunctions.cpp" />
     <ClCompile Include="InfoWindow.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="CreatureWindowObject.h" />
     <ClInclude Include="EquipmentWindow.h" />
     <ClInclude Include="FlagButton.h" />
+    <ClInclude Include="Form.h" />
     <ClInclude Include="FullscreenButton.h" />
     <ClInclude Include="globalFunctions.h" />
     <ClInclude Include="InfoWindow.h" />

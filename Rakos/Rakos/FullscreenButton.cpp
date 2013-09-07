@@ -39,11 +39,14 @@ void FullscreenButton::Draw() {
 		return;
 
 	// drawing image
-	al_draw_bitmap(image, x, y, ALLEGRO_ALIGN_LEFT);
-
-	// drawing button contour
-	if (beingHovered)
-		al_draw_rounded_rectangle(x+2, y+1, x+width-1, y+height-2, 10, 10, Yellow, 1.0);
+	switch (beingHovered) {
+	case true:
+		al_draw_bitmap(image, x, y, ALLEGRO_ALIGN_LEFT);
+		break;
+	case false:
+		al_draw_tinted_bitmap(image, LightGray, x, y, ALLEGRO_ALIGN_LEFT);
+		break;
+	}
 }
 
 FullscreenButton::~FullscreenButton(void) {

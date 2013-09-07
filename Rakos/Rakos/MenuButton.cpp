@@ -9,8 +9,8 @@ MenuButton::MenuButton(string Label, unsigned int CenterX, unsigned int CenterY,
 	label = Label;
 
 	// setting button coordinates
-	x = CenterX - Width/2.0;
-	y = CenterY - Height/2.0;
+	x = CenterX - Width/2;
+	y = CenterY - Height/2;
 
 
 	// setting button width and height
@@ -55,14 +55,13 @@ void MenuButton::Draw() {
 	al_draw_filled_rectangle(x, y, x+width, y+height, buttonColor);
 
 	// drawing button contour
-	al_draw_rectangle(x+3, y+3, x+width-3, y+height-3, DarkGray, 1.0);
 	al_draw_rectangle(x+2, y+2, x+width-2, y+height-2, Gray, 1.0);
 	al_draw_rectangle(x+1, y+1, x+width-1, y+height-1, LightGray, 1.0);
 	al_draw_rectangle(x, y, x+width, y+height, Black, 1.0);
 
 	// printing label
-	al_draw_text(font, White, x + width/2.0 + 1, y+5 + 0.1*font->height + 1, ALLEGRO_ALIGN_CENTER, label.c_str());
-	al_draw_text(font, Black, x + width/2.0, y+5 + 0.1*font->height, ALLEGRO_ALIGN_CENTER, label.c_str());
+	al_draw_text(font, White, x + width/2 + 1, y+5 + 0.1*font->height + 1, ALLEGRO_ALIGN_CENTER, label.c_str());
+	al_draw_text(font, Black, x + width/2, y+5 + 0.1*font->height, ALLEGRO_ALIGN_CENTER, label.c_str());
 }
 
 MenuButton::~MenuButton(void) {

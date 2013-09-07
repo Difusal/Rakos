@@ -7,15 +7,43 @@ void MenuState::Initialize() {
 	if (!background)
 		al_show_native_message_box(RPG::GetInstance()->GetDisplay(), "Error", "Main Menu warning.", "Could not load Main Menu background.\nPress OK to continue anyway.", NULL, ALLEGRO_MESSAGEBOX_WARN);
 
+	// initializing data
+	font = al_load_font(CalibriTTF, RPG::GetInstance()->ScreenHeight/5, NULL);
+	titleX = RPG::GetInstance()->cameraPosition[0]+font->height/2;
+	titleY = RPG::GetInstance()->cameraPosition[1]+font->height/2;
+
+	// initializing forms
+	formsSpacing = 30;
+
+	switch (RPG::GetInstance()->LanguageBeingUsed) {
+	case _English:
+		usernameForm = new Form("Username", titleX, titleY+font->height);
+		passwordForm = new Form("Password", titleX, usernameForm->YEndPos()+formsSpacing);
+		break;
+	case _Portuguese:
+		usernameForm = new Form("Nome de Utilizador", titleX, titleY+font->height);
+		passwordForm = new Form("Palavra-Passe", titleX, usernameForm->YEndPos()+formsSpacing);
+		break;
+	}
+	forms.push_back(usernameForm);
+	forms.push_back(passwordForm);
+
+	loginButtonWidth = usernameForm->Width()/3;
+	loginButtonHeight = usernameForm->Height();
+
 	// initializing buttons
 	ToggleFullscreen = new FullscreenButton(ToggleFullscreenPngPath, 50, 50);
 	ToggleFullscreen->PositionOnUpperRightCorner();
 
-	Submit = new MenuButton("Login", 250, 250, 120, 50);
-	buttons.push_back(Submit);
+	Login = new MenuButton("Login", titleX+loginButtonWidth/2, passwordForm->YEndPos()+formsSpacing+loginButtonHeight/2, loginButtonWidth, loginButtonHeight);
+	buttons.push_back(Login);
 }
 
 bool MenuState::Update(ALLEGRO_EVENT *ev) {
+	// updating forms
+	for (Form *form: forms)
+		form->Update(ev);
+
 	if (ev->type == ALLEGRO_EVENT_TIMER) {
 		// updating buttons
 		for (MenuButton *button: buttons)
@@ -29,7 +57,7 @@ bool MenuState::Update(ALLEGRO_EVENT *ev) {
 		}
 
 		// if player submitted login data
-		if (Submit->wasReleased()) {
+		if (Login->wasReleased()) {
 			RPG::GetInstance()->ChangeState(_Tutorial);
 			return true;
 		}
@@ -45,6 +73,13 @@ void MenuState::Draw() {
 	else
 		al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), RPG::GetInstance()->cameraPosition[0], RPG::GetInstance()->cameraPosition[1], RPG::GetInstance()->cameraPosition[0]+RPG::GetInstance()->ScreenWidth, RPG::GetInstance()->cameraPosition[1]+RPG::GetInstance()->ScreenHeight, ALLEGRO_ALIGN_LEFT);
 
+	// drawing title
+	al_draw_text(font, White, titleX, titleY, ALLEGRO_ALIGN_LEFT, "Rakos");
+
+	// drawing forms
+	for (Form *form: forms)
+		form->Draw();
+
 	// drawing buttons
 	for (MenuButton *button: buttons)
 		button->Draw();
@@ -54,6 +89,11 @@ void MenuState::Draw() {
 void MenuState::Terminate() {
 	// destroying background
 	al_destroy_bitmap(background);
+
+	// destroying forms
+	for (Form *form: forms)
+		delete form;
+	forms.clear();
 
 	// destroying buttons
 	delete ToggleFullscreen;
