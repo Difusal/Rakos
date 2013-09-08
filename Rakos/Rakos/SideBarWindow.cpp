@@ -79,6 +79,6 @@ void SideBarWindow::DrawBase() {
 
 	// title
 	unsigned int yCorrection = 4;
-	al_draw_text(font, Black, titleBarX + width/2.0 + 2, titleBarY+yCorrection + 1, ALLEGRO_ALIGN_CENTER, title.c_str());
-	al_draw_text(font, White, titleBarX + width/2.0, titleBarY+yCorrection, ALLEGRO_ALIGN_CENTER, title.c_str());
+	al_draw_text(font, Black, titleBarX + width/2 + 2, titleBarY+yCorrection + 1, ALLEGRO_ALIGN_CENTER, title.c_str());
+	al_draw_text(font, White, titleBarX + width/2, titleBarY+yCorrection, ALLEGRO_ALIGN_CENTER, title.c_str());
 }
